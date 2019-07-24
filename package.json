@@ -1,8 +1,8 @@
 {
   "name": "futu-api",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
-  "main": "dist/src/futu.js",
+  "main": "dist/src/Futu.js",
   "scripts": {
     "test": "npm run update; mocha dist/src/test/test.js",
     "prebuild": "mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh; ./tools/update_proto_id.sh",
