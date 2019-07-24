@@ -5,7 +5,7 @@ This module automatically generates interfaces and class according to official r
 ```bash
 npm install --save futu-api
 ```
-or install locally
+or build locally
 ```bash
 npm install
 npm run build
