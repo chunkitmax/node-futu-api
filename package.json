@@ -5,9 +5,9 @@
   "main": "dist/src/futu.js",
   "scripts": {
     "test": "npm run update; mocha dist/src/test/test.js",
-    "prebuild": "chmod +x tools/*.sh; ./tools/pb2ts.sh; ./tools/update_proto_id.sh",
+    "prebuild": "mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh; ./tools/update_proto_id.sh",
     "build": "npm run update",
-    "update": "tsc; for f in $( ls src/proto ); do ln -s $PWD/src/proto/${f} $PWD/dist/src/proto/${f} >> /dev/null; done"
+    "update": "./tools/build.sh"
   },
   "author": "Petel__",
   "license": "ISC",

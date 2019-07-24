@@ -11,7 +11,15 @@ fi
 
 if [ -z $( command -v pbts ) ]
 then
+  mv ./node_modules/protobufjs/cli/package.json ./node_modules/protobufjs/cli/package1.json
+  mv ./node_modules/protobufjs/cli/package.standalone.json ./node_modules/protobufjs/cli/package.json
   sudo npm link ./node_modules/protobufjs/cli/
+fi
+
+if [ -z $( command -v pbts ) ]
+then
+  echo "protobuf cli is not installed properly!"
+  exit 1
 fi
 
 SRC_DIR=$DIR/../py-futu-api/futu/common/pb
