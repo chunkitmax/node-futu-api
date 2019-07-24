@@ -47,8 +47,8 @@ export default class Futu extends ProtoMethods {
 
   // private socket: Socket
 
-  constructor(config: FutuConfig) {
-    super(new Socket(config.ip, config.port))
+  constructor(config: FutuConfig, extendProtoName2Id: { [key: string]: number }={}) {
+    super(new Socket(config.ip, config.port, extendProtoName2Id))
 
     this.market = config.market || this.market
     this.env = config.env || this.env

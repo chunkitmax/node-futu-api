@@ -28,6 +28,10 @@ export default class ProtoMethods {
       return a
     }, []).join('\n')
   }
+  public unknownProto(protoIdOrName: number|string, params: any): Promise<any> {
+    return this.socket.send(protoIdOrName, params)
+  }
+
 }
 `
 Fs.writeFileSync('./src/ProtoMethods.ts', content, 'utf8')

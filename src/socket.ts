@@ -3,12 +3,7 @@ import Net from 'net'
 import * as $protobuf from 'protobufjs'
 
 import * as Proto from './proto/proto'
-import ProtoName2Id from './proto/protoid.json'
-
-const ProtoId2Name: { [key: number]: string } = {}
-Object.entries(ProtoName2Id as Object).forEach(([k, v]) => {
-  ProtoId2Name[v] = k
-})
+import _ProtoName2Id from './proto/protoid.json'
 
 let id = 1
 
@@ -37,7 +32,10 @@ export default class Socket {
 
   private initPromise: Promise<void>|undefined
 
-  constructor(ip: string, port: number) {
+  private ProtoName2Id: { [key: string]: number } = {}
+  private ProtoId2Name: { [key: number]: string } = {}
+
+  constructor(ip: string, port: number, extendProtoName2Id: { [key: string]: number }={}) {
     this.ip = ip
     this.port = port
     this.id = id++
@@ -51,6 +49,11 @@ export default class Socket {
     this.cacheNotifyCallback = {}
     this.header = null
     this.recvBuffer = Buffer.allocUnsafe(0)
+
+    this.ProtoName2Id = Object.assign({}, _ProtoName2Id, extendProtoName2Id)
+    Object.entries(this.ProtoName2Id as Object).forEach(([k, v]) => {
+      this.ProtoId2Name[v] = k
+    })
 
     this.socket = new Net.Socket()
     this.socket.setTimeout(1000*30)
@@ -128,14 +131,28 @@ export default class Socket {
     this.cacheNotifyCallback[protoId]
   }
 
-  public async send(protoName: string, msg: any): Promise<any|null> {
+  public async send(protoIdOrName: number|string, msg: any): Promise<any|null> {
     if (!this.isConnected) {
       console.warn(`${this.name} 尚未連接，無法發送請求。`)
       return null
     }
-    const protoId = (ProtoName2Id as any)[protoName] as number
-    if (!protoId) {
-      console.warn(`找不到對應的協議Id:${protoName}`)
+    let protoId: number = 0,
+        protoName: string = ''
+    if (typeof protoIdOrName === 'number') {
+      protoId = protoIdOrName
+      protoName = this.ProtoId2Name[protoIdOrName]
+      if (!protoId || !protoName) {
+        console.warn(`找不到對應的協議Id/Name: ${protoIdOrName}`)
+        return null
+      }
+    } else if (typeof protoIdOrName === 'string') {
+      protoName = protoIdOrName
+      protoId = this.ProtoName2Id[protoIdOrName]
+      if (!protoId || !protoName) {
+        console.warn(`找不到對應的協議Id/Name: ${protoIdOrName}`)
+        return null
+      }
+    } else {
       return null
     }
     // 請求序列號，自增
@@ -214,10 +231,10 @@ export default class Socket {
         throw new Error('接收的包頭數據格式錯誤')
       }
 
-      console.debug(`Response: ${ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
+      console.debug(`Response: ${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
       console.group()
       console.debug(`reqId:${this.header.nSerialNo}, bodyLen:${this.header.nBodyLen}`)
-      console.timeEnd(`${ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
+      console.timeEnd(`${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
     }
 
     // 已經接收指定包體長度的全部數據，切割包體buffer
@@ -244,12 +261,12 @@ export default class Socket {
       if (this.cacheNotifyCallback[protoId]) {
         try {
           // 加載proto協議文件
-          const protoName = ProtoId2Name[protoId]
+          const protoName = this.ProtoId2Name[protoId]
           const response = this.root[protoName].Response
           const result = response.decode(bodyBuffer).toJSON()
           this.cacheNotifyCallback[protoId](result.s2c)
         } catch (e) {
-          const errMsg = `通知回調執行錯誤，response:${ProtoId2Name[protoId]}(${protoId}),reqId:${reqId},bodyLen:${bodyLen}，堆棧：${e.stack}`
+          const errMsg = `通知回調執行錯誤，response:${this.ProtoId2Name[protoId]}(${protoId}),reqId:${reqId},bodyLen:${bodyLen}，堆棧：${e.stack}`
           console.error(errMsg)
           throw new Error(errMsg)
         }

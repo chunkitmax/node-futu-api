@@ -214,4 +214,8 @@ export default class ProtoMethods {
     return this.socket.send('Qot_GetCapitalDistribution', params)
   }
       
+  public unknownProto(protoIdOrName: number|string, params: any): Promise<any> {
+    return this.socket.send(protoIdOrName, params)
+  }
+
 }
