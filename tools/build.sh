@@ -10,7 +10,7 @@ for f in $( ls src/proto )
 do
   if [ ! -f $PWD/dist/src/proto/${f} ]
   then
-    ln -s $PWD/src/proto/${f} $PWD/dist/src/proto/${f} >> /dev/null
+    cp $PWD/src/proto/${f} $PWD/dist/src/proto/${f}
   fi
 done
 
