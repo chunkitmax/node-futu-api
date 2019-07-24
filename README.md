@@ -3,6 +3,9 @@ This module automatically generates interfaces and class according to official r
 
 ## Install
 ```bash
+npm install --save futu-api
+```
+```bash
 npm install
 npm run build
 ```
@@ -12,5 +15,6 @@ For now, please refer to test files.
 
 ## Test
 ```bash
+# Require FutuOpenD software running
 npm test
 ```
