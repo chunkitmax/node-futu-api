@@ -45,6 +45,16 @@ describe('Futu', () => {
     Assert.notEqual(Proto.Qot_GetStaticInfo.S2C.verify(res), null)
   })
 
+  it('qotGetTradeDate', async () => {
+    const res = await ft.qotGetTradeDate({
+      market: Proto.Qot_Common.QotMarket.QotMarket_HK_Security,
+      beginTime: '2018-01-01 00:00:00', 
+      endTime: '2018-02-01 00:00:00'
+    })
+    Assert(res.tradeDateList)
+    Assert.equal(res.tradeDateList!.length, 23)
+  })
+
   it('trdGetMaxTrdQtys', async () => {
     const res = await ft.trdGetMaxTrdQtys({
       header: ft.trdHeader!,
