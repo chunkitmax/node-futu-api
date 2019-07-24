@@ -3,6 +3,16 @@ import 'mocha';
 import Assert from 'assert';
 import Util from 'util';
 
+/** It is normal to have error on the next line
+ * because the user credential is not provided
+ * user_config.json format:
+ * {
+ *    "userID": 1234,
+ *    "pwdMd5": "129619259239abcdef",
+ *    "port": 11111,
+ *    "ip": "localhost"
+ * }
+ */
 import UserConfig from '../../user_config.json';
 import Futu, { Proto } from '../Futu';
 
