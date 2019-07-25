@@ -45,7 +45,7 @@ interface IC2S {
 ```
 However, this module generates files from those proto files even there are mistakes.
 
-⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api repo](https://github.com/FutunnOpen/py-futu-api) but hidden on the table. You may extend the lookup table by yourselves (See the followiing example).
+⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api repo](https://github.com/FutunnOpen/py-futu-api) but hidden on the table. You may extend the lookup table by yourselves (See the example 5 below).
 
 ### Usage example:
 ```typescript
@@ -61,7 +61,7 @@ import UserConfig from '../user_config.json'
       port: number,
       userID: number,
       pwdMd5: string,
-      market?: Proto.Trd_Common.TrdMarket, // default: first marking option: HK
+      market?: Proto.Trd_Common.TrdMarket, // default: first market option: HK
       env?: Proto.Trd_Common.TrdEnv  // default: real trading env
     }
   */
