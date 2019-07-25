@@ -45,7 +45,7 @@ interface IC2S {
 ```
 However, this module generates files from those proto files even there are mistakes.
 
-⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api repo](https://github.com/FutunnOpen/py-futu-api) but hidden on the table. You may extend the lookup table by yourselves (See the example 5 below).
+⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api](https://github.com/FutunnOpen/py-futu-api/tree/v4.x/futu/common/pb) repo but hidden on the table. You may extend the lookup table by yourselves (See the example 5 below).
 
 ### Usage example:
 ```typescript
