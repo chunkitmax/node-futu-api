@@ -23,7 +23,7 @@ describe('Futu', () => {
     await ft.waitForInit()
     Assert.notEqual(ft.userID, undefined)
     Assert.notEqual(ft.connID, undefined)
-    Assert.notEqual(ft.trdHeader, undefined)
+    Assert.notEqual(ft.header, undefined)
   })
   after(async () => {
     await ft.close()
@@ -57,7 +57,7 @@ describe('Futu', () => {
 
   it('trdGetMaxTrdQtys', async () => {
     const res = await ft.trdGetMaxTrdQtys({
-      header: ft.trdHeader!,
+      header: ft.header!,
       orderType: Proto.Trd_Common.OrderType.OrderType_Normal,
       code: '00700',
       price: 100000

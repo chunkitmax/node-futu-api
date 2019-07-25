@@ -29,7 +29,7 @@ export default class Futu extends ProtoMethods {
 
   public userID: number
   public connID: number|Long|undefined
-  public trdHeader: Proto.Trd_Common.ITrdHeader|undefined
+  public header: Proto.Trd_Common.ITrdHeader|undefined
 
 
   private market = Proto.Trd_Common.TrdMarket.TrdMarket_HK
@@ -135,7 +135,7 @@ export default class Futu extends ProtoMethods {
 
   private setCommonTradeHeader(trdEnv = 1, accID: number|Long, trdMarket = 1) {
     this.market = trdMarket
-    this.trdHeader = {
+    this.header = {
       trdEnv,
       accID,
       trdMarket
