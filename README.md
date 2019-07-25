@@ -12,9 +12,7 @@ npm run build
 ```
 
 ## Usage
-For now, please refer to test files.
-  
-⚠️ Sometimes types on interface may be misleading because of poor definition in offical protobuf files. Please refer to those files if you have trouble about types.
+⚠️ Sometimes types on interface may be misleading because of poor definition in official protobuf files. Please refer to those files if you have trouble about types.  
 For example (Qot_GetStaticInfo.proto):
 ```protobuf
 message C2S
@@ -47,7 +45,7 @@ interface IC2S {
 ```
 However, this module generates files from those proto files even there are mistakes.
 
-⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files are on official [py-futu-api repo](https://github.com/FutunnOpen/py-futu-api) but not available on the table. You may extend the lookup table by yourselves(See the followiing example).
+⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api repo](https://github.com/FutunnOpen/py-futu-api) but hidden on the table. You may extend the lookup table by yourselves (See the followiing example).
 
 ### Usage example:
 ```typescript
@@ -68,7 +66,7 @@ import UserConfig from '../user_config.json'
     secType: Proto.Qot_Common.SecurityType.SecurityType_Warrant
   })
   console.log(staticInfo)
-  // example 2: get snapshot of list of security.
+  // example 2: get snapshot of a list of securities.
   // we get snapshot of HK.00700 Tencent Holdings Ltd. here
   let snapshot = await ft.qotGetSecuritySnapshot({
     securityList: [
@@ -81,12 +79,12 @@ import UserConfig from '../user_config.json'
   console.log(snapshot)
 
   // example 3: protocol passed to constructor
-  // get protocol "Qot_RequestHistoryKLQuota" quota
+  // get protocol "Qot_RequestHistoryKL" quota
   let quota = await ft.unknownProto(3104, {
     bGetDetail: true
   } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
   console.log(quota)
-  // you can pass name or id
+  // or you can pass name or id
   quota = await ft.unknownProto('Qot_RequestHistoryKLQuota', {
     bGetDetail: true
   } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
