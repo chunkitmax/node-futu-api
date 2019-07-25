@@ -120,7 +120,7 @@ export default class Socket {
       this.socket.end()
       this.socket.destroy()
       this.isHandStopped = true
-      console.info('手動關閉 socket 。')
+      console.info('Closed socket by user')
     }
   }
 
@@ -133,7 +133,7 @@ export default class Socket {
 
   public async send(protoIdOrName: number|string, msg: any): Promise<any|null> {
     if (!this.isConnected) {
-      console.warn(`${this.name} 尚未連接，無法發送請求。`)
+      console.warn(`Cannot send any request as ${this.name} is not connected`)
       return null
     }
     let protoId: number = 0,
@@ -142,20 +142,20 @@ export default class Socket {
       protoId = protoIdOrName
       protoName = this.ProtoId2Name[protoIdOrName]
       if (!protoId || !protoName) {
-        console.warn(`找不到對應的協議Id/Name: ${protoIdOrName}`)
+        console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
         return null
       }
     } else if (typeof protoIdOrName === 'string') {
       protoName = protoIdOrName
       protoId = this.ProtoName2Id[protoIdOrName]
       if (!protoId || !protoName) {
-        console.warn(`找不到對應的協議Id/Name: ${protoIdOrName}`)
+        console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
         return null
       }
     } else {
       return null
     }
-    // 請求序列號，自增
+    // 請求序列號,自增
     if (this.requestId > 1000000) {
       this.requestId = 1000
     }
@@ -173,20 +173,20 @@ export default class Socket {
     console.debug('Request:')
     console.group()
     console.debug(`${protoName}(${protoId}) ${requestId}`)
-    console.time(`${protoName}(${protoId}) ${requestId}`) // TODO: 
+    console.time(`${protoName}(${protoId}) ${requestId}`)
     console.groupEnd()
     const buffer = Buffer.concat([
-      Buffer.from('FT'), // 包頭起始標志，固定為「FT」
+      Buffer.from('FT'), // 包頭起始標志,固定為「FT」
       Buffer.from(new Uint32Array([protoId]).buffer), // 協議ID
-      Buffer.from(new Uint8Array([0]).buffer), // 協議格式類型，0為Protobuf格式，1為Json格式
-      Buffer.from(new Uint8Array([0]).buffer), // 協議版本，用於迭代兼容, 目前填0
-      Buffer.from(new Uint32Array([requestId]).buffer), // 包序列號，用於對應請求包和回包, 要求遞增
+      Buffer.from(new Uint8Array([0]).buffer), // 協議格式類型,0為Protobuf格式,1為Json格式
+      Buffer.from(new Uint8Array([0]).buffer), // 協議版本,用於迭代兼容, 目前填0
+      Buffer.from(new Uint32Array([requestId]).buffer), // 包序列號,用於對應請求包和回包, 要求遞增
       Buffer.from(new Uint32Array([reqBuffer.length]).buffer), // 包體長度
       Buffer.from(sha1Buffer.buffer), // 包體原始數據(解密後)的SHA1哈希值
       Buffer.from(new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0]).buffer), // 保留8字節擴展
       reqBuffer,
     ])
-    // 發送請求，處理回調
+    // 發送請求,處理回調
     this.socket.write(buffer)
     return await new Promise((resolve, reject) => {
       this.cacheResponseCallback[requestId] = (responseBuffer) => {
@@ -194,7 +194,12 @@ export default class Socket {
         if (result.retType === 0) {
           return resolve(result.s2c)
         }
-        const errMsg = `服務器返回結果失敗,request:${protoName}(${protoId}),retType:${result.retType},reqId:${requestId},errMsg:${result.retMsg}`
+        const errMsg = `Error msg from server
+          request:${protoName}(${protoId}),
+          retType:${result.retType},
+          reqId:${requestId},
+          errMsg:${result.retMsg}
+        `
         console.error(errMsg)
         return reject(new Error(errMsg))
       }
@@ -217,27 +222,27 @@ export default class Socket {
       })
       let recvSha1Str = recvSha1.join('')
       this.header = {
-        // 包頭起始標志，固定為「FT」
+        // 包頭起始標志,固定為「FT」
         szHeaderFlag: String.fromCharCode(this.recvBuffer.readUInt8(0)) + String.fromCharCode(this.recvBuffer.readUInt8(1)),
         nProtoID: this.recvBuffer.readUInt32LE(2), // 協議ID
-        nProtoFmtType: this.recvBuffer.readUInt8(6), // 協議格式類型，0為Protobuf格式，1為Json格式
-        nProtoVer: this.recvBuffer.readUInt8(7), // 協議版本，用於迭代兼容
+        nProtoFmtType: this.recvBuffer.readUInt8(6), // 協議格式類型,0為Protobuf格式,1為Json格式
+        nProtoVer: this.recvBuffer.readUInt8(7), // 協議版本,用於迭代兼容
         nSerialNo: this.recvBuffer.readUInt32LE(8), // 包序列號
         nBodyLen: this.recvBuffer.readUInt32LE(12), // 包體長度
         arrBodySHA1: recvSha1Str, // 包體原數據(解密後)的SHA1哈希值
         arrReserved: this.recvBuffer.slice(36, 44), // 保留8字節擴展
       }
       if (this.header.szHeaderFlag !== 'FT') {
-        throw new Error('接收的包頭數據格式錯誤')
+        throw new Error('Incorrect header flag')
       }
 
       console.debug(`Response: ${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
       console.group()
-      console.debug(`reqId:${this.header.nSerialNo}, bodyLen:${this.header.nBodyLen}`)
+      console.debug(`reqId: ${this.header.nSerialNo}, bodyLen: ${this.header.nBodyLen}`)
       console.timeEnd(`${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
     }
 
-    // 已經接收指定包體長度的全部數據，切割包體buffer
+    // 已經接收指定包體長度的全部數據,切割包體buffer
     if (this.header && this.recvBuffer.length >= this.header.nBodyLen + headerLen) {
       reqId = this.header.nSerialNo
       protoId = this.header.nProtoID
@@ -250,7 +255,7 @@ export default class Socket {
 
       const sha1 = HexSha1(bodyBuffer)
       if (sha1 !== bodySha1) {
-        throw new Error(`接收的包體sha1加密錯誤：${bodySha1},本地sha1：${sha1}`)
+        throw new Error(`SHA1 checksum error: ${bodySha1} vs ${sha1}`)
       }
       // 交給回調處理包體數據
       if (this.cacheResponseCallback[reqId]) {
@@ -266,7 +271,12 @@ export default class Socket {
           const result = response.decode(bodyBuffer).toJSON()
           this.cacheNotifyCallback[protoId](result.s2c)
         } catch (e) {
-          const errMsg = `通知回調執行錯誤，response:${this.ProtoId2Name[protoId]}(${protoId}),reqId:${reqId},bodyLen:${bodyLen}，堆棧：${e.stack}`
+          const errMsg = `Error caught from notify callback,
+            response:${this.ProtoId2Name[protoId]}(${protoId}),
+            reqId: ${reqId},
+            bodyLen: ${bodyLen},
+            stack: ${e.stack}
+          `
           console.error(errMsg)
           throw new Error(errMsg)
         }
