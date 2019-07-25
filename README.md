@@ -54,6 +54,18 @@ However, this module generates files from those proto files even there are mista
 import Futu, { Proto } from 'futu-api'
 import UserConfig from '../user_config.json'
 
+/**
+ * UserConfig: FutuConfig
+ *  {
+      ip: string,
+      port: number,
+      userID: number,
+      pwdMd5: string,
+      market?: Proto.Trd_Common.TrdMarket, // default: first marking option: HK
+      env?: Proto.Trd_Common.TrdEnv  // default: real trading env
+    }
+  */
+
 (async function main() {
   // extend the lookup table
   // add back protocol 'Qot_RequestHistoryKLQuota' with its protocol id
@@ -66,6 +78,7 @@ import UserConfig from '../user_config.json'
     secType: Proto.Qot_Common.SecurityType.SecurityType_Warrant
   })
   console.log(staticInfo)
+
   // example 2: get snapshot of a list of securities.
   // we get snapshot of HK.00700 Tencent Holdings Ltd. here
   let snapshot = await ft.qotGetSecuritySnapshot({
@@ -78,7 +91,32 @@ import UserConfig from '../user_config.json'
   })
   console.log(snapshot)
 
-  // example 3: protocol passed to constructor
+  /**
+   * userID, connID in packetID and header are public member variables in class Futu
+   */
+  // example 3: place order
+  // place order stock: HK.00700, price: 1.0, qty: 100
+  let resp = await ft.trdPlaceOrder({
+    packetID: {
+      connID: ft.connID!, // <------------- connID
+      serialNo: Date.now()
+    },
+    trdSide: Proto.Trd_Common.TrdSide.TrdSide_Buy,
+    code: '00700',
+    price: 1.0,
+    orderType: Proto.Trd_Common.OrderType.OrderType_Normal,
+    qty: 100,
+    header: ft.header!, // <--------------- header
+    secMarket: Proto.Trd_Common.TrdSecMarket.TrdSecMarket_HK
+  })
+  console.log(resp)
+  // example 4: get account list
+  let accList = await ft.trdGetAccList({
+    userID: ft.userID // <----------------- userID
+  })
+  console.log(accList)
+
+  // example 5: protocol passed to constructor
   // get protocol "Qot_RequestHistoryKL" quota
   let quota = await ft.unknownProto(3104, {
     bGetDetail: true
