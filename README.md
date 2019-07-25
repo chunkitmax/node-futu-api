@@ -1,4 +1,4 @@
-# Futu_Node_Api (In Progress)
+# Futu_Node_Api
 This module automatically generates interfaces and class according to official release files.
 
 ## Install
