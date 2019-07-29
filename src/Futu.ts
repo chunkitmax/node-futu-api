@@ -66,7 +66,7 @@ export default class Futu extends ProtoMethods {
     this.initPromise = new Promise(async resolve => {
       await this.socket.waitForInit()
       await this._initConnect()
-      console.info('initConnect finished')
+      // console.info('initConnect finished')
       await this.execFreqGuard(30 * 1000, 10, 'trdUnlockTrade')
       await this.trdUnlockTrade({
         pwdMD5: this.pwdMd5,
@@ -88,7 +88,7 @@ export default class Futu extends ProtoMethods {
   public async waitForInit(): Promise<void> {
     Assert(this.initPromise)
     await this.initPromise
-    console.info('futu inited')
+    // console.info('futu inited')
   }
 
   public close() {
