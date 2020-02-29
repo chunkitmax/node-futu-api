@@ -124,11 +124,26 @@ export default class Socket {
     }
   }
 
-  public subNotify(protoId: number, callback: (protoId: number) => any) {
+  public subNotify(protoIdOrName: number|string, callback: (s2c: any) => void) {
+    if (callback === undefined) {
+      this.unsubNotify(protoIdOrName)
+    }
+    let protoId: number = 0
+    if (typeof protoIdOrName === 'string') {
+      protoId = this.ProtoName2Id[protoIdOrName]
+    } else {
+      protoId = protoIdOrName
+    }
     this.cacheNotifyCallback[protoId] = callback
   }
-  public unsubNotify(protoId: number) {
-    this.cacheNotifyCallback[protoId]
+  public unsubNotify(protoIdOrName: number|string) {
+    let protoId: number = 0
+    if (typeof protoIdOrName === 'string') {
+      protoId = this.ProtoName2Id[protoIdOrName]
+    } else {
+      protoId = protoIdOrName
+    }
+    delete this.cacheNotifyCallback[protoId]
   }
 
   public async send(protoIdOrName: number|string, msg: any): Promise<any|null> {

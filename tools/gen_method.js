@@ -18,12 +18,22 @@ export default class ProtoMethods {
       [name[0].toLowerCase() + name.slice(1).replace('_', ''), name]
     ).reduce((a, [name, oriName]) => {
       if (Proto[oriName] && Proto[oriName].C2S) {
-        a.push(`
+        if (oriName.toLowerCase().indexOf('_sub') >= 0) {
+          a.push(`
+  public ${name}(${Proto[oriName].C2S? `params: Proto.${oriName}.IC2S` : ''}, callback: (s2c: any) => void): Promise<Proto.${oriName}.IS2C> {
+    this.socket.subNotify('${oriName}', callback)
+    return this.socket.send('${oriName}', params)
+  }
+      `
+          )
+        } else {
+          a.push(`
   public ${name}(${Proto[oriName].C2S? `params: Proto.${oriName}.IC2S` : ''}): Promise<Proto.${oriName}.IS2C> {
     return this.socket.send('${oriName}', params)
   }
       `
-        )
+          )
+        }
       }
       return a
     }, []).join('\n')
