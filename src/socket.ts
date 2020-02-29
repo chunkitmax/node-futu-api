@@ -92,7 +92,7 @@ export default class Socket {
       return
     }
     this.initPromise = this.connect()
-    console.info('socket inited')
+    // console.info('socket inited')
   }
 
   public waitForInit(): Promise<void> {
@@ -120,7 +120,7 @@ export default class Socket {
       this.socket.end()
       this.socket.destroy()
       this.isHandStopped = true
-      console.info('Closed socket by user')
+      // console.info('Closed socket by user')
     }
   }
 
@@ -148,7 +148,7 @@ export default class Socket {
 
   public async send(protoIdOrName: number|string, msg: any): Promise<any|null> {
     if (!this.isConnected) {
-      console.warn(`Cannot send any request as ${this.name} is not connected`)
+      // console.warn(`Cannot send any request as ${this.name} is not connected`)
       return null
     }
     let protoId: number = 0,
@@ -157,14 +157,14 @@ export default class Socket {
       protoId = protoIdOrName
       protoName = this.ProtoId2Name[protoIdOrName]
       if (!protoId || !protoName) {
-        console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
+        // console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
         return null
       }
     } else if (typeof protoIdOrName === 'string') {
       protoName = protoIdOrName
       protoId = this.ProtoName2Id[protoIdOrName]
       if (!protoId || !protoName) {
-        console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
+        // console.warn(`Protocol Id/Name not found: ${protoIdOrName}`)
         return null
       }
     } else {
@@ -185,11 +185,11 @@ export default class Socket {
     })).finish()
     const sha1 = HexSha1(reqBuffer)
     const sha1Buffer = new Uint8Array(20).map((_, index) => Number(`0x${sha1.substr(index * 2, 2)}`))
-    console.debug('Request:')
-    console.group()
-    console.debug(`${protoName}(${protoId}) ${requestId}`)
-    console.time(`${protoName}(${protoId}) ${requestId}`)
-    console.groupEnd()
+    // console.debug('Request:')
+    // console.group()
+    // console.debug(`${protoName}(${protoId}) ${requestId}`)
+    // console.time(`${protoName}(${protoId}) ${requestId}`)
+    // console.groupEnd()
     const buffer = Buffer.concat([
       Buffer.from('FT'), // 包頭起始標志,固定為「FT」
       Buffer.from(new Uint32Array([protoId]).buffer), // 協議ID
@@ -251,10 +251,10 @@ export default class Socket {
         throw new Error('Incorrect header flag')
       }
 
-      console.debug(`Response: ${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
-      console.group()
-      console.debug(`reqId: ${this.header.nSerialNo}, bodyLen: ${this.header.nBodyLen}`)
-      console.timeEnd(`${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
+      // console.debug(`Response: ${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
+      // console.group()
+      // console.debug(`reqId: ${this.header.nSerialNo}, bodyLen: ${this.header.nBodyLen}`)
+      // console.timeEnd(`${this.ProtoId2Name[this.header.nProtoID]}(${this.header.nProtoID}) ${this.header.nSerialNo}`)
     }
 
     // 已經接收指定包體長度的全部數據,切割包體buffer
@@ -298,6 +298,6 @@ export default class Socket {
       }
       if (this.recvBuffer.length > headerLen) this.parseData()
     }
-    console.groupEnd()
+    // console.groupEnd()
   }
 }
