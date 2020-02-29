@@ -1,4 +1,5 @@
 # Futu_Node_Api
+![npm](https://img.shields.io/npm/v/futu-api)<br/>
 This module automatically generates interfaces and class according to official release files.
 
 ## Install
@@ -12,7 +13,7 @@ npm run build
 ```
 
 ## Usage
-⚠️ Sometimes types on interface may be misleading because of poor definition in official protobuf files. Please refer to those files if you have trouble about types.  
+⚠️ Sometimes types on interface may be misleading because of poor definition in official protobuf files. Please refer to those files if you have trouble about types.
 For example (Qot_GetStaticInfo.proto):
 ```protobuf
 message C2S
@@ -127,7 +128,7 @@ import UserConfig from '../user_config.json'
     bGetDetail: true
   } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
   console.log(quota)
-  
+
   ft.close()
 })()
 ```
