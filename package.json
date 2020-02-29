@@ -1,6 +1,6 @@
 {
   "name": "futu-api",
-  "version": "1.0.8",
+  "version": "1.0.11",
   "description": "Basic tool for algorithmic trading on Futu which automatically generates interfaces and methods according to official release files",
   "main": "dist/src/Futu.js",
   "scripts": {
