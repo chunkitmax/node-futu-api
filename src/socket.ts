@@ -8,7 +8,7 @@ import _ProtoName2Id from './proto/protoid.json'
 let id = 1
 
 export default class Socket {
-  
+
   private ip: string
   private port: number
   private id: number

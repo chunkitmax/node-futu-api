@@ -48,7 +48,7 @@ describe('Futu', () => {
   it('qotGetTradeDate', async () => {
     const res = await ft.qotGetTradeDate({
       market: Proto.Qot_Common.QotMarket.QotMarket_HK_Security,
-      beginTime: '2018-01-01 00:00:00', 
+      beginTime: '2018-01-01 00:00:00',
       endTime: '2018-02-01 00:00:00'
     })
     Assert(res.tradeDateList)

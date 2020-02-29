@@ -6,7 +6,7 @@ import Socket from './socket';
 
 export { Proto }
 
-const sleep = async (time: number) => new Promise(resolve => 
+const sleep = async (time: number) => new Promise(resolve =>
   setTimeout(resolve, time)
 )
 
@@ -74,7 +74,7 @@ export default class Futu extends ProtoMethods {
       })
       const accList = ((await this.trdGetAccList({
         userID: this.userID
-      })).accList || []).filter(acc => 
+      })).accList || []).filter(acc =>
         acc.trdMarketAuthList && acc.trdMarketAuthList.includes(this.market) &&
         acc.trdEnv === this.env
       )
@@ -100,7 +100,7 @@ export default class Futu extends ProtoMethods {
       this.initPromise = undefined
     }
   }
-  
+
   private async _initConnect(_config?: ConnectConfig) {
     Proto.InitConnect.Request
     let config: ConnectConfig = {

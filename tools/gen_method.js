@@ -14,7 +14,7 @@ export default class ProtoMethods {
     this.socket = socket
   }
   ${
-    Object.keys(ProtoName2Id).map(name => 
+    Object.keys(ProtoName2Id).map(name =>
       [name[0].toLowerCase() + name.slice(1).replace('_', ''), name]
     ).reduce((a, [name, oriName]) => {
       if (Proto[oriName] && Proto[oriName].C2S) {
