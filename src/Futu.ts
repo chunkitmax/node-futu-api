@@ -67,7 +67,6 @@ export default class Futu extends ProtoMethods {
       await this.socket.waitForInit()
       await this._initConnect()
       // console.info('initConnect finished')
-      await this.execFreqGuard(30 * 1000, 10, 'trdUnlockTrade')
       await this.trdUnlockTrade({
         pwdMD5: this.pwdMd5,
         unlock: true
