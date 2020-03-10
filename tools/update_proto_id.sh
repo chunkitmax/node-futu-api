@@ -7,6 +7,10 @@ cd $DIR/..
 if [ ! -d "py-futu-api" ]
 then
   git clone --single-branch --branch master https://github.com/FutunnOpen/py-futu-api.git
+else
+  cd py-futu-api
+  git pull origin master
+  cd ..
 fi
 
 node ./tools/get_proto_id.js

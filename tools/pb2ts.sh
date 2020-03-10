@@ -6,10 +6,10 @@ cd $DIR/..
 
 if [ ! -d "py-futu-api" ]
 then
-  git clone --single-branch --branch v4.x https://github.com/FutunnOpen/py-futu-api.git
+  git clone --single-branch --branch master https://github.com/FutunnOpen/py-futu-api.git
 else
   cd py-futu-api
-  git pull origin v4.x
+  git pull origin master
   cd ..
 fi
 
