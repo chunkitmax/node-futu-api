@@ -54,6 +54,7 @@ However, this module generates files from those proto files even there are mista
 
 import Futu, { Proto } from 'futu-api'
 import UserConfig from '../user_config.json'
+import { Qot_Common, Trd_Common } from '../proto/proto'
 
 /**
  * UserConfig: FutuConfig
@@ -62,8 +63,8 @@ import UserConfig from '../user_config.json'
       port: number,
       userID: number,
       pwdMd5: string,
-      market?: Proto.Trd_Common.TrdMarket, // default: first market option: HK
-      env?: Proto.Trd_Common.TrdEnv  // default: real trading env
+      market?: Trd_Common.TrdMarket, // default: first market option: HK
+      env?: Trd_Common.TrdEnv  // default: real trading env
     }
   */
 
@@ -73,51 +74,56 @@ import UserConfig from '../user_config.json'
   let ft = new Futu(UserConfig, { 'Qot_RequestHistoryKLQuota': 3104 })
   // wait for initialization to finish
   await ft.waitForInit()
-  // example 1: get static info
+
+
+  // Example 1: get static info
   let staticInfo = await ft.qotGetStaticInfo({
-    market: Proto.Qot_Common.QotMarket.QotMarket_HK_Security,
-    secType: Proto.Qot_Common.SecurityType.SecurityType_Warrant
+    market: Qot_Common.QotMarket.QotMarket_HK_Security,
+    secType: Qot_Common.SecurityType.SecurityType_Warrant
   })
   console.log(staticInfo)
 
-  // example 2: get snapshot of a list of securities.
+
+  // Example 2: get snapshot of a list of securities.
   // we get snapshot of HK.00700 Tencent Holdings Ltd. here
   let snapshot = await ft.qotGetSecuritySnapshot({
-    securityList: [
-      {
-        market: Proto.Qot_Common.QotMarket.QotMarket_HK_Security,
-        code: '00700'
-      }
-    ]
+    securityList: [{
+      market: Qot_Common.QotMarket.QotMarket_HK_Security,
+      code: '00700'
+    }]
   })
   console.log(snapshot)
+
 
   /**
    * userID, connID in packetID and header are public member variables in class Futu
    */
-  // example 3: place order
+  // Example 3: place order
   // place order stock: HK.00700, price: 1.0, qty: 100
   let resp = await ft.trdPlaceOrder({
     packetID: {
-      connID: ft.connID!, // <------------- connID
+      connID: ft.connID!, // <------------------------------ connID
       serialNo: Date.now()
     },
-    trdSide: Proto.Trd_Common.TrdSide.TrdSide_Buy,
+    trdSide: Trd_Common.TrdSide.TrdSide_Buy,
     code: '00700',
     price: 1.0,
-    orderType: Proto.Trd_Common.OrderType.OrderType_Normal,
+    orderType: Trd_Common.OrderType.OrderType_Normal,
     qty: 100,
-    header: ft.header!, // <--------------- header
-    secMarket: Proto.Trd_Common.TrdSecMarket.TrdSecMarket_HK
+    header: ft.header!, // <-------------------------------- header
+    secMarket: Trd_Common.TrdSecMarket.TrdSecMarket_HK
   })
   console.log(resp)
-  // example 4: get account list
+
+
+  // Example 4: get account list
   let accList = await ft.trdGetAccList({
-    userID: ft.userID // <----------------- userID
+    userID: ft.userID // <---------------------------------- userID
   })
   console.log(accList)
 
-  // example 5: protocol passed to constructor
+
+  // Example 5: protocol passed to constructor
   // get protocol "Qot_RequestHistoryKL" quota
   let quota = await ft.unknownProto(3104, {
     bGetDetail: true
@@ -129,7 +135,57 @@ import UserConfig from '../user_config.json'
   } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
   console.log(quota)
 
-  ft.close()
+
+  // Example 6: subscription
+  // subscribe to DJI futures (Ticker & Realtime data)
+  await ft.qotSub({
+      isSubOrUnSub: true,
+      isFirstPush: true,
+      isRegOrUnRegPush: true,
+      subTypeList: [
+        Qot_Common.SubType.SubType_Ticker, // <------------- 1
+        Qot_Common.SubType.SubType_RT      // <------------- 2
+      ],
+      securityList: [{
+        code: 'YMmain',
+        market: Qot_Common.QotMarket.QotMarket_US_Security
+      }]
+    },
+    // callback for ticker
+    function (data: Proto.Qot_UpdateTicker.IS2C) { // <----- 1
+      console.log(
+        'ticker: ',
+        data.tickerList!.map(ticker => ticker.price)
+      )
+    },
+    // callback for rt
+    function (data: Proto.Qot_UpdateRT.IS2C) { // <--------- 2
+      console.log(
+        'rt: ',
+        data.rtList!.map(rt => rt.price)
+      )
+    }
+  )
+  // unsubscribe after 1min according to documentation
+  await new Promise(resolve => setTimeout(resolve, 60500))
+  // only unsubscribe to ticker
+  await ft.qotSub({
+    isSubOrUnSub: false,
+    isRegOrUnRegPush: false,
+    subTypeList: [Qot_Common.SubType.SubType_Ticker],
+    securityList: [{
+      code: 'YMmain',
+      market: Qot_Common.QotMarket.QotMarket_US_Security
+    }]
+  })
+  // unsubscribe all
+  await ft.qotSub({
+    isSubOrUnSub: false,
+    isRegOrUnRegPush: false,
+    isUnsubAll: true // <----------------------------------- all
+  })
+
+  await ft.close()
 })()
 ```
 
