@@ -52,9 +52,9 @@ However, this module generates files from those proto files even there are mista
 ```typescript
 // TODO: Run FutuOpenD software first
 
-import Futu, { Proto } from 'futu-api'
-import UserConfig from '../user_config.json'
-import { Qot_Common, Trd_Common } from '../proto/proto'
+import Futu, { Proto } from 'futu-api';
+import UserConfig from '../user_config.json';
+import { Qot_Common, Trd_Common } from '../proto/proto';
 
 /**
  * UserConfig: FutuConfig
