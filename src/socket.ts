@@ -134,6 +134,9 @@ export default class Socket {
     } else {
       protoId = protoIdOrName
     }
+    if (this.ProtoId2Name[protoId].toLowerCase().indexOf('update') < 0) {
+      throw new Error('This protocol cannot be subscribed')
+    }
     this.cacheNotifyCallback[protoId] = callback
   }
   public unsubNotify(protoIdOrName: number|string) {
@@ -144,6 +147,9 @@ export default class Socket {
       protoId = protoIdOrName
     }
     delete this.cacheNotifyCallback[protoId]
+  }
+  public unsubAll() {
+    this.cacheNotifyCallback = {}
   }
 
   public async send(protoIdOrName: number|string, msg: any): Promise<any|null> {

@@ -100,7 +100,16 @@ export default class Futu extends ProtoMethods {
     }
   }
 
-  private async _initConnect(_config?: ConnectConfig) {
+  public registerCallback(subType: Proto.Qot_Common.SubType, callback: ((s2c: any) => void)): boolean {
+    let updateProtoName = this.translateUpdateProto(subType)
+    if (updateProtoName) {
+      this.socket.subNotify(updateProtoName, callback)
+      return true
+    }
+    return false
+  }
+
+  private async _initConnect(_config?: ConnectConfig): Promise<void> {
     Proto.InitConnect.Request
     let config: ConnectConfig = {
       clientVer: 101,
