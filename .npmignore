@@ -2,3 +2,4 @@ src/
 tools/
 py-futu-api/
 user_config.json
+.vscode
