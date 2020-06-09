@@ -3,6 +3,7 @@ node_modules
 dist
 py-futu-api
 package-lock.json
-src/proto
+# src/proto
 src/ProtoMethods.ts
 .vscode
+FutuApi
