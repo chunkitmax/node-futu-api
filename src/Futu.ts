@@ -11,8 +11,8 @@ export type FutuConfig = {
   pwdMd5: string
   // account
   account: {
-  market?: Proto.Trd_Common.TrdMarket
-  env?: Proto.Trd_Common.TrdEnv
+    market?: Proto.Trd_Common.TrdMarket
+    env?: Proto.Trd_Common.TrdEnv
     accType?: Proto.Trd_Common.TrdAccType
   }
   // websocket
@@ -29,8 +29,8 @@ const DefaultConfig = {
   // no default user
   // account
   account: {
-  market: Proto.Trd_Common.TrdMarket.TrdMarket_HK,
-  env: Proto.Trd_Common.TrdEnv.TrdEnv_Real,
+    market: Proto.Trd_Common.TrdMarket.TrdMarket_HK,
+    env: Proto.Trd_Common.TrdEnv.TrdEnv_Real,
     accType: Proto.Trd_Common.TrdAccType.TrdAccType_Cash
   },
   // websocket
@@ -39,7 +39,7 @@ const DefaultConfig = {
   reqTimeout: 10000
 }
 
-type AutoFilled<T> = Omit<T, 
+type AutoFilled<T> = Omit<T,
   'header' |
   'packetID' |
   'userID'
@@ -323,4 +323,22 @@ export default class Futu extends WebSocket {
     return super.request('Trd_GetHistoryOrderFillList', req)
   }
 
+}
+
+if (require.main === module) {
+  const ft = new Futu(require('../../futu_config.json'))
+  setTimeout(async () => {
+    console.log(await ft.trdGetFunds({
+      currency: Proto.Trd_Common.Currency.Currency_HKD
+    }))
+    const order = await ft.trdPlaceOrder({
+      code: '00700',
+      orderType: Proto.Trd_Common.OrderType.OrderType_Normal,
+      qty: 100,
+      trdSide: Proto.Trd_Common.TrdSide.TrdSide_Buy,
+      price: 1.0,
+      secMarket: Proto.Trd_Common.TrdSecMarket.TrdSecMarket_HK
+    })
+    console.log(order)
+  }, 5000)
 }

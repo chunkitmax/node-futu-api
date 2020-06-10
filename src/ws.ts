@@ -5,6 +5,7 @@ import Fs from 'fs';
 import L from 'loglevel';
 import Path from 'path';
 import ProtoBuf, { Message, Type, Writer } from 'protobufjs';
+import { inspect } from 'util';
 import Ws from 'ws';
 
 import Futu, { FutuConfig } from './Futu';
@@ -42,6 +43,11 @@ type FutuResponse = {
   s2c: any
 }
 
+enum WsApiCmd {
+  Init = 1,
+  OpenDisConnect
+}
+
 export default class WebSocket {
 
   private ws: Ws & {
@@ -59,7 +65,7 @@ export default class WebSocket {
   private isLoggedIn = false
   private exitFlag = false
 
-  private reqId = 0
+  private reqId = 1
 
   // TODO: handle push subscription
 
@@ -89,30 +95,32 @@ export default class WebSocket {
     return this.ws
   }
 
-  private sendCmd(id: number, buffer: Uint8Array): Promise<ArrayBuffer> {
+  private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
       const reqId = ++this.reqId
-      this.ws.send(this.pack(id, reqId, buffer).toArrayBuffer(), err => {
-        if (err) return reject(err)
-        // TODO: can setting many timeout cause performance issues?
-        let timeoutTimer = setTimeout(() => {
-          delete this.locks[reqId]
-          return reject(new Error('Timeout'))
-        }, this.config.reqTimeout)
-        const lock = (err?: Error, data?: FutuRet) => {
-          if (timeoutTimer) clearTimeout(timeoutTimer)
+      // TODO: can setting many timeout cause performance issues?
+      let timeoutTimer = setTimeout(() => {
+        delete this.locks[reqId]
+        return reject(new Error('Timeout'))
+      }, this.config.reqTimeout)
+      this.ws.send(this.pack(cmd, reqId, buffer).toArrayBuffer(), err => {
+        if (!this.locks[reqId]) {
           if (err) return reject(err)
-          if (!data) {
-            return reject(new Error('Return obj is undeifned'))
-          } else if (data.error !== 0) {
-            return reject(new Error(data.errMsg))
-          } else if (data.sign.indexOf(HeadSign) === -1) {
-            return reject(new Error('Wrong Header Flag'))
-          } else {
-            return resolve(data.data)
+          const lock = (err?: Error, data?: FutuRet) => {
+            if (timeoutTimer) clearTimeout(timeoutTimer)
+            if (err) return reject(err)
+            if (!data) {
+              return reject(new Error('Return obj is undeifned'))
+            } else if (data.error !== 0) {
+              return reject(new Error(data.errMsg))
+            } else if (data.sign.indexOf(HeadSign) === -1) {
+              return reject(new Error('Wrong Header Flag'))
+            } else {
+              return resolve(data.data)
+            }
           }
+          this.locks[reqId] = lock
         }
-        this.locks[reqId] = lock
       })
     })
   }
@@ -161,7 +169,7 @@ export default class WebSocket {
     if (this.ws) {
       this.clean(false)
       // TODO: setup (e.g. InitConnect)
-      let keyMD5 = ""
+      let keyMD5 = undefined
       if (this.config.wsKey) {
         // keyMD5 = Crypto.createHash('md5').update(this.config.wsKey).digest('hex')
         keyMD5 = this.config.wsKey
@@ -172,12 +180,15 @@ export default class WebSocket {
         } as Proto.InitWebSocket.IC2S)
         // TODO: useless (InitConnect on websocket causes api call failure afterwards)
         // get connID
-        // const { connID, keepAliveInterval } = (await this._request('InitConnect', {
-        //   clientVer: 101,
-        //   clientID: `client-${Date.now()%1000}`,
-        //   recvNotify: this.config.recvNotify
-        // } as Proto.InitConnect.IC2S)) as Proto.InitConnect.IS2C
-        // this.connID = connID
+        const { connID, keepAliveInterval } = (await this._request('InitConnect', {
+          clientVer: 101,
+          clientID: `client-${Date.now()%1000}`,
+          recvNotify: this.config.recvNotify,
+          pushProtoFmt: Proto.Common.ProtoFmt.ProtoFmt_Protobuf,
+          packetEncAlgo: Proto.Common.PacketEncAlgo.PacketEncAlgo_None
+        } as Proto.InitConnect.IC2S)) as Proto.InitConnect.IS2C
+        this.connID = connID
+        await new Promise(resolve => setTimeout(resolve, 2000))
         // unlock trade features
         await this._request('Trd_UnlockTrade', {
           pwdMD5: this.config.pwdMd5,
@@ -188,7 +199,7 @@ export default class WebSocket {
           userID: this.config.userID
         } as Proto.Trd_GetAccList.IC2S) as Proto.Trd_GetAccList.IS2C)
         if (!accList || accList.length === 0) throw new Error('Cannot get acc list')
-        const matchedAcc = accList.find(acc => 
+        const matchedAcc = accList.find(acc =>
           acc.trdEnv === this.config.account.env! &&
           acc.trdMarketAuthList!.includes(this.config.account.market!) &&
           acc.accType === this.config.account.accType!
@@ -201,6 +212,7 @@ export default class WebSocket {
           trdMarket: this.config.account.market!
         }
         this.isLoggedIn = true
+        L.info('Finish initialization')
       } catch (err) {
         L.error(err)
       }
@@ -219,7 +231,7 @@ export default class WebSocket {
     }
   }
 
-  private onClose(e: Ws.CloseEvent) {
+  private onClose(_: Ws.CloseEvent) {
     if (this.exitFlag) {
       L.warn('Websocket disconnected')
     } else {
@@ -238,6 +250,16 @@ export default class WebSocket {
       if (ret && ret.section && this.locks[ret.section]) {
         this.locks[ret.section]!(undefined, ret)
         delete this.locks[ret.section]
+      } else if (ret.cmd === WsApiCmd.OpenDisConnect) {
+        if (!this.exitFlag) {
+          L.error('Disconnected (Cmd = 2)')
+          if (!this.reconnectTimer) {
+            this.clean()
+            this.reconnectTimer = setTimeout(() => this.setup(), 1000)
+          }
+        }
+      } else {
+        console.log(inspect(ret, { depth: 3 }))
       }
     }
   }

@@ -56,7 +56,7 @@
   "Qot_SetPriceReminder": 3220,
   "Qot_GetPriceReminder": 3221,
   "Qot_GetUserSecurityGroup": 3222,
-  
+
   "Trd_GetAccList": 2001,
   "Trd_UnlockTrade": 2005,
   "Trd_SubAccPush": 2008,
