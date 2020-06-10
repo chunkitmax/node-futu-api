@@ -283,20 +283,6 @@ $root.Common = (function() {
     })();
 
     /**
-     * ProtoFmt enum.
-     * @name Common.ProtoFmt
-     * @enum {string}
-     * @property {number} ProtoFmt_Protobuf=0 ProtoFmt_Protobuf value
-     * @property {number} ProtoFmt_Json=1 ProtoFmt_Json value
-     */
-    Common.ProtoFmt = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "ProtoFmt_Protobuf"] = 0;
-        values[valuesById[1] = "ProtoFmt_Json"] = 1;
-        return values;
-    })();
-
-    /**
      * ProgramStatusType enum.
      * @name Common.ProgramStatusType
      * @enum {string}
@@ -3047,7 +3033,6 @@ $root.GetGlobalState = (function() {
          * @property {number} marketSH S2C marketSH
          * @property {number} marketSZ S2C marketSZ
          * @property {number} marketHKFuture S2C marketHKFuture
-         * @property {number|null} [marketUSFuture] S2C marketUSFuture
          * @property {boolean} qotLogined S2C qotLogined
          * @property {boolean} trdLogined S2C trdLogined
          * @property {number} serverVer S2C serverVer
@@ -3113,14 +3098,6 @@ $root.GetGlobalState = (function() {
          * @instance
          */
         S2C.prototype.marketHKFuture = 0;
-
-        /**
-         * S2C marketUSFuture.
-         * @member {number} marketUSFuture
-         * @memberof GetGlobalState.S2C
-         * @instance
-         */
-        S2C.prototype.marketUSFuture = 0;
 
         /**
          * S2C qotLogined.
@@ -3236,8 +3213,6 @@ $root.GetGlobalState = (function() {
                 writer.uint32(/* id 13, wireType 2 =*/106).string(message.qotSvrIpAddr);
             if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
                 writer.uint32(/* id 14, wireType 2 =*/114).string(message.trdSvrIpAddr);
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.marketUSFuture);
             return writer;
         };
 
@@ -3286,9 +3261,6 @@ $root.GetGlobalState = (function() {
                     break;
                 case 5:
                     message.marketHKFuture = reader.int32();
-                    break;
-                case 15:
-                    message.marketUSFuture = reader.int32();
                     break;
                 case 6:
                     message.qotLogined = reader.bool();
@@ -3382,9 +3354,6 @@ $root.GetGlobalState = (function() {
                 return "marketSZ: integer expected";
             if (!$util.isInteger(message.marketHKFuture))
                 return "marketHKFuture: integer expected";
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                if (!$util.isInteger(message.marketUSFuture))
-                    return "marketUSFuture: integer expected";
             if (typeof message.qotLogined !== "boolean")
                 return "qotLogined: boolean expected";
             if (typeof message.trdLogined !== "boolean")
@@ -3434,8 +3403,6 @@ $root.GetGlobalState = (function() {
                 message.marketSZ = object.marketSZ | 0;
             if (object.marketHKFuture != null)
                 message.marketHKFuture = object.marketHKFuture | 0;
-            if (object.marketUSFuture != null)
-                message.marketUSFuture = object.marketUSFuture | 0;
             if (object.qotLogined != null)
                 message.qotLogined = Boolean(object.qotLogined);
             if (object.trdLogined != null)
@@ -3499,7 +3466,6 @@ $root.GetGlobalState = (function() {
                 object.programStatus = null;
                 object.qotSvrIpAddr = "";
                 object.trdSvrIpAddr = "";
-                object.marketUSFuture = 0;
             }
             if (message.marketHK != null && message.hasOwnProperty("marketHK"))
                 object.marketHK = message.marketHK;
@@ -3532,8 +3498,6 @@ $root.GetGlobalState = (function() {
                 object.qotSvrIpAddr = message.qotSvrIpAddr;
             if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
                 object.trdSvrIpAddr = message.trdSvrIpAddr;
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                object.marketUSFuture = message.marketUSFuture;
             return object;
         };
 
@@ -4051,7 +4015,6 @@ $root.Qot_Common = (function() {
      * @property {number} SecurityType_Plate=7 SecurityType_Plate value
      * @property {number} SecurityType_Drvt=8 SecurityType_Drvt value
      * @property {number} SecurityType_PlateSet=9 SecurityType_PlateSet value
-     * @property {number} SecurityType_Future=10 SecurityType_Future value
      */
     Qot_Common.SecurityType = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4065,7 +4028,6 @@ $root.Qot_Common = (function() {
         values[valuesById[7] = "SecurityType_Plate"] = 7;
         values[valuesById[8] = "SecurityType_Drvt"] = 8;
         values[valuesById[9] = "SecurityType_PlateSet"] = 9;
-        values[valuesById[10] = "SecurityType_Future"] = 10;
         return values;
     })();
 
@@ -4183,13 +4145,6 @@ $root.Qot_Common = (function() {
      * @property {number} QotMarketState_FutureDayClose=17 QotMarketState_FutureDayClose value
      * @property {number} QotMarketState_FutureDayWaitForOpen=18 QotMarketState_FutureDayWaitForOpen value
      * @property {number} QotMarketState_HkCas=19 QotMarketState_HkCas value
-     * @property {number} QotMarketState_FutureNightWait=20 QotMarketState_FutureNightWait value
-     * @property {number} QotMarketState_FutureAfternoon=21 QotMarketState_FutureAfternoon value
-     * @property {number} QotMarketState_FutureSwitchDate=22 QotMarketState_FutureSwitchDate value
-     * @property {number} QotMarketState_FutureOpen=23 QotMarketState_FutureOpen value
-     * @property {number} QotMarketState_FutureBreak=24 QotMarketState_FutureBreak value
-     * @property {number} QotMarketState_FutureBreakOver=25 QotMarketState_FutureBreakOver value
-     * @property {number} QotMarketState_FutureClose=26 QotMarketState_FutureClose value
      */
     Qot_Common.QotMarketState = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4211,35 +4166,6 @@ $root.Qot_Common = (function() {
         values[valuesById[17] = "QotMarketState_FutureDayClose"] = 17;
         values[valuesById[18] = "QotMarketState_FutureDayWaitForOpen"] = 18;
         values[valuesById[19] = "QotMarketState_HkCas"] = 19;
-        values[valuesById[20] = "QotMarketState_FutureNightWait"] = 20;
-        values[valuesById[21] = "QotMarketState_FutureAfternoon"] = 21;
-        values[valuesById[22] = "QotMarketState_FutureSwitchDate"] = 22;
-        values[valuesById[23] = "QotMarketState_FutureOpen"] = 23;
-        values[valuesById[24] = "QotMarketState_FutureBreak"] = 24;
-        values[valuesById[25] = "QotMarketState_FutureBreakOver"] = 25;
-        values[valuesById[26] = "QotMarketState_FutureClose"] = 26;
-        return values;
-    })();
-
-    /**
-     * TradeDateMarket enum.
-     * @name Qot_Common.TradeDateMarket
-     * @enum {string}
-     * @property {number} TradeDateMarket_Unknown=0 TradeDateMarket_Unknown value
-     * @property {number} TradeDateMarket_HK=1 TradeDateMarket_HK value
-     * @property {number} TradeDateMarket_US=2 TradeDateMarket_US value
-     * @property {number} TradeDateMarket_CN=3 TradeDateMarket_CN value
-     * @property {number} TradeDateMarket_NT=4 TradeDateMarket_NT value
-     * @property {number} TradeDateMarket_ST=5 TradeDateMarket_ST value
-     */
-    Qot_Common.TradeDateMarket = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "TradeDateMarket_Unknown"] = 0;
-        values[valuesById[1] = "TradeDateMarket_HK"] = 1;
-        values[valuesById[2] = "TradeDateMarket_US"] = 2;
-        values[valuesById[3] = "TradeDateMarket_CN"] = 3;
-        values[valuesById[4] = "TradeDateMarket_NT"] = 4;
-        values[valuesById[5] = "TradeDateMarket_ST"] = 5;
         return values;
     })();
 
@@ -4440,7 +4366,6 @@ $root.Qot_Common = (function() {
      * @property {number} TickerType_ReOpeningPriced=28 TickerType_ReOpeningPriced value
      * @property {number} TickerType_ClosingPriced=29 TickerType_ClosingPriced value
      * @property {number} TickerType_ComprehensiveDelayPrice=30 TickerType_ComprehensiveDelayPrice value
-     * @property {number} TickerType_Overseas=31 TickerType_Overseas value
      */
     Qot_Common.TickerType = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4475,7 +4400,6 @@ $root.Qot_Common = (function() {
         values[valuesById[28] = "TickerType_ReOpeningPriced"] = 28;
         values[valuesById[29] = "TickerType_ClosingPriced"] = 29;
         values[valuesById[30] = "TickerType_ComprehensiveDelayPrice"] = 30;
-        values[valuesById[31] = "TickerType_Overseas"] = 31;
         return values;
     })();
 
@@ -4637,9 +4561,6 @@ $root.Qot_Common = (function() {
      * @property {number} SortField_AfterAmplitude=42 SortField_AfterAmplitude value
      * @property {number} SortField_PreTurnover=43 SortField_PreTurnover value
      * @property {number} SortField_AfterTurnover=44 SortField_AfterTurnover value
-     * @property {number} SortField_LastSettlePrice=48 SortField_LastSettlePrice value
-     * @property {number} SortField_Position=49 SortField_Position value
-     * @property {number} SortField_PositionChange=50 SortField_PositionChange value
      */
     Qot_Common.SortField = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4691,9 +4612,6 @@ $root.Qot_Common = (function() {
         values[valuesById[42] = "SortField_AfterAmplitude"] = 42;
         values[valuesById[43] = "SortField_PreTurnover"] = 43;
         values[valuesById[44] = "SortField_AfterTurnover"] = 44;
-        values[valuesById[48] = "SortField_LastSettlePrice"] = 48;
-        values[valuesById[49] = "SortField_Position"] = 49;
-        values[valuesById[50] = "SortField_PositionChange"] = 50;
         return values;
     })();
 
@@ -4849,7 +4767,6 @@ $root.Qot_Common = (function() {
      * @property {number} QotRight_Bmp=1 QotRight_Bmp value
      * @property {number} QotRight_Level1=2 QotRight_Level1 value
      * @property {number} QotRight_Level2=3 QotRight_Level2 value
-     * @property {number} QotRight_SF=4 QotRight_SF value
      */
     Qot_Common.QotRight = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4857,63 +4774,6 @@ $root.Qot_Common = (function() {
         values[valuesById[1] = "QotRight_Bmp"] = 1;
         values[valuesById[2] = "QotRight_Level1"] = 2;
         values[valuesById[3] = "QotRight_Level2"] = 3;
-        values[valuesById[4] = "QotRight_SF"] = 4;
-        return values;
-    })();
-
-    /**
-     * PriceReminderType enum.
-     * @name Qot_Common.PriceReminderType
-     * @enum {string}
-     * @property {number} PriceReminderType_Unknown=0 PriceReminderType_Unknown value
-     * @property {number} PriceReminderType_PriceUp=1 PriceReminderType_PriceUp value
-     * @property {number} PriceReminderType_PriceDown=2 PriceReminderType_PriceDown value
-     * @property {number} PriceReminderType_ChangeRateUp=3 PriceReminderType_ChangeRateUp value
-     * @property {number} PriceReminderType_ChangeRateDown=4 PriceReminderType_ChangeRateDown value
-     * @property {number} PriceReminderType_5MinChangeRateUp=5 PriceReminderType_5MinChangeRateUp value
-     * @property {number} PriceReminderType_5MinChangeRateDown=6 PriceReminderType_5MinChangeRateDown value
-     * @property {number} PriceReminderType_VolumeUp=7 PriceReminderType_VolumeUp value
-     * @property {number} PriceReminderType_TurnoverUp=8 PriceReminderType_TurnoverUp value
-     * @property {number} PriceReminderType_TurnoverRateUp=9 PriceReminderType_TurnoverRateUp value
-     * @property {number} PriceReminderType_BidPriceUp=10 PriceReminderType_BidPriceUp value
-     * @property {number} PriceReminderType_AskPriceDown=11 PriceReminderType_AskPriceDown value
-     * @property {number} PriceReminderType_BidVolUp=12 PriceReminderType_BidVolUp value
-     * @property {number} PriceReminderType_AskVolUp=13 PriceReminderType_AskVolUp value
-     */
-    Qot_Common.PriceReminderType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "PriceReminderType_Unknown"] = 0;
-        values[valuesById[1] = "PriceReminderType_PriceUp"] = 1;
-        values[valuesById[2] = "PriceReminderType_PriceDown"] = 2;
-        values[valuesById[3] = "PriceReminderType_ChangeRateUp"] = 3;
-        values[valuesById[4] = "PriceReminderType_ChangeRateDown"] = 4;
-        values[valuesById[5] = "PriceReminderType_5MinChangeRateUp"] = 5;
-        values[valuesById[6] = "PriceReminderType_5MinChangeRateDown"] = 6;
-        values[valuesById[7] = "PriceReminderType_VolumeUp"] = 7;
-        values[valuesById[8] = "PriceReminderType_TurnoverUp"] = 8;
-        values[valuesById[9] = "PriceReminderType_TurnoverRateUp"] = 9;
-        values[valuesById[10] = "PriceReminderType_BidPriceUp"] = 10;
-        values[valuesById[11] = "PriceReminderType_AskPriceDown"] = 11;
-        values[valuesById[12] = "PriceReminderType_BidVolUp"] = 12;
-        values[valuesById[13] = "PriceReminderType_AskVolUp"] = 13;
-        return values;
-    })();
-
-    /**
-     * PriceReminderFreq enum.
-     * @name Qot_Common.PriceReminderFreq
-     * @enum {string}
-     * @property {number} PriceReminderFreq_Unknown=0 PriceReminderFreq_Unknown value
-     * @property {number} PriceReminderFreq_Always=1 PriceReminderFreq_Always value
-     * @property {number} PriceReminderFreq_OnceADay=2 PriceReminderFreq_OnceADay value
-     * @property {number} PriceReminderFreq_OnlyOnce=3 PriceReminderFreq_OnlyOnce value
-     */
-    Qot_Common.PriceReminderFreq = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "PriceReminderFreq_Unknown"] = 0;
-        values[valuesById[1] = "PriceReminderFreq_Always"] = 1;
-        values[valuesById[2] = "PriceReminderFreq_OnceADay"] = 2;
-        values[valuesById[3] = "PriceReminderFreq_OnlyOnce"] = 3;
         return values;
     })();
 
@@ -6467,260 +6327,6 @@ $root.Qot_Common = (function() {
         return PreAfterMarketData;
     })();
 
-    Qot_Common.FutureBasicQotExData = (function() {
-
-        /**
-         * Properties of a FutureBasicQotExData.
-         * @memberof Qot_Common
-         * @interface IFutureBasicQotExData
-         * @property {number} lastSettlePrice FutureBasicQotExData lastSettlePrice
-         * @property {number} position FutureBasicQotExData position
-         * @property {number} positionChange FutureBasicQotExData positionChange
-         * @property {number|null} [expiryDateDistance] FutureBasicQotExData expiryDateDistance
-         */
-
-        /**
-         * Constructs a new FutureBasicQotExData.
-         * @memberof Qot_Common
-         * @classdesc Represents a FutureBasicQotExData.
-         * @implements IFutureBasicQotExData
-         * @constructor
-         * @param {Qot_Common.IFutureBasicQotExData=} [properties] Properties to set
-         */
-        function FutureBasicQotExData(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * FutureBasicQotExData lastSettlePrice.
-         * @member {number} lastSettlePrice
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @instance
-         */
-        FutureBasicQotExData.prototype.lastSettlePrice = 0;
-
-        /**
-         * FutureBasicQotExData position.
-         * @member {number} position
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @instance
-         */
-        FutureBasicQotExData.prototype.position = 0;
-
-        /**
-         * FutureBasicQotExData positionChange.
-         * @member {number} positionChange
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @instance
-         */
-        FutureBasicQotExData.prototype.positionChange = 0;
-
-        /**
-         * FutureBasicQotExData expiryDateDistance.
-         * @member {number} expiryDateDistance
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @instance
-         */
-        FutureBasicQotExData.prototype.expiryDateDistance = 0;
-
-        /**
-         * Creates a new FutureBasicQotExData instance using the specified properties.
-         * @function create
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Qot_Common.IFutureBasicQotExData=} [properties] Properties to set
-         * @returns {Qot_Common.FutureBasicQotExData} FutureBasicQotExData instance
-         */
-        FutureBasicQotExData.create = function create(properties) {
-            return new FutureBasicQotExData(properties);
-        };
-
-        /**
-         * Encodes the specified FutureBasicQotExData message. Does not implicitly {@link Qot_Common.FutureBasicQotExData.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Qot_Common.IFutureBasicQotExData} message FutureBasicQotExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureBasicQotExData.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 1 =*/9).double(message.lastSettlePrice);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.positionChange);
-            if (message.expiryDateDistance != null && message.hasOwnProperty("expiryDateDistance"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.expiryDateDistance);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified FutureBasicQotExData message, length delimited. Does not implicitly {@link Qot_Common.FutureBasicQotExData.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Qot_Common.IFutureBasicQotExData} message FutureBasicQotExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureBasicQotExData.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a FutureBasicQotExData message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_Common.FutureBasicQotExData} FutureBasicQotExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureBasicQotExData.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_Common.FutureBasicQotExData();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.lastSettlePrice = reader.double();
-                    break;
-                case 2:
-                    message.position = reader.int32();
-                    break;
-                case 3:
-                    message.positionChange = reader.int32();
-                    break;
-                case 4:
-                    message.expiryDateDistance = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("lastSettlePrice"))
-                throw $util.ProtocolError("missing required 'lastSettlePrice'", { instance: message });
-            if (!message.hasOwnProperty("position"))
-                throw $util.ProtocolError("missing required 'position'", { instance: message });
-            if (!message.hasOwnProperty("positionChange"))
-                throw $util.ProtocolError("missing required 'positionChange'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a FutureBasicQotExData message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_Common.FutureBasicQotExData} FutureBasicQotExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureBasicQotExData.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a FutureBasicQotExData message.
-         * @function verify
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        FutureBasicQotExData.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (typeof message.lastSettlePrice !== "number")
-                return "lastSettlePrice: number expected";
-            if (!$util.isInteger(message.position))
-                return "position: integer expected";
-            if (!$util.isInteger(message.positionChange))
-                return "positionChange: integer expected";
-            if (message.expiryDateDistance != null && message.hasOwnProperty("expiryDateDistance"))
-                if (!$util.isInteger(message.expiryDateDistance))
-                    return "expiryDateDistance: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a FutureBasicQotExData message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_Common.FutureBasicQotExData} FutureBasicQotExData
-         */
-        FutureBasicQotExData.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_Common.FutureBasicQotExData)
-                return object;
-            var message = new $root.Qot_Common.FutureBasicQotExData();
-            if (object.lastSettlePrice != null)
-                message.lastSettlePrice = Number(object.lastSettlePrice);
-            if (object.position != null)
-                message.position = object.position | 0;
-            if (object.positionChange != null)
-                message.positionChange = object.positionChange | 0;
-            if (object.expiryDateDistance != null)
-                message.expiryDateDistance = object.expiryDateDistance | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a FutureBasicQotExData message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @static
-         * @param {Qot_Common.FutureBasicQotExData} message FutureBasicQotExData
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        FutureBasicQotExData.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.lastSettlePrice = 0;
-                object.position = 0;
-                object.positionChange = 0;
-                object.expiryDateDistance = 0;
-            }
-            if (message.lastSettlePrice != null && message.hasOwnProperty("lastSettlePrice"))
-                object.lastSettlePrice = options.json && !isFinite(message.lastSettlePrice) ? String(message.lastSettlePrice) : message.lastSettlePrice;
-            if (message.position != null && message.hasOwnProperty("position"))
-                object.position = message.position;
-            if (message.positionChange != null && message.hasOwnProperty("positionChange"))
-                object.positionChange = message.positionChange;
-            if (message.expiryDateDistance != null && message.hasOwnProperty("expiryDateDistance"))
-                object.expiryDateDistance = message.expiryDateDistance;
-            return object;
-        };
-
-        /**
-         * Converts this FutureBasicQotExData to JSON.
-         * @function toJSON
-         * @memberof Qot_Common.FutureBasicQotExData
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        FutureBasicQotExData.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return FutureBasicQotExData;
-    })();
-
     Qot_Common.BasicQot = (function() {
 
         /**
@@ -6748,7 +6354,6 @@ $root.Qot_Common = (function() {
          * @property {Qot_Common.IPreAfterMarketData|null} [preMarket] BasicQot preMarket
          * @property {Qot_Common.IPreAfterMarketData|null} [afterMarket] BasicQot afterMarket
          * @property {number|null} [secStatus] BasicQot secStatus
-         * @property {Qot_Common.IFutureBasicQotExData|null} [futureExData] BasicQot futureExData
          */
 
         /**
@@ -6935,14 +6540,6 @@ $root.Qot_Common = (function() {
         BasicQot.prototype.secStatus = 0;
 
         /**
-         * BasicQot futureExData.
-         * @member {Qot_Common.IFutureBasicQotExData|null|undefined} futureExData
-         * @memberof Qot_Common.BasicQot
-         * @instance
-         */
-        BasicQot.prototype.futureExData = null;
-
-        /**
          * Creates a new BasicQot instance using the specified properties.
          * @function create
          * @memberof Qot_Common.BasicQot
@@ -6994,8 +6591,6 @@ $root.Qot_Common = (function() {
                 $root.Qot_Common.PreAfterMarketData.encode(message.afterMarket, writer.uint32(/* id 20, wireType 2 =*/162).fork()).ldelim();
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 writer.uint32(/* id 21, wireType 0 =*/168).int32(message.secStatus);
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                $root.Qot_Common.FutureBasicQotExData.encode(message.futureExData, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
             return writer;
         };
 
@@ -7092,9 +6687,6 @@ $root.Qot_Common = (function() {
                     break;
                 case 21:
                     message.secStatus = reader.int32();
-                    break;
-                case 22:
-                    message.futureExData = $root.Qot_Common.FutureBasicQotExData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -7217,11 +6809,6 @@ $root.Qot_Common = (function() {
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 if (!$util.isInteger(message.secStatus))
                     return "secStatus: integer expected";
-            if (message.futureExData != null && message.hasOwnProperty("futureExData")) {
-                var error = $root.Qot_Common.FutureBasicQotExData.verify(message.futureExData);
-                if (error)
-                    return "futureExData." + error;
-            }
             return null;
         };
 
@@ -7298,11 +6885,6 @@ $root.Qot_Common = (function() {
             }
             if (object.secStatus != null)
                 message.secStatus = object.secStatus | 0;
-            if (object.futureExData != null) {
-                if (typeof object.futureExData !== "object")
-                    throw TypeError(".Qot_Common.BasicQot.futureExData: object expected");
-                message.futureExData = $root.Qot_Common.FutureBasicQotExData.fromObject(object.futureExData);
-            }
             return message;
         };
 
@@ -7345,7 +6927,6 @@ $root.Qot_Common = (function() {
                 object.preMarket = null;
                 object.afterMarket = null;
                 object.secStatus = 0;
-                object.futureExData = null;
             }
             if (message.security != null && message.hasOwnProperty("security"))
                 object.security = $root.Qot_Common.Security.toObject(message.security, options);
@@ -7392,8 +6973,6 @@ $root.Qot_Common = (function() {
                 object.afterMarket = $root.Qot_Common.PreAfterMarketData.toObject(message.afterMarket, options);
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 object.secStatus = message.secStatus;
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                object.futureExData = $root.Qot_Common.FutureBasicQotExData.toObject(message.futureExData, options);
             return object;
         };
 
@@ -8715,238 +8294,6 @@ $root.Qot_Common = (function() {
         return OptionStaticExData;
     })();
 
-    Qot_Common.FutureStaticExData = (function() {
-
-        /**
-         * Properties of a FutureStaticExData.
-         * @memberof Qot_Common
-         * @interface IFutureStaticExData
-         * @property {string} lastTradeTime FutureStaticExData lastTradeTime
-         * @property {number|null} [lastTradeTimestamp] FutureStaticExData lastTradeTimestamp
-         * @property {boolean} isMainContract FutureStaticExData isMainContract
-         */
-
-        /**
-         * Constructs a new FutureStaticExData.
-         * @memberof Qot_Common
-         * @classdesc Represents a FutureStaticExData.
-         * @implements IFutureStaticExData
-         * @constructor
-         * @param {Qot_Common.IFutureStaticExData=} [properties] Properties to set
-         */
-        function FutureStaticExData(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * FutureStaticExData lastTradeTime.
-         * @member {string} lastTradeTime
-         * @memberof Qot_Common.FutureStaticExData
-         * @instance
-         */
-        FutureStaticExData.prototype.lastTradeTime = "";
-
-        /**
-         * FutureStaticExData lastTradeTimestamp.
-         * @member {number} lastTradeTimestamp
-         * @memberof Qot_Common.FutureStaticExData
-         * @instance
-         */
-        FutureStaticExData.prototype.lastTradeTimestamp = 0;
-
-        /**
-         * FutureStaticExData isMainContract.
-         * @member {boolean} isMainContract
-         * @memberof Qot_Common.FutureStaticExData
-         * @instance
-         */
-        FutureStaticExData.prototype.isMainContract = false;
-
-        /**
-         * Creates a new FutureStaticExData instance using the specified properties.
-         * @function create
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Qot_Common.IFutureStaticExData=} [properties] Properties to set
-         * @returns {Qot_Common.FutureStaticExData} FutureStaticExData instance
-         */
-        FutureStaticExData.create = function create(properties) {
-            return new FutureStaticExData(properties);
-        };
-
-        /**
-         * Encodes the specified FutureStaticExData message. Does not implicitly {@link Qot_Common.FutureStaticExData.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Qot_Common.IFutureStaticExData} message FutureStaticExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureStaticExData.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.lastTradeTime);
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.lastTradeTimestamp);
-            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.isMainContract);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified FutureStaticExData message, length delimited. Does not implicitly {@link Qot_Common.FutureStaticExData.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Qot_Common.IFutureStaticExData} message FutureStaticExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureStaticExData.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a FutureStaticExData message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_Common.FutureStaticExData} FutureStaticExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureStaticExData.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_Common.FutureStaticExData();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.lastTradeTime = reader.string();
-                    break;
-                case 2:
-                    message.lastTradeTimestamp = reader.double();
-                    break;
-                case 3:
-                    message.isMainContract = reader.bool();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("lastTradeTime"))
-                throw $util.ProtocolError("missing required 'lastTradeTime'", { instance: message });
-            if (!message.hasOwnProperty("isMainContract"))
-                throw $util.ProtocolError("missing required 'isMainContract'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a FutureStaticExData message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_Common.FutureStaticExData} FutureStaticExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureStaticExData.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a FutureStaticExData message.
-         * @function verify
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        FutureStaticExData.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.lastTradeTime))
-                return "lastTradeTime: string expected";
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                if (typeof message.lastTradeTimestamp !== "number")
-                    return "lastTradeTimestamp: number expected";
-            if (typeof message.isMainContract !== "boolean")
-                return "isMainContract: boolean expected";
-            return null;
-        };
-
-        /**
-         * Creates a FutureStaticExData message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_Common.FutureStaticExData} FutureStaticExData
-         */
-        FutureStaticExData.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_Common.FutureStaticExData)
-                return object;
-            var message = new $root.Qot_Common.FutureStaticExData();
-            if (object.lastTradeTime != null)
-                message.lastTradeTime = String(object.lastTradeTime);
-            if (object.lastTradeTimestamp != null)
-                message.lastTradeTimestamp = Number(object.lastTradeTimestamp);
-            if (object.isMainContract != null)
-                message.isMainContract = Boolean(object.isMainContract);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a FutureStaticExData message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_Common.FutureStaticExData
-         * @static
-         * @param {Qot_Common.FutureStaticExData} message FutureStaticExData
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        FutureStaticExData.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.lastTradeTime = "";
-                object.lastTradeTimestamp = 0;
-                object.isMainContract = false;
-            }
-            if (message.lastTradeTime != null && message.hasOwnProperty("lastTradeTime"))
-                object.lastTradeTime = message.lastTradeTime;
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                object.lastTradeTimestamp = options.json && !isFinite(message.lastTradeTimestamp) ? String(message.lastTradeTimestamp) : message.lastTradeTimestamp;
-            if (message.isMainContract != null && message.hasOwnProperty("isMainContract"))
-                object.isMainContract = message.isMainContract;
-            return object;
-        };
-
-        /**
-         * Converts this FutureStaticExData to JSON.
-         * @function toJSON
-         * @memberof Qot_Common.FutureStaticExData
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        FutureStaticExData.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return FutureStaticExData;
-    })();
-
     Qot_Common.SecurityStaticInfo = (function() {
 
         /**
@@ -8956,7 +8303,6 @@ $root.Qot_Common = (function() {
          * @property {Qot_Common.ISecurityStaticBasic} basic SecurityStaticInfo basic
          * @property {Qot_Common.IWarrantStaticExData|null} [warrantExData] SecurityStaticInfo warrantExData
          * @property {Qot_Common.IOptionStaticExData|null} [optionExData] SecurityStaticInfo optionExData
-         * @property {Qot_Common.IFutureStaticExData|null} [futureExData] SecurityStaticInfo futureExData
          */
 
         /**
@@ -8999,14 +8345,6 @@ $root.Qot_Common = (function() {
         SecurityStaticInfo.prototype.optionExData = null;
 
         /**
-         * SecurityStaticInfo futureExData.
-         * @member {Qot_Common.IFutureStaticExData|null|undefined} futureExData
-         * @memberof Qot_Common.SecurityStaticInfo
-         * @instance
-         */
-        SecurityStaticInfo.prototype.futureExData = null;
-
-        /**
          * Creates a new SecurityStaticInfo instance using the specified properties.
          * @function create
          * @memberof Qot_Common.SecurityStaticInfo
@@ -9035,8 +8373,6 @@ $root.Qot_Common = (function() {
                 $root.Qot_Common.WarrantStaticExData.encode(message.warrantExData, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.optionExData != null && message.hasOwnProperty("optionExData"))
                 $root.Qot_Common.OptionStaticExData.encode(message.optionExData, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                $root.Qot_Common.FutureStaticExData.encode(message.futureExData, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -9079,9 +8415,6 @@ $root.Qot_Common = (function() {
                     break;
                 case 3:
                     message.optionExData = $root.Qot_Common.OptionStaticExData.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    message.futureExData = $root.Qot_Common.FutureStaticExData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -9135,11 +8468,6 @@ $root.Qot_Common = (function() {
                 if (error)
                     return "optionExData." + error;
             }
-            if (message.futureExData != null && message.hasOwnProperty("futureExData")) {
-                var error = $root.Qot_Common.FutureStaticExData.verify(message.futureExData);
-                if (error)
-                    return "futureExData." + error;
-            }
             return null;
         };
 
@@ -9170,11 +8498,6 @@ $root.Qot_Common = (function() {
                     throw TypeError(".Qot_Common.SecurityStaticInfo.optionExData: object expected");
                 message.optionExData = $root.Qot_Common.OptionStaticExData.fromObject(object.optionExData);
             }
-            if (object.futureExData != null) {
-                if (typeof object.futureExData !== "object")
-                    throw TypeError(".Qot_Common.SecurityStaticInfo.futureExData: object expected");
-                message.futureExData = $root.Qot_Common.FutureStaticExData.fromObject(object.futureExData);
-            }
             return message;
         };
 
@@ -9195,7 +8518,6 @@ $root.Qot_Common = (function() {
                 object.basic = null;
                 object.warrantExData = null;
                 object.optionExData = null;
-                object.futureExData = null;
             }
             if (message.basic != null && message.hasOwnProperty("basic"))
                 object.basic = $root.Qot_Common.SecurityStaticBasic.toObject(message.basic, options);
@@ -9203,8 +8525,6 @@ $root.Qot_Common = (function() {
                 object.warrantExData = $root.Qot_Common.WarrantStaticExData.toObject(message.warrantExData, options);
             if (message.optionExData != null && message.hasOwnProperty("optionExData"))
                 object.optionExData = $root.Qot_Common.OptionStaticExData.toObject(message.optionExData, options);
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                object.futureExData = $root.Qot_Common.FutureStaticExData.toObject(message.futureExData, options);
             return object;
         };
 
@@ -9231,8 +8551,6 @@ $root.Qot_Common = (function() {
          * @property {number|Long} id Broker id
          * @property {string} name Broker name
          * @property {number} pos Broker pos
-         * @property {number|Long|null} [orderID] Broker orderID
-         * @property {number|Long|null} [volume] Broker volume
          */
 
         /**
@@ -9275,22 +8593,6 @@ $root.Qot_Common = (function() {
         Broker.prototype.pos = 0;
 
         /**
-         * Broker orderID.
-         * @member {number|Long} orderID
-         * @memberof Qot_Common.Broker
-         * @instance
-         */
-        Broker.prototype.orderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Broker volume.
-         * @member {number|Long} volume
-         * @memberof Qot_Common.Broker
-         * @instance
-         */
-        Broker.prototype.volume = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
          * Creates a new Broker instance using the specified properties.
          * @function create
          * @memberof Qot_Common.Broker
@@ -9317,10 +8619,6 @@ $root.Qot_Common = (function() {
             writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pos);
-            if (message.orderID != null && message.hasOwnProperty("orderID"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.orderID);
-            if (message.volume != null && message.hasOwnProperty("volume"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.volume);
             return writer;
         };
 
@@ -9363,12 +8661,6 @@ $root.Qot_Common = (function() {
                     break;
                 case 3:
                     message.pos = reader.int32();
-                    break;
-                case 4:
-                    message.orderID = reader.int64();
-                    break;
-                case 5:
-                    message.volume = reader.int64();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -9417,12 +8709,6 @@ $root.Qot_Common = (function() {
                 return "name: string expected";
             if (!$util.isInteger(message.pos))
                 return "pos: integer expected";
-            if (message.orderID != null && message.hasOwnProperty("orderID"))
-                if (!$util.isInteger(message.orderID) && !(message.orderID && $util.isInteger(message.orderID.low) && $util.isInteger(message.orderID.high)))
-                    return "orderID: integer|Long expected";
-            if (message.volume != null && message.hasOwnProperty("volume"))
-                if (!$util.isInteger(message.volume) && !(message.volume && $util.isInteger(message.volume.low) && $util.isInteger(message.volume.high)))
-                    return "volume: integer|Long expected";
             return null;
         };
 
@@ -9451,24 +8737,6 @@ $root.Qot_Common = (function() {
                 message.name = String(object.name);
             if (object.pos != null)
                 message.pos = object.pos | 0;
-            if (object.orderID != null)
-                if ($util.Long)
-                    (message.orderID = $util.Long.fromValue(object.orderID)).unsigned = false;
-                else if (typeof object.orderID === "string")
-                    message.orderID = parseInt(object.orderID, 10);
-                else if (typeof object.orderID === "number")
-                    message.orderID = object.orderID;
-                else if (typeof object.orderID === "object")
-                    message.orderID = new $util.LongBits(object.orderID.low >>> 0, object.orderID.high >>> 0).toNumber();
-            if (object.volume != null)
-                if ($util.Long)
-                    (message.volume = $util.Long.fromValue(object.volume)).unsigned = false;
-                else if (typeof object.volume === "string")
-                    message.volume = parseInt(object.volume, 10);
-                else if (typeof object.volume === "number")
-                    message.volume = object.volume;
-                else if (typeof object.volume === "object")
-                    message.volume = new $util.LongBits(object.volume.low >>> 0, object.volume.high >>> 0).toNumber();
             return message;
         };
 
@@ -9493,16 +8761,6 @@ $root.Qot_Common = (function() {
                     object.id = options.longs === String ? "0" : 0;
                 object.name = "";
                 object.pos = 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.orderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.orderID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.volume = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.volume = options.longs === String ? "0" : 0;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 if (typeof message.id === "number")
@@ -9513,16 +8771,6 @@ $root.Qot_Common = (function() {
                 object.name = message.name;
             if (message.pos != null && message.hasOwnProperty("pos"))
                 object.pos = message.pos;
-            if (message.orderID != null && message.hasOwnProperty("orderID"))
-                if (typeof message.orderID === "number")
-                    object.orderID = options.longs === String ? String(message.orderID) : message.orderID;
-                else
-                    object.orderID = options.longs === String ? $util.Long.prototype.toString.call(message.orderID) : options.longs === Number ? new $util.LongBits(message.orderID.low >>> 0, message.orderID.high >>> 0).toNumber() : message.orderID;
-            if (message.volume != null && message.hasOwnProperty("volume"))
-                if (typeof message.volume === "number")
-                    object.volume = options.longs === String ? String(message.volume) : message.volume;
-                else
-                    object.volume = options.longs === String ? $util.Long.prototype.toString.call(message.volume) : options.longs === Number ? new $util.LongBits(message.volume.low >>> 0, message.volume.high >>> 0).toNumber() : message.volume;
             return object;
         };
 
@@ -9976,244 +9224,6 @@ $root.Qot_Common = (function() {
         return Ticker;
     })();
 
-    Qot_Common.OrderBookDetail = (function() {
-
-        /**
-         * Properties of an OrderBookDetail.
-         * @memberof Qot_Common
-         * @interface IOrderBookDetail
-         * @property {number|Long} orderID OrderBookDetail orderID
-         * @property {number|Long} volume OrderBookDetail volume
-         */
-
-        /**
-         * Constructs a new OrderBookDetail.
-         * @memberof Qot_Common
-         * @classdesc Represents an OrderBookDetail.
-         * @implements IOrderBookDetail
-         * @constructor
-         * @param {Qot_Common.IOrderBookDetail=} [properties] Properties to set
-         */
-        function OrderBookDetail(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * OrderBookDetail orderID.
-         * @member {number|Long} orderID
-         * @memberof Qot_Common.OrderBookDetail
-         * @instance
-         */
-        OrderBookDetail.prototype.orderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * OrderBookDetail volume.
-         * @member {number|Long} volume
-         * @memberof Qot_Common.OrderBookDetail
-         * @instance
-         */
-        OrderBookDetail.prototype.volume = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new OrderBookDetail instance using the specified properties.
-         * @function create
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Qot_Common.IOrderBookDetail=} [properties] Properties to set
-         * @returns {Qot_Common.OrderBookDetail} OrderBookDetail instance
-         */
-        OrderBookDetail.create = function create(properties) {
-            return new OrderBookDetail(properties);
-        };
-
-        /**
-         * Encodes the specified OrderBookDetail message. Does not implicitly {@link Qot_Common.OrderBookDetail.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Qot_Common.IOrderBookDetail} message OrderBookDetail message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        OrderBookDetail.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.orderID);
-            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.volume);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified OrderBookDetail message, length delimited. Does not implicitly {@link Qot_Common.OrderBookDetail.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Qot_Common.IOrderBookDetail} message OrderBookDetail message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        OrderBookDetail.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an OrderBookDetail message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_Common.OrderBookDetail} OrderBookDetail
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        OrderBookDetail.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_Common.OrderBookDetail();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.orderID = reader.int64();
-                    break;
-                case 2:
-                    message.volume = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("orderID"))
-                throw $util.ProtocolError("missing required 'orderID'", { instance: message });
-            if (!message.hasOwnProperty("volume"))
-                throw $util.ProtocolError("missing required 'volume'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes an OrderBookDetail message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_Common.OrderBookDetail} OrderBookDetail
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        OrderBookDetail.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an OrderBookDetail message.
-         * @function verify
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        OrderBookDetail.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.orderID) && !(message.orderID && $util.isInteger(message.orderID.low) && $util.isInteger(message.orderID.high)))
-                return "orderID: integer|Long expected";
-            if (!$util.isInteger(message.volume) && !(message.volume && $util.isInteger(message.volume.low) && $util.isInteger(message.volume.high)))
-                return "volume: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates an OrderBookDetail message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_Common.OrderBookDetail} OrderBookDetail
-         */
-        OrderBookDetail.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_Common.OrderBookDetail)
-                return object;
-            var message = new $root.Qot_Common.OrderBookDetail();
-            if (object.orderID != null)
-                if ($util.Long)
-                    (message.orderID = $util.Long.fromValue(object.orderID)).unsigned = false;
-                else if (typeof object.orderID === "string")
-                    message.orderID = parseInt(object.orderID, 10);
-                else if (typeof object.orderID === "number")
-                    message.orderID = object.orderID;
-                else if (typeof object.orderID === "object")
-                    message.orderID = new $util.LongBits(object.orderID.low >>> 0, object.orderID.high >>> 0).toNumber();
-            if (object.volume != null)
-                if ($util.Long)
-                    (message.volume = $util.Long.fromValue(object.volume)).unsigned = false;
-                else if (typeof object.volume === "string")
-                    message.volume = parseInt(object.volume, 10);
-                else if (typeof object.volume === "number")
-                    message.volume = object.volume;
-                else if (typeof object.volume === "object")
-                    message.volume = new $util.LongBits(object.volume.low >>> 0, object.volume.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an OrderBookDetail message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_Common.OrderBookDetail
-         * @static
-         * @param {Qot_Common.OrderBookDetail} message OrderBookDetail
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        OrderBookDetail.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.orderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.orderID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.volume = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.volume = options.longs === String ? "0" : 0;
-            }
-            if (message.orderID != null && message.hasOwnProperty("orderID"))
-                if (typeof message.orderID === "number")
-                    object.orderID = options.longs === String ? String(message.orderID) : message.orderID;
-                else
-                    object.orderID = options.longs === String ? $util.Long.prototype.toString.call(message.orderID) : options.longs === Number ? new $util.LongBits(message.orderID.low >>> 0, message.orderID.high >>> 0).toNumber() : message.orderID;
-            if (message.volume != null && message.hasOwnProperty("volume"))
-                if (typeof message.volume === "number")
-                    object.volume = options.longs === String ? String(message.volume) : message.volume;
-                else
-                    object.volume = options.longs === String ? $util.Long.prototype.toString.call(message.volume) : options.longs === Number ? new $util.LongBits(message.volume.low >>> 0, message.volume.high >>> 0).toNumber() : message.volume;
-            return object;
-        };
-
-        /**
-         * Converts this OrderBookDetail to JSON.
-         * @function toJSON
-         * @memberof Qot_Common.OrderBookDetail
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        OrderBookDetail.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return OrderBookDetail;
-    })();
-
     Qot_Common.OrderBook = (function() {
 
         /**
@@ -10223,7 +9233,6 @@ $root.Qot_Common = (function() {
          * @property {number} price OrderBook price
          * @property {number|Long} volume OrderBook volume
          * @property {number} orederCount OrderBook orederCount
-         * @property {Array.<Qot_Common.IOrderBookDetail>|null} [detailList] OrderBook detailList
          */
 
         /**
@@ -10235,7 +9244,6 @@ $root.Qot_Common = (function() {
          * @param {Qot_Common.IOrderBook=} [properties] Properties to set
          */
         function OrderBook(properties) {
-            this.detailList = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -10267,14 +9275,6 @@ $root.Qot_Common = (function() {
         OrderBook.prototype.orederCount = 0;
 
         /**
-         * OrderBook detailList.
-         * @member {Array.<Qot_Common.IOrderBookDetail>} detailList
-         * @memberof Qot_Common.OrderBook
-         * @instance
-         */
-        OrderBook.prototype.detailList = $util.emptyArray;
-
-        /**
          * Creates a new OrderBook instance using the specified properties.
          * @function create
          * @memberof Qot_Common.OrderBook
@@ -10301,9 +9301,6 @@ $root.Qot_Common = (function() {
             writer.uint32(/* id 1, wireType 1 =*/9).double(message.price);
             writer.uint32(/* id 2, wireType 0 =*/16).int64(message.volume);
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.orederCount);
-            if (message.detailList != null && message.detailList.length)
-                for (var i = 0; i < message.detailList.length; ++i)
-                    $root.Qot_Common.OrderBookDetail.encode(message.detailList[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -10346,11 +9343,6 @@ $root.Qot_Common = (function() {
                     break;
                 case 3:
                     message.orederCount = reader.int32();
-                    break;
-                case 4:
-                    if (!(message.detailList && message.detailList.length))
-                        message.detailList = [];
-                    message.detailList.push($root.Qot_Common.OrderBookDetail.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -10399,15 +9391,6 @@ $root.Qot_Common = (function() {
                 return "volume: integer|Long expected";
             if (!$util.isInteger(message.orederCount))
                 return "orederCount: integer expected";
-            if (message.detailList != null && message.hasOwnProperty("detailList")) {
-                if (!Array.isArray(message.detailList))
-                    return "detailList: array expected";
-                for (var i = 0; i < message.detailList.length; ++i) {
-                    var error = $root.Qot_Common.OrderBookDetail.verify(message.detailList[i]);
-                    if (error)
-                        return "detailList." + error;
-                }
-            }
             return null;
         };
 
@@ -10436,16 +9419,6 @@ $root.Qot_Common = (function() {
                     message.volume = new $util.LongBits(object.volume.low >>> 0, object.volume.high >>> 0).toNumber();
             if (object.orederCount != null)
                 message.orederCount = object.orederCount | 0;
-            if (object.detailList) {
-                if (!Array.isArray(object.detailList))
-                    throw TypeError(".Qot_Common.OrderBook.detailList: array expected");
-                message.detailList = [];
-                for (var i = 0; i < object.detailList.length; ++i) {
-                    if (typeof object.detailList[i] !== "object")
-                        throw TypeError(".Qot_Common.OrderBook.detailList: object expected");
-                    message.detailList[i] = $root.Qot_Common.OrderBookDetail.fromObject(object.detailList[i]);
-                }
-            }
             return message;
         };
 
@@ -10462,8 +9435,6 @@ $root.Qot_Common = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.arrays || options.defaults)
-                object.detailList = [];
             if (options.defaults) {
                 object.price = 0;
                 if ($util.Long) {
@@ -10482,11 +9453,6 @@ $root.Qot_Common = (function() {
                     object.volume = options.longs === String ? $util.Long.prototype.toString.call(message.volume) : options.longs === Number ? new $util.LongBits(message.volume.low >>> 0, message.volume.high >>> 0).toNumber() : message.volume;
             if (message.orederCount != null && message.hasOwnProperty("orederCount"))
                 object.orederCount = message.orederCount;
-            if (message.detailList && message.detailList.length) {
-                object.detailList = [];
-                for (var j = 0; j < message.detailList.length; ++j)
-                    object.detailList[j] = $root.Qot_Common.OrderBookDetail.toObject(message.detailList[j], options);
-            }
             return object;
         };
 
@@ -12719,9 +11685,6 @@ $root.GetUserInfo = (function() {
          * @property {string|null} [webKey] S2C webKey
          * @property {number|null} [hkOptionQotRight] S2C hkOptionQotRight
          * @property {boolean|null} [hasUSOptionQotRight] S2C hasUSOptionQotRight
-         * @property {number|null} [hkFutureQotRight] S2C hkFutureQotRight
-         * @property {number|null} [subQuota] S2C subQuota
-         * @property {number|null} [historyKLQuota] S2C historyKLQuota
          */
 
         /**
@@ -12836,30 +11799,6 @@ $root.GetUserInfo = (function() {
         S2C.prototype.hasUSOptionQotRight = false;
 
         /**
-         * S2C hkFutureQotRight.
-         * @member {number} hkFutureQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.hkFutureQotRight = 0;
-
-        /**
-         * S2C subQuota.
-         * @member {number} subQuota
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.subQuota = 0;
-
-        /**
-         * S2C historyKLQuota.
-         * @member {number} historyKLQuota
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.historyKLQuota = 0;
-
-        /**
          * Creates a new S2C instance using the specified properties.
          * @function create
          * @memberof GetUserInfo.S2C
@@ -12907,12 +11846,6 @@ $root.GetUserInfo = (function() {
                 writer.uint32(/* id 11, wireType 0 =*/88).int32(message.hkOptionQotRight);
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 writer.uint32(/* id 12, wireType 0 =*/96).bool(message.hasUSOptionQotRight);
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.hkFutureQotRight);
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.subQuota);
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.historyKLQuota);
             return writer;
         };
 
@@ -12982,15 +11915,6 @@ $root.GetUserInfo = (function() {
                     break;
                 case 12:
                     message.hasUSOptionQotRight = reader.bool();
-                    break;
-                case 13:
-                    message.hkFutureQotRight = reader.int32();
-                    break;
-                case 14:
-                    message.subQuota = reader.int32();
-                    break;
-                case 15:
-                    message.historyKLQuota = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -13063,15 +11987,6 @@ $root.GetUserInfo = (function() {
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 if (typeof message.hasUSOptionQotRight !== "boolean")
                     return "hasUSOptionQotRight: boolean expected";
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                if (!$util.isInteger(message.hkFutureQotRight))
-                    return "hkFutureQotRight: integer expected";
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                if (!$util.isInteger(message.subQuota))
-                    return "subQuota: integer expected";
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                if (!$util.isInteger(message.historyKLQuota))
-                    return "historyKLQuota: integer expected";
             return null;
         };
 
@@ -13118,12 +12033,6 @@ $root.GetUserInfo = (function() {
                 message.hkOptionQotRight = object.hkOptionQotRight | 0;
             if (object.hasUSOptionQotRight != null)
                 message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
-            if (object.hkFutureQotRight != null)
-                message.hkFutureQotRight = object.hkFutureQotRight | 0;
-            if (object.subQuota != null)
-                message.subQuota = object.subQuota | 0;
-            if (object.historyKLQuota != null)
-                message.historyKLQuota = object.historyKLQuota | 0;
             return message;
         };
 
@@ -13157,9 +12066,6 @@ $root.GetUserInfo = (function() {
                 object.webKey = "";
                 object.hkOptionQotRight = 0;
                 object.hasUSOptionQotRight = false;
-                object.hkFutureQotRight = 0;
-                object.subQuota = 0;
-                object.historyKLQuota = 0;
             }
             if (message.nickName != null && message.hasOwnProperty("nickName"))
                 object.nickName = message.nickName;
@@ -13188,12 +12094,6 @@ $root.GetUserInfo = (function() {
                 object.hkOptionQotRight = message.hkOptionQotRight;
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 object.hasUSOptionQotRight = message.hasUSOptionQotRight;
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                object.hkFutureQotRight = message.hkFutureQotRight;
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                object.subQuota = message.subQuota;
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                object.historyKLQuota = message.historyKLQuota;
             return object;
         };
 
@@ -13685,8 +12585,6 @@ $root.InitConnect = (function() {
          * @property {string} clientID C2S clientID
          * @property {boolean|null} [recvNotify] C2S recvNotify
          * @property {number|null} [packetEncAlgo] C2S packetEncAlgo
-         * @property {number|null} [pushProtoFmt] C2S pushProtoFmt
-         * @property {string|null} [programmingLanguage] C2S programmingLanguage
          */
 
         /**
@@ -13737,22 +12635,6 @@ $root.InitConnect = (function() {
         C2S.prototype.packetEncAlgo = 0;
 
         /**
-         * C2S pushProtoFmt.
-         * @member {number} pushProtoFmt
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.pushProtoFmt = 0;
-
-        /**
-         * C2S programmingLanguage.
-         * @member {string} programmingLanguage
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.programmingLanguage = "";
-
-        /**
          * Creates a new C2S instance using the specified properties.
          * @function create
          * @memberof InitConnect.C2S
@@ -13782,10 +12664,6 @@ $root.InitConnect = (function() {
                 writer.uint32(/* id 3, wireType 0 =*/24).bool(message.recvNotify);
             if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
                 writer.uint32(/* id 4, wireType 0 =*/32).int32(message.packetEncAlgo);
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.pushProtoFmt);
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.programmingLanguage);
             return writer;
         };
 
@@ -13831,12 +12709,6 @@ $root.InitConnect = (function() {
                     break;
                 case 4:
                     message.packetEncAlgo = reader.int32();
-                    break;
-                case 5:
-                    message.pushProtoFmt = reader.int32();
-                    break;
-                case 6:
-                    message.programmingLanguage = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -13887,12 +12759,6 @@ $root.InitConnect = (function() {
             if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
                 if (!$util.isInteger(message.packetEncAlgo))
                     return "packetEncAlgo: integer expected";
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                if (!$util.isInteger(message.pushProtoFmt))
-                    return "pushProtoFmt: integer expected";
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                if (!$util.isString(message.programmingLanguage))
-                    return "programmingLanguage: string expected";
             return null;
         };
 
@@ -13916,10 +12782,6 @@ $root.InitConnect = (function() {
                 message.recvNotify = Boolean(object.recvNotify);
             if (object.packetEncAlgo != null)
                 message.packetEncAlgo = object.packetEncAlgo | 0;
-            if (object.pushProtoFmt != null)
-                message.pushProtoFmt = object.pushProtoFmt | 0;
-            if (object.programmingLanguage != null)
-                message.programmingLanguage = String(object.programmingLanguage);
             return message;
         };
 
@@ -13941,8 +12803,6 @@ $root.InitConnect = (function() {
                 object.clientID = "";
                 object.recvNotify = false;
                 object.packetEncAlgo = 0;
-                object.pushProtoFmt = 0;
-                object.programmingLanguage = "";
             }
             if (message.clientVer != null && message.hasOwnProperty("clientVer"))
                 object.clientVer = message.clientVer;
@@ -13952,10 +12812,6 @@ $root.InitConnect = (function() {
                 object.recvNotify = message.recvNotify;
             if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
                 object.packetEncAlgo = message.packetEncAlgo;
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                object.pushProtoFmt = message.pushProtoFmt;
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                object.programmingLanguage = message.programmingLanguage;
             return object;
         };
 
@@ -15639,7 +14495,6 @@ $root.Notify = (function() {
      * @property {number} NotifyType_ConnStatus=3 NotifyType_ConnStatus value
      * @property {number} NotifyType_QotRight=4 NotifyType_QotRight value
      * @property {number} NotifyType_APILevel=5 NotifyType_APILevel value
-     * @property {number} NotifyType_APIQuota=6 NotifyType_APIQuota value
      */
     Notify.NotifyType = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -15649,7 +14504,6 @@ $root.Notify = (function() {
         values[valuesById[3] = "NotifyType_ConnStatus"] = 3;
         values[valuesById[4] = "NotifyType_QotRight"] = 4;
         values[valuesById[5] = "NotifyType_APILevel"] = 5;
-        values[valuesById[6] = "NotifyType_APIQuota"] = 6;
         return values;
     })();
 
@@ -16319,7 +15173,6 @@ $root.Notify = (function() {
          * @property {number} cnQotRight QotRight cnQotRight
          * @property {number|null} [hkOptionQotRight] QotRight hkOptionQotRight
          * @property {boolean|null} [hasUSOptionQotRight] QotRight hasUSOptionQotRight
-         * @property {number|null} [hkFutureQotRight] QotRight hkFutureQotRight
          */
 
         /**
@@ -16378,14 +15231,6 @@ $root.Notify = (function() {
         QotRight.prototype.hasUSOptionQotRight = false;
 
         /**
-         * QotRight hkFutureQotRight.
-         * @member {number} hkFutureQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.hkFutureQotRight = 0;
-
-        /**
          * Creates a new QotRight instance using the specified properties.
          * @function create
          * @memberof Notify.QotRight
@@ -16416,8 +15261,6 @@ $root.Notify = (function() {
                 writer.uint32(/* id 7, wireType 0 =*/56).int32(message.hkOptionQotRight);
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 writer.uint32(/* id 8, wireType 0 =*/64).bool(message.hasUSOptionQotRight);
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.hkFutureQotRight);
             return writer;
         };
 
@@ -16466,9 +15309,6 @@ $root.Notify = (function() {
                     break;
                 case 8:
                     message.hasUSOptionQotRight = reader.bool();
-                    break;
-                case 9:
-                    message.hkFutureQotRight = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -16523,9 +15363,6 @@ $root.Notify = (function() {
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 if (typeof message.hasUSOptionQotRight !== "boolean")
                     return "hasUSOptionQotRight: boolean expected";
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                if (!$util.isInteger(message.hkFutureQotRight))
-                    return "hkFutureQotRight: integer expected";
             return null;
         };
 
@@ -16551,8 +15388,6 @@ $root.Notify = (function() {
                 message.hkOptionQotRight = object.hkOptionQotRight | 0;
             if (object.hasUSOptionQotRight != null)
                 message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
-            if (object.hkFutureQotRight != null)
-                message.hkFutureQotRight = object.hkFutureQotRight | 0;
             return message;
         };
 
@@ -16575,7 +15410,6 @@ $root.Notify = (function() {
                 object.cnQotRight = 0;
                 object.hkOptionQotRight = 0;
                 object.hasUSOptionQotRight = false;
-                object.hkFutureQotRight = 0;
             }
             if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
                 object.hkQotRight = message.hkQotRight;
@@ -16587,8 +15421,6 @@ $root.Notify = (function() {
                 object.hkOptionQotRight = message.hkOptionQotRight;
             if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
                 object.hasUSOptionQotRight = message.hasUSOptionQotRight;
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                object.hkFutureQotRight = message.hkFutureQotRight;
             return object;
         };
 
@@ -16793,216 +15625,6 @@ $root.Notify = (function() {
         return APILevel;
     })();
 
-    Notify.APIQuota = (function() {
-
-        /**
-         * Properties of a APIQuota.
-         * @memberof Notify
-         * @interface IAPIQuota
-         * @property {number} subQuota APIQuota subQuota
-         * @property {number} historyKLQuota APIQuota historyKLQuota
-         */
-
-        /**
-         * Constructs a new APIQuota.
-         * @memberof Notify
-         * @classdesc Represents a APIQuota.
-         * @implements IAPIQuota
-         * @constructor
-         * @param {Notify.IAPIQuota=} [properties] Properties to set
-         */
-        function APIQuota(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * APIQuota subQuota.
-         * @member {number} subQuota
-         * @memberof Notify.APIQuota
-         * @instance
-         */
-        APIQuota.prototype.subQuota = 0;
-
-        /**
-         * APIQuota historyKLQuota.
-         * @member {number} historyKLQuota
-         * @memberof Notify.APIQuota
-         * @instance
-         */
-        APIQuota.prototype.historyKLQuota = 0;
-
-        /**
-         * Creates a new APIQuota instance using the specified properties.
-         * @function create
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota=} [properties] Properties to set
-         * @returns {Notify.APIQuota} APIQuota instance
-         */
-        APIQuota.create = function create(properties) {
-            return new APIQuota(properties);
-        };
-
-        /**
-         * Encodes the specified APIQuota message. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APIQuota.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.subQuota);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.historyKLQuota);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified APIQuota message, length delimited. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APIQuota.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.APIQuota} APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APIQuota.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.APIQuota();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.subQuota = reader.int32();
-                    break;
-                case 2:
-                    message.historyKLQuota = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("subQuota"))
-                throw $util.ProtocolError("missing required 'subQuota'", { instance: message });
-            if (!message.hasOwnProperty("historyKLQuota"))
-                throw $util.ProtocolError("missing required 'historyKLQuota'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.APIQuota} APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APIQuota.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a APIQuota message.
-         * @function verify
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        APIQuota.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.subQuota))
-                return "subQuota: integer expected";
-            if (!$util.isInteger(message.historyKLQuota))
-                return "historyKLQuota: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a APIQuota message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.APIQuota} APIQuota
-         */
-        APIQuota.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.APIQuota)
-                return object;
-            var message = new $root.Notify.APIQuota();
-            if (object.subQuota != null)
-                message.subQuota = object.subQuota | 0;
-            if (object.historyKLQuota != null)
-                message.historyKLQuota = object.historyKLQuota | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a APIQuota message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.APIQuota} message APIQuota
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        APIQuota.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.subQuota = 0;
-                object.historyKLQuota = 0;
-            }
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                object.subQuota = message.subQuota;
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                object.historyKLQuota = message.historyKLQuota;
-            return object;
-        };
-
-        /**
-         * Converts this APIQuota to JSON.
-         * @function toJSON
-         * @memberof Notify.APIQuota
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        APIQuota.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return APIQuota;
-    })();
-
     Notify.S2C = (function() {
 
         /**
@@ -17015,7 +15637,6 @@ $root.Notify = (function() {
          * @property {Notify.IConnectStatus|null} [connectStatus] S2C connectStatus
          * @property {Notify.IQotRight|null} [qotRight] S2C qotRight
          * @property {Notify.IAPILevel|null} [apiLevel] S2C apiLevel
-         * @property {Notify.IAPIQuota|null} [apiQuota] S2C apiQuota
          */
 
         /**
@@ -17082,14 +15703,6 @@ $root.Notify = (function() {
         S2C.prototype.apiLevel = null;
 
         /**
-         * S2C apiQuota.
-         * @member {Notify.IAPIQuota|null|undefined} apiQuota
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.apiQuota = null;
-
-        /**
          * Creates a new S2C instance using the specified properties.
          * @function create
          * @memberof Notify.S2C
@@ -17124,8 +15737,6 @@ $root.Notify = (function() {
                 $root.Notify.QotRight.encode(message.qotRight, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
                 $root.Notify.APILevel.encode(message.apiLevel, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
-                $root.Notify.APIQuota.encode(message.apiQuota, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             return writer;
         };
 
@@ -17177,9 +15788,6 @@ $root.Notify = (function() {
                     break;
                 case 6:
                     message.apiLevel = $root.Notify.APILevel.decode(reader, reader.uint32());
-                    break;
-                case 7:
-                    message.apiQuota = $root.Notify.APIQuota.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -17245,11 +15853,6 @@ $root.Notify = (function() {
                 if (error)
                     return "apiLevel." + error;
             }
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota")) {
-                var error = $root.Notify.APIQuota.verify(message.apiQuota);
-                if (error)
-                    return "apiQuota." + error;
-            }
             return null;
         };
 
@@ -17292,11 +15895,6 @@ $root.Notify = (function() {
                     throw TypeError(".Notify.S2C.apiLevel: object expected");
                 message.apiLevel = $root.Notify.APILevel.fromObject(object.apiLevel);
             }
-            if (object.apiQuota != null) {
-                if (typeof object.apiQuota !== "object")
-                    throw TypeError(".Notify.S2C.apiQuota: object expected");
-                message.apiQuota = $root.Notify.APIQuota.fromObject(object.apiQuota);
-            }
             return message;
         };
 
@@ -17320,7 +15918,6 @@ $root.Notify = (function() {
                 object.connectStatus = null;
                 object.qotRight = null;
                 object.apiLevel = null;
-                object.apiQuota = null;
             }
             if (message.type != null && message.hasOwnProperty("type"))
                 object.type = message.type;
@@ -17334,8 +15931,6 @@ $root.Notify = (function() {
                 object.qotRight = $root.Notify.QotRight.toObject(message.qotRight, options);
             if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
                 object.apiLevel = $root.Notify.APILevel.toObject(message.apiLevel, options);
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
-                object.apiQuota = $root.Notify.APIQuota.toObject(message.apiQuota, options);
             return object;
         };
 
@@ -23217,1669 +21812,6 @@ $root.Qot_GetCodeChange = (function() {
     })();
 
     return Qot_GetCodeChange;
-})();
-
-$root.Qot_GetFutureInfo = (function() {
-
-    /**
-     * Namespace Qot_GetFutureInfo.
-     * @exports Qot_GetFutureInfo
-     * @namespace
-     */
-    var Qot_GetFutureInfo = {};
-
-    Qot_GetFutureInfo.TradeTime = (function() {
-
-        /**
-         * Properties of a TradeTime.
-         * @memberof Qot_GetFutureInfo
-         * @interface ITradeTime
-         * @property {number|null} [begin] TradeTime begin
-         * @property {number|null} [end] TradeTime end
-         */
-
-        /**
-         * Constructs a new TradeTime.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a TradeTime.
-         * @implements ITradeTime
-         * @constructor
-         * @param {Qot_GetFutureInfo.ITradeTime=} [properties] Properties to set
-         */
-        function TradeTime(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * TradeTime begin.
-         * @member {number} begin
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @instance
-         */
-        TradeTime.prototype.begin = 0;
-
-        /**
-         * TradeTime end.
-         * @member {number} end
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @instance
-         */
-        TradeTime.prototype.end = 0;
-
-        /**
-         * Creates a new TradeTime instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Qot_GetFutureInfo.ITradeTime=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.TradeTime} TradeTime instance
-         */
-        TradeTime.create = function create(properties) {
-            return new TradeTime(properties);
-        };
-
-        /**
-         * Encodes the specified TradeTime message. Does not implicitly {@link Qot_GetFutureInfo.TradeTime.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Qot_GetFutureInfo.ITradeTime} message TradeTime message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        TradeTime.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.begin != null && message.hasOwnProperty("begin"))
-                writer.uint32(/* id 1, wireType 1 =*/9).double(message.begin);
-            if (message.end != null && message.hasOwnProperty("end"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.end);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified TradeTime message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.TradeTime.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Qot_GetFutureInfo.ITradeTime} message TradeTime message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        TradeTime.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a TradeTime message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.TradeTime} TradeTime
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        TradeTime.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.TradeTime();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.begin = reader.double();
-                    break;
-                case 2:
-                    message.end = reader.double();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a TradeTime message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.TradeTime} TradeTime
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        TradeTime.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a TradeTime message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        TradeTime.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.begin != null && message.hasOwnProperty("begin"))
-                if (typeof message.begin !== "number")
-                    return "begin: number expected";
-            if (message.end != null && message.hasOwnProperty("end"))
-                if (typeof message.end !== "number")
-                    return "end: number expected";
-            return null;
-        };
-
-        /**
-         * Creates a TradeTime message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.TradeTime} TradeTime
-         */
-        TradeTime.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.TradeTime)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.TradeTime();
-            if (object.begin != null)
-                message.begin = Number(object.begin);
-            if (object.end != null)
-                message.end = Number(object.end);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a TradeTime message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @static
-         * @param {Qot_GetFutureInfo.TradeTime} message TradeTime
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        TradeTime.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.begin = 0;
-                object.end = 0;
-            }
-            if (message.begin != null && message.hasOwnProperty("begin"))
-                object.begin = options.json && !isFinite(message.begin) ? String(message.begin) : message.begin;
-            if (message.end != null && message.hasOwnProperty("end"))
-                object.end = options.json && !isFinite(message.end) ? String(message.end) : message.end;
-            return object;
-        };
-
-        /**
-         * Converts this TradeTime to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.TradeTime
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        TradeTime.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return TradeTime;
-    })();
-
-    Qot_GetFutureInfo.FutureInfo = (function() {
-
-        /**
-         * Properties of a FutureInfo.
-         * @memberof Qot_GetFutureInfo
-         * @interface IFutureInfo
-         * @property {string} name FutureInfo name
-         * @property {Qot_Common.ISecurity} security FutureInfo security
-         * @property {string} lastTradeTime FutureInfo lastTradeTime
-         * @property {number|null} [lastTradeTimestamp] FutureInfo lastTradeTimestamp
-         * @property {Qot_Common.ISecurity|null} [owner] FutureInfo owner
-         * @property {string} ownerOther FutureInfo ownerOther
-         * @property {string} exchange FutureInfo exchange
-         * @property {string} contractType FutureInfo contractType
-         * @property {number} contractSize FutureInfo contractSize
-         * @property {string} contractSizeUnit FutureInfo contractSizeUnit
-         * @property {string} quoteCurrency FutureInfo quoteCurrency
-         * @property {number} minVar FutureInfo minVar
-         * @property {string} minVarUnit FutureInfo minVarUnit
-         * @property {string|null} [quoteUnit] FutureInfo quoteUnit
-         * @property {Array.<Qot_GetFutureInfo.ITradeTime>|null} [tradeTime] FutureInfo tradeTime
-         * @property {string} timeZone FutureInfo timeZone
-         * @property {string} exchangeFormatUrl FutureInfo exchangeFormatUrl
-         */
-
-        /**
-         * Constructs a new FutureInfo.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a FutureInfo.
-         * @implements IFutureInfo
-         * @constructor
-         * @param {Qot_GetFutureInfo.IFutureInfo=} [properties] Properties to set
-         */
-        function FutureInfo(properties) {
-            this.tradeTime = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * FutureInfo name.
-         * @member {string} name
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.name = "";
-
-        /**
-         * FutureInfo security.
-         * @member {Qot_Common.ISecurity} security
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.security = null;
-
-        /**
-         * FutureInfo lastTradeTime.
-         * @member {string} lastTradeTime
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.lastTradeTime = "";
-
-        /**
-         * FutureInfo lastTradeTimestamp.
-         * @member {number} lastTradeTimestamp
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.lastTradeTimestamp = 0;
-
-        /**
-         * FutureInfo owner.
-         * @member {Qot_Common.ISecurity|null|undefined} owner
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.owner = null;
-
-        /**
-         * FutureInfo ownerOther.
-         * @member {string} ownerOther
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.ownerOther = "";
-
-        /**
-         * FutureInfo exchange.
-         * @member {string} exchange
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.exchange = "";
-
-        /**
-         * FutureInfo contractType.
-         * @member {string} contractType
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.contractType = "";
-
-        /**
-         * FutureInfo contractSize.
-         * @member {number} contractSize
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.contractSize = 0;
-
-        /**
-         * FutureInfo contractSizeUnit.
-         * @member {string} contractSizeUnit
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.contractSizeUnit = "";
-
-        /**
-         * FutureInfo quoteCurrency.
-         * @member {string} quoteCurrency
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.quoteCurrency = "";
-
-        /**
-         * FutureInfo minVar.
-         * @member {number} minVar
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.minVar = 0;
-
-        /**
-         * FutureInfo minVarUnit.
-         * @member {string} minVarUnit
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.minVarUnit = "";
-
-        /**
-         * FutureInfo quoteUnit.
-         * @member {string} quoteUnit
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.quoteUnit = "";
-
-        /**
-         * FutureInfo tradeTime.
-         * @member {Array.<Qot_GetFutureInfo.ITradeTime>} tradeTime
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.tradeTime = $util.emptyArray;
-
-        /**
-         * FutureInfo timeZone.
-         * @member {string} timeZone
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.timeZone = "";
-
-        /**
-         * FutureInfo exchangeFormatUrl.
-         * @member {string} exchangeFormatUrl
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         */
-        FutureInfo.prototype.exchangeFormatUrl = "";
-
-        /**
-         * Creates a new FutureInfo instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Qot_GetFutureInfo.IFutureInfo=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.FutureInfo} FutureInfo instance
-         */
-        FutureInfo.create = function create(properties) {
-            return new FutureInfo(properties);
-        };
-
-        /**
-         * Encodes the specified FutureInfo message. Does not implicitly {@link Qot_GetFutureInfo.FutureInfo.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Qot_GetFutureInfo.IFutureInfo} message FutureInfo message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureInfo.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-            $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.lastTradeTime);
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                writer.uint32(/* id 4, wireType 1 =*/33).double(message.lastTradeTimestamp);
-            if (message.owner != null && message.hasOwnProperty("owner"))
-                $root.Qot_Common.Security.encode(message.owner, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            writer.uint32(/* id 6, wireType 2 =*/50).string(message.ownerOther);
-            writer.uint32(/* id 7, wireType 2 =*/58).string(message.exchange);
-            writer.uint32(/* id 8, wireType 2 =*/66).string(message.contractType);
-            writer.uint32(/* id 9, wireType 1 =*/73).double(message.contractSize);
-            writer.uint32(/* id 10, wireType 2 =*/82).string(message.contractSizeUnit);
-            writer.uint32(/* id 11, wireType 2 =*/90).string(message.quoteCurrency);
-            writer.uint32(/* id 12, wireType 1 =*/97).double(message.minVar);
-            writer.uint32(/* id 13, wireType 2 =*/106).string(message.minVarUnit);
-            if (message.quoteUnit != null && message.hasOwnProperty("quoteUnit"))
-                writer.uint32(/* id 14, wireType 2 =*/114).string(message.quoteUnit);
-            if (message.tradeTime != null && message.tradeTime.length)
-                for (var i = 0; i < message.tradeTime.length; ++i)
-                    $root.Qot_GetFutureInfo.TradeTime.encode(message.tradeTime[i], writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
-            writer.uint32(/* id 16, wireType 2 =*/130).string(message.timeZone);
-            writer.uint32(/* id 17, wireType 2 =*/138).string(message.exchangeFormatUrl);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified FutureInfo message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.FutureInfo.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Qot_GetFutureInfo.IFutureInfo} message FutureInfo message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureInfo.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a FutureInfo message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.FutureInfo} FutureInfo
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureInfo.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.FutureInfo();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.name = reader.string();
-                    break;
-                case 2:
-                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.lastTradeTime = reader.string();
-                    break;
-                case 4:
-                    message.lastTradeTimestamp = reader.double();
-                    break;
-                case 5:
-                    message.owner = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 6:
-                    message.ownerOther = reader.string();
-                    break;
-                case 7:
-                    message.exchange = reader.string();
-                    break;
-                case 8:
-                    message.contractType = reader.string();
-                    break;
-                case 9:
-                    message.contractSize = reader.double();
-                    break;
-                case 10:
-                    message.contractSizeUnit = reader.string();
-                    break;
-                case 11:
-                    message.quoteCurrency = reader.string();
-                    break;
-                case 12:
-                    message.minVar = reader.double();
-                    break;
-                case 13:
-                    message.minVarUnit = reader.string();
-                    break;
-                case 14:
-                    message.quoteUnit = reader.string();
-                    break;
-                case 15:
-                    if (!(message.tradeTime && message.tradeTime.length))
-                        message.tradeTime = [];
-                    message.tradeTime.push($root.Qot_GetFutureInfo.TradeTime.decode(reader, reader.uint32()));
-                    break;
-                case 16:
-                    message.timeZone = reader.string();
-                    break;
-                case 17:
-                    message.exchangeFormatUrl = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("name"))
-                throw $util.ProtocolError("missing required 'name'", { instance: message });
-            if (!message.hasOwnProperty("security"))
-                throw $util.ProtocolError("missing required 'security'", { instance: message });
-            if (!message.hasOwnProperty("lastTradeTime"))
-                throw $util.ProtocolError("missing required 'lastTradeTime'", { instance: message });
-            if (!message.hasOwnProperty("ownerOther"))
-                throw $util.ProtocolError("missing required 'ownerOther'", { instance: message });
-            if (!message.hasOwnProperty("exchange"))
-                throw $util.ProtocolError("missing required 'exchange'", { instance: message });
-            if (!message.hasOwnProperty("contractType"))
-                throw $util.ProtocolError("missing required 'contractType'", { instance: message });
-            if (!message.hasOwnProperty("contractSize"))
-                throw $util.ProtocolError("missing required 'contractSize'", { instance: message });
-            if (!message.hasOwnProperty("contractSizeUnit"))
-                throw $util.ProtocolError("missing required 'contractSizeUnit'", { instance: message });
-            if (!message.hasOwnProperty("quoteCurrency"))
-                throw $util.ProtocolError("missing required 'quoteCurrency'", { instance: message });
-            if (!message.hasOwnProperty("minVar"))
-                throw $util.ProtocolError("missing required 'minVar'", { instance: message });
-            if (!message.hasOwnProperty("minVarUnit"))
-                throw $util.ProtocolError("missing required 'minVarUnit'", { instance: message });
-            if (!message.hasOwnProperty("timeZone"))
-                throw $util.ProtocolError("missing required 'timeZone'", { instance: message });
-            if (!message.hasOwnProperty("exchangeFormatUrl"))
-                throw $util.ProtocolError("missing required 'exchangeFormatUrl'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a FutureInfo message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.FutureInfo} FutureInfo
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureInfo.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a FutureInfo message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        FutureInfo.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.name))
-                return "name: string expected";
-            {
-                var error = $root.Qot_Common.Security.verify(message.security);
-                if (error)
-                    return "security." + error;
-            }
-            if (!$util.isString(message.lastTradeTime))
-                return "lastTradeTime: string expected";
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                if (typeof message.lastTradeTimestamp !== "number")
-                    return "lastTradeTimestamp: number expected";
-            if (message.owner != null && message.hasOwnProperty("owner")) {
-                var error = $root.Qot_Common.Security.verify(message.owner);
-                if (error)
-                    return "owner." + error;
-            }
-            if (!$util.isString(message.ownerOther))
-                return "ownerOther: string expected";
-            if (!$util.isString(message.exchange))
-                return "exchange: string expected";
-            if (!$util.isString(message.contractType))
-                return "contractType: string expected";
-            if (typeof message.contractSize !== "number")
-                return "contractSize: number expected";
-            if (!$util.isString(message.contractSizeUnit))
-                return "contractSizeUnit: string expected";
-            if (!$util.isString(message.quoteCurrency))
-                return "quoteCurrency: string expected";
-            if (typeof message.minVar !== "number")
-                return "minVar: number expected";
-            if (!$util.isString(message.minVarUnit))
-                return "minVarUnit: string expected";
-            if (message.quoteUnit != null && message.hasOwnProperty("quoteUnit"))
-                if (!$util.isString(message.quoteUnit))
-                    return "quoteUnit: string expected";
-            if (message.tradeTime != null && message.hasOwnProperty("tradeTime")) {
-                if (!Array.isArray(message.tradeTime))
-                    return "tradeTime: array expected";
-                for (var i = 0; i < message.tradeTime.length; ++i) {
-                    var error = $root.Qot_GetFutureInfo.TradeTime.verify(message.tradeTime[i]);
-                    if (error)
-                        return "tradeTime." + error;
-                }
-            }
-            if (!$util.isString(message.timeZone))
-                return "timeZone: string expected";
-            if (!$util.isString(message.exchangeFormatUrl))
-                return "exchangeFormatUrl: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a FutureInfo message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.FutureInfo} FutureInfo
-         */
-        FutureInfo.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.FutureInfo)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.FutureInfo();
-            if (object.name != null)
-                message.name = String(object.name);
-            if (object.security != null) {
-                if (typeof object.security !== "object")
-                    throw TypeError(".Qot_GetFutureInfo.FutureInfo.security: object expected");
-                message.security = $root.Qot_Common.Security.fromObject(object.security);
-            }
-            if (object.lastTradeTime != null)
-                message.lastTradeTime = String(object.lastTradeTime);
-            if (object.lastTradeTimestamp != null)
-                message.lastTradeTimestamp = Number(object.lastTradeTimestamp);
-            if (object.owner != null) {
-                if (typeof object.owner !== "object")
-                    throw TypeError(".Qot_GetFutureInfo.FutureInfo.owner: object expected");
-                message.owner = $root.Qot_Common.Security.fromObject(object.owner);
-            }
-            if (object.ownerOther != null)
-                message.ownerOther = String(object.ownerOther);
-            if (object.exchange != null)
-                message.exchange = String(object.exchange);
-            if (object.contractType != null)
-                message.contractType = String(object.contractType);
-            if (object.contractSize != null)
-                message.contractSize = Number(object.contractSize);
-            if (object.contractSizeUnit != null)
-                message.contractSizeUnit = String(object.contractSizeUnit);
-            if (object.quoteCurrency != null)
-                message.quoteCurrency = String(object.quoteCurrency);
-            if (object.minVar != null)
-                message.minVar = Number(object.minVar);
-            if (object.minVarUnit != null)
-                message.minVarUnit = String(object.minVarUnit);
-            if (object.quoteUnit != null)
-                message.quoteUnit = String(object.quoteUnit);
-            if (object.tradeTime) {
-                if (!Array.isArray(object.tradeTime))
-                    throw TypeError(".Qot_GetFutureInfo.FutureInfo.tradeTime: array expected");
-                message.tradeTime = [];
-                for (var i = 0; i < object.tradeTime.length; ++i) {
-                    if (typeof object.tradeTime[i] !== "object")
-                        throw TypeError(".Qot_GetFutureInfo.FutureInfo.tradeTime: object expected");
-                    message.tradeTime[i] = $root.Qot_GetFutureInfo.TradeTime.fromObject(object.tradeTime[i]);
-                }
-            }
-            if (object.timeZone != null)
-                message.timeZone = String(object.timeZone);
-            if (object.exchangeFormatUrl != null)
-                message.exchangeFormatUrl = String(object.exchangeFormatUrl);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a FutureInfo message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @static
-         * @param {Qot_GetFutureInfo.FutureInfo} message FutureInfo
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        FutureInfo.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.tradeTime = [];
-            if (options.defaults) {
-                object.name = "";
-                object.security = null;
-                object.lastTradeTime = "";
-                object.lastTradeTimestamp = 0;
-                object.owner = null;
-                object.ownerOther = "";
-                object.exchange = "";
-                object.contractType = "";
-                object.contractSize = 0;
-                object.contractSizeUnit = "";
-                object.quoteCurrency = "";
-                object.minVar = 0;
-                object.minVarUnit = "";
-                object.quoteUnit = "";
-                object.timeZone = "";
-                object.exchangeFormatUrl = "";
-            }
-            if (message.name != null && message.hasOwnProperty("name"))
-                object.name = message.name;
-            if (message.security != null && message.hasOwnProperty("security"))
-                object.security = $root.Qot_Common.Security.toObject(message.security, options);
-            if (message.lastTradeTime != null && message.hasOwnProperty("lastTradeTime"))
-                object.lastTradeTime = message.lastTradeTime;
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                object.lastTradeTimestamp = options.json && !isFinite(message.lastTradeTimestamp) ? String(message.lastTradeTimestamp) : message.lastTradeTimestamp;
-            if (message.owner != null && message.hasOwnProperty("owner"))
-                object.owner = $root.Qot_Common.Security.toObject(message.owner, options);
-            if (message.ownerOther != null && message.hasOwnProperty("ownerOther"))
-                object.ownerOther = message.ownerOther;
-            if (message.exchange != null && message.hasOwnProperty("exchange"))
-                object.exchange = message.exchange;
-            if (message.contractType != null && message.hasOwnProperty("contractType"))
-                object.contractType = message.contractType;
-            if (message.contractSize != null && message.hasOwnProperty("contractSize"))
-                object.contractSize = options.json && !isFinite(message.contractSize) ? String(message.contractSize) : message.contractSize;
-            if (message.contractSizeUnit != null && message.hasOwnProperty("contractSizeUnit"))
-                object.contractSizeUnit = message.contractSizeUnit;
-            if (message.quoteCurrency != null && message.hasOwnProperty("quoteCurrency"))
-                object.quoteCurrency = message.quoteCurrency;
-            if (message.minVar != null && message.hasOwnProperty("minVar"))
-                object.minVar = options.json && !isFinite(message.minVar) ? String(message.minVar) : message.minVar;
-            if (message.minVarUnit != null && message.hasOwnProperty("minVarUnit"))
-                object.minVarUnit = message.minVarUnit;
-            if (message.quoteUnit != null && message.hasOwnProperty("quoteUnit"))
-                object.quoteUnit = message.quoteUnit;
-            if (message.tradeTime && message.tradeTime.length) {
-                object.tradeTime = [];
-                for (var j = 0; j < message.tradeTime.length; ++j)
-                    object.tradeTime[j] = $root.Qot_GetFutureInfo.TradeTime.toObject(message.tradeTime[j], options);
-            }
-            if (message.timeZone != null && message.hasOwnProperty("timeZone"))
-                object.timeZone = message.timeZone;
-            if (message.exchangeFormatUrl != null && message.hasOwnProperty("exchangeFormatUrl"))
-                object.exchangeFormatUrl = message.exchangeFormatUrl;
-            return object;
-        };
-
-        /**
-         * Converts this FutureInfo to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.FutureInfo
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        FutureInfo.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return FutureInfo;
-    })();
-
-    Qot_GetFutureInfo.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof Qot_GetFutureInfo
-         * @interface IC2S
-         * @property {Array.<Qot_Common.ISecurity>|null} [securityList] C2S securityList
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {Qot_GetFutureInfo.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            this.securityList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S securityList.
-         * @member {Array.<Qot_Common.ISecurity>} securityList
-         * @memberof Qot_GetFutureInfo.C2S
-         * @instance
-         */
-        C2S.prototype.securityList = $util.emptyArray;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Qot_GetFutureInfo.IC2S=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link Qot_GetFutureInfo.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Qot_GetFutureInfo.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.securityList != null && message.securityList.length)
-                for (var i = 0; i < message.securityList.length; ++i)
-                    $root.Qot_Common.Security.encode(message.securityList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Qot_GetFutureInfo.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.securityList && message.securityList.length))
-                        message.securityList = [];
-                    message.securityList.push($root.Qot_Common.Security.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.securityList != null && message.hasOwnProperty("securityList")) {
-                if (!Array.isArray(message.securityList))
-                    return "securityList: array expected";
-                for (var i = 0; i < message.securityList.length; ++i) {
-                    var error = $root.Qot_Common.Security.verify(message.securityList[i]);
-                    if (error)
-                        return "securityList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.C2S)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.C2S();
-            if (object.securityList) {
-                if (!Array.isArray(object.securityList))
-                    throw TypeError(".Qot_GetFutureInfo.C2S.securityList: array expected");
-                message.securityList = [];
-                for (var i = 0; i < object.securityList.length; ++i) {
-                    if (typeof object.securityList[i] !== "object")
-                        throw TypeError(".Qot_GetFutureInfo.C2S.securityList: object expected");
-                    message.securityList[i] = $root.Qot_Common.Security.fromObject(object.securityList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.C2S
-         * @static
-         * @param {Qot_GetFutureInfo.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.securityList = [];
-            if (message.securityList && message.securityList.length) {
-                object.securityList = [];
-                for (var j = 0; j < message.securityList.length; ++j)
-                    object.securityList[j] = $root.Qot_Common.Security.toObject(message.securityList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    Qot_GetFutureInfo.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_GetFutureInfo
-         * @interface IS2C
-         * @property {Array.<Qot_GetFutureInfo.IFutureInfo>|null} [futureInfoList] S2C futureInfoList
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_GetFutureInfo.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            this.futureInfoList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C futureInfoList.
-         * @member {Array.<Qot_GetFutureInfo.IFutureInfo>} futureInfoList
-         * @memberof Qot_GetFutureInfo.S2C
-         * @instance
-         */
-        S2C.prototype.futureInfoList = $util.emptyArray;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Qot_GetFutureInfo.IS2C=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_GetFutureInfo.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Qot_GetFutureInfo.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.futureInfoList != null && message.futureInfoList.length)
-                for (var i = 0; i < message.futureInfoList.length; ++i)
-                    $root.Qot_GetFutureInfo.FutureInfo.encode(message.futureInfoList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Qot_GetFutureInfo.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.futureInfoList && message.futureInfoList.length))
-                        message.futureInfoList = [];
-                    message.futureInfoList.push($root.Qot_GetFutureInfo.FutureInfo.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.futureInfoList != null && message.hasOwnProperty("futureInfoList")) {
-                if (!Array.isArray(message.futureInfoList))
-                    return "futureInfoList: array expected";
-                for (var i = 0; i < message.futureInfoList.length; ++i) {
-                    var error = $root.Qot_GetFutureInfo.FutureInfo.verify(message.futureInfoList[i]);
-                    if (error)
-                        return "futureInfoList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.S2C)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.S2C();
-            if (object.futureInfoList) {
-                if (!Array.isArray(object.futureInfoList))
-                    throw TypeError(".Qot_GetFutureInfo.S2C.futureInfoList: array expected");
-                message.futureInfoList = [];
-                for (var i = 0; i < object.futureInfoList.length; ++i) {
-                    if (typeof object.futureInfoList[i] !== "object")
-                        throw TypeError(".Qot_GetFutureInfo.S2C.futureInfoList: object expected");
-                    message.futureInfoList[i] = $root.Qot_GetFutureInfo.FutureInfo.fromObject(object.futureInfoList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.S2C
-         * @static
-         * @param {Qot_GetFutureInfo.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.futureInfoList = [];
-            if (message.futureInfoList && message.futureInfoList.length) {
-                object.futureInfoList = [];
-                for (var j = 0; j < message.futureInfoList.length; ++j)
-                    object.futureInfoList[j] = $root.Qot_GetFutureInfo.FutureInfo.toObject(message.futureInfoList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_GetFutureInfo.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof Qot_GetFutureInfo
-         * @interface IRequest
-         * @property {Qot_GetFutureInfo.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {Qot_GetFutureInfo.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {Qot_GetFutureInfo.IC2S} c2s
-         * @memberof Qot_GetFutureInfo.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Qot_GetFutureInfo.IRequest=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link Qot_GetFutureInfo.Request.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Qot_GetFutureInfo.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_GetFutureInfo.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Qot_GetFutureInfo.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.Qot_GetFutureInfo.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_GetFutureInfo.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.Request)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".Qot_GetFutureInfo.Request.c2s: object expected");
-                message.c2s = $root.Qot_GetFutureInfo.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.Request
-         * @static
-         * @param {Qot_GetFutureInfo.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.Qot_GetFutureInfo.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    Qot_GetFutureInfo.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_GetFutureInfo
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_GetFutureInfo.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_GetFutureInfo
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_GetFutureInfo.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_GetFutureInfo.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_GetFutureInfo.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_GetFutureInfo.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_GetFutureInfo.IS2C|null|undefined} s2c
-         * @memberof Qot_GetFutureInfo.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Qot_GetFutureInfo.IResponse=} [properties] Properties to set
-         * @returns {Qot_GetFutureInfo.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_GetFutureInfo.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Qot_GetFutureInfo.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_GetFutureInfo.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_GetFutureInfo.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Qot_GetFutureInfo.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetFutureInfo.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetFutureInfo.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_GetFutureInfo.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetFutureInfo.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_GetFutureInfo.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetFutureInfo.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetFutureInfo.Response)
-                return object;
-            var message = new $root.Qot_GetFutureInfo.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_GetFutureInfo.Response.s2c: object expected");
-                message.s2c = $root.Qot_GetFutureInfo.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetFutureInfo.Response
-         * @static
-         * @param {Qot_GetFutureInfo.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_GetFutureInfo.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_GetFutureInfo.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_GetFutureInfo;
 })();
 
 $root.Qot_GetHistoryKLPoints = (function() {
@@ -32302,568 +29234,6 @@ $root.Qot_GetOptionChain = (function() {
         return values;
     })();
 
-    Qot_GetOptionChain.DataFilter = (function() {
-
-        /**
-         * Properties of a DataFilter.
-         * @memberof Qot_GetOptionChain
-         * @interface IDataFilter
-         * @property {number|null} [impliedVolatilityMin] DataFilter impliedVolatilityMin
-         * @property {number|null} [impliedVolatilityMax] DataFilter impliedVolatilityMax
-         * @property {number|null} [deltaMin] DataFilter deltaMin
-         * @property {number|null} [deltaMax] DataFilter deltaMax
-         * @property {number|null} [gammaMin] DataFilter gammaMin
-         * @property {number|null} [gammaMax] DataFilter gammaMax
-         * @property {number|null} [vegaMin] DataFilter vegaMin
-         * @property {number|null} [vegaMax] DataFilter vegaMax
-         * @property {number|null} [thetaMin] DataFilter thetaMin
-         * @property {number|null} [thetaMax] DataFilter thetaMax
-         * @property {number|null} [rhoMin] DataFilter rhoMin
-         * @property {number|null} [rhoMax] DataFilter rhoMax
-         * @property {number|null} [netOpenInterestMin] DataFilter netOpenInterestMin
-         * @property {number|null} [netOpenInterestMax] DataFilter netOpenInterestMax
-         * @property {number|null} [openInterestMin] DataFilter openInterestMin
-         * @property {number|null} [openInterestMax] DataFilter openInterestMax
-         * @property {number|null} [volMin] DataFilter volMin
-         * @property {number|null} [volMax] DataFilter volMax
-         */
-
-        /**
-         * Constructs a new DataFilter.
-         * @memberof Qot_GetOptionChain
-         * @classdesc Represents a DataFilter.
-         * @implements IDataFilter
-         * @constructor
-         * @param {Qot_GetOptionChain.IDataFilter=} [properties] Properties to set
-         */
-        function DataFilter(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * DataFilter impliedVolatilityMin.
-         * @member {number} impliedVolatilityMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.impliedVolatilityMin = 0;
-
-        /**
-         * DataFilter impliedVolatilityMax.
-         * @member {number} impliedVolatilityMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.impliedVolatilityMax = 0;
-
-        /**
-         * DataFilter deltaMin.
-         * @member {number} deltaMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.deltaMin = 0;
-
-        /**
-         * DataFilter deltaMax.
-         * @member {number} deltaMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.deltaMax = 0;
-
-        /**
-         * DataFilter gammaMin.
-         * @member {number} gammaMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.gammaMin = 0;
-
-        /**
-         * DataFilter gammaMax.
-         * @member {number} gammaMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.gammaMax = 0;
-
-        /**
-         * DataFilter vegaMin.
-         * @member {number} vegaMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.vegaMin = 0;
-
-        /**
-         * DataFilter vegaMax.
-         * @member {number} vegaMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.vegaMax = 0;
-
-        /**
-         * DataFilter thetaMin.
-         * @member {number} thetaMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.thetaMin = 0;
-
-        /**
-         * DataFilter thetaMax.
-         * @member {number} thetaMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.thetaMax = 0;
-
-        /**
-         * DataFilter rhoMin.
-         * @member {number} rhoMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.rhoMin = 0;
-
-        /**
-         * DataFilter rhoMax.
-         * @member {number} rhoMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.rhoMax = 0;
-
-        /**
-         * DataFilter netOpenInterestMin.
-         * @member {number} netOpenInterestMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.netOpenInterestMin = 0;
-
-        /**
-         * DataFilter netOpenInterestMax.
-         * @member {number} netOpenInterestMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.netOpenInterestMax = 0;
-
-        /**
-         * DataFilter openInterestMin.
-         * @member {number} openInterestMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.openInterestMin = 0;
-
-        /**
-         * DataFilter openInterestMax.
-         * @member {number} openInterestMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.openInterestMax = 0;
-
-        /**
-         * DataFilter volMin.
-         * @member {number} volMin
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.volMin = 0;
-
-        /**
-         * DataFilter volMax.
-         * @member {number} volMax
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         */
-        DataFilter.prototype.volMax = 0;
-
-        /**
-         * Creates a new DataFilter instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Qot_GetOptionChain.IDataFilter=} [properties] Properties to set
-         * @returns {Qot_GetOptionChain.DataFilter} DataFilter instance
-         */
-        DataFilter.create = function create(properties) {
-            return new DataFilter(properties);
-        };
-
-        /**
-         * Encodes the specified DataFilter message. Does not implicitly {@link Qot_GetOptionChain.DataFilter.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Qot_GetOptionChain.IDataFilter} message DataFilter message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        DataFilter.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.impliedVolatilityMin != null && message.hasOwnProperty("impliedVolatilityMin"))
-                writer.uint32(/* id 1, wireType 1 =*/9).double(message.impliedVolatilityMin);
-            if (message.impliedVolatilityMax != null && message.hasOwnProperty("impliedVolatilityMax"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.impliedVolatilityMax);
-            if (message.deltaMin != null && message.hasOwnProperty("deltaMin"))
-                writer.uint32(/* id 3, wireType 1 =*/25).double(message.deltaMin);
-            if (message.deltaMax != null && message.hasOwnProperty("deltaMax"))
-                writer.uint32(/* id 4, wireType 1 =*/33).double(message.deltaMax);
-            if (message.gammaMin != null && message.hasOwnProperty("gammaMin"))
-                writer.uint32(/* id 5, wireType 1 =*/41).double(message.gammaMin);
-            if (message.gammaMax != null && message.hasOwnProperty("gammaMax"))
-                writer.uint32(/* id 6, wireType 1 =*/49).double(message.gammaMax);
-            if (message.vegaMin != null && message.hasOwnProperty("vegaMin"))
-                writer.uint32(/* id 7, wireType 1 =*/57).double(message.vegaMin);
-            if (message.vegaMax != null && message.hasOwnProperty("vegaMax"))
-                writer.uint32(/* id 8, wireType 1 =*/65).double(message.vegaMax);
-            if (message.thetaMin != null && message.hasOwnProperty("thetaMin"))
-                writer.uint32(/* id 9, wireType 1 =*/73).double(message.thetaMin);
-            if (message.thetaMax != null && message.hasOwnProperty("thetaMax"))
-                writer.uint32(/* id 10, wireType 1 =*/81).double(message.thetaMax);
-            if (message.rhoMin != null && message.hasOwnProperty("rhoMin"))
-                writer.uint32(/* id 11, wireType 1 =*/89).double(message.rhoMin);
-            if (message.rhoMax != null && message.hasOwnProperty("rhoMax"))
-                writer.uint32(/* id 12, wireType 1 =*/97).double(message.rhoMax);
-            if (message.netOpenInterestMin != null && message.hasOwnProperty("netOpenInterestMin"))
-                writer.uint32(/* id 13, wireType 1 =*/105).double(message.netOpenInterestMin);
-            if (message.netOpenInterestMax != null && message.hasOwnProperty("netOpenInterestMax"))
-                writer.uint32(/* id 14, wireType 1 =*/113).double(message.netOpenInterestMax);
-            if (message.openInterestMin != null && message.hasOwnProperty("openInterestMin"))
-                writer.uint32(/* id 15, wireType 1 =*/121).double(message.openInterestMin);
-            if (message.openInterestMax != null && message.hasOwnProperty("openInterestMax"))
-                writer.uint32(/* id 16, wireType 1 =*/129).double(message.openInterestMax);
-            if (message.volMin != null && message.hasOwnProperty("volMin"))
-                writer.uint32(/* id 17, wireType 1 =*/137).double(message.volMin);
-            if (message.volMax != null && message.hasOwnProperty("volMax"))
-                writer.uint32(/* id 18, wireType 1 =*/145).double(message.volMax);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified DataFilter message, length delimited. Does not implicitly {@link Qot_GetOptionChain.DataFilter.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Qot_GetOptionChain.IDataFilter} message DataFilter message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        DataFilter.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a DataFilter message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetOptionChain.DataFilter} DataFilter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        DataFilter.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetOptionChain.DataFilter();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.impliedVolatilityMin = reader.double();
-                    break;
-                case 2:
-                    message.impliedVolatilityMax = reader.double();
-                    break;
-                case 3:
-                    message.deltaMin = reader.double();
-                    break;
-                case 4:
-                    message.deltaMax = reader.double();
-                    break;
-                case 5:
-                    message.gammaMin = reader.double();
-                    break;
-                case 6:
-                    message.gammaMax = reader.double();
-                    break;
-                case 7:
-                    message.vegaMin = reader.double();
-                    break;
-                case 8:
-                    message.vegaMax = reader.double();
-                    break;
-                case 9:
-                    message.thetaMin = reader.double();
-                    break;
-                case 10:
-                    message.thetaMax = reader.double();
-                    break;
-                case 11:
-                    message.rhoMin = reader.double();
-                    break;
-                case 12:
-                    message.rhoMax = reader.double();
-                    break;
-                case 13:
-                    message.netOpenInterestMin = reader.double();
-                    break;
-                case 14:
-                    message.netOpenInterestMax = reader.double();
-                    break;
-                case 15:
-                    message.openInterestMin = reader.double();
-                    break;
-                case 16:
-                    message.openInterestMax = reader.double();
-                    break;
-                case 17:
-                    message.volMin = reader.double();
-                    break;
-                case 18:
-                    message.volMax = reader.double();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a DataFilter message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetOptionChain.DataFilter} DataFilter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        DataFilter.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a DataFilter message.
-         * @function verify
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        DataFilter.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.impliedVolatilityMin != null && message.hasOwnProperty("impliedVolatilityMin"))
-                if (typeof message.impliedVolatilityMin !== "number")
-                    return "impliedVolatilityMin: number expected";
-            if (message.impliedVolatilityMax != null && message.hasOwnProperty("impliedVolatilityMax"))
-                if (typeof message.impliedVolatilityMax !== "number")
-                    return "impliedVolatilityMax: number expected";
-            if (message.deltaMin != null && message.hasOwnProperty("deltaMin"))
-                if (typeof message.deltaMin !== "number")
-                    return "deltaMin: number expected";
-            if (message.deltaMax != null && message.hasOwnProperty("deltaMax"))
-                if (typeof message.deltaMax !== "number")
-                    return "deltaMax: number expected";
-            if (message.gammaMin != null && message.hasOwnProperty("gammaMin"))
-                if (typeof message.gammaMin !== "number")
-                    return "gammaMin: number expected";
-            if (message.gammaMax != null && message.hasOwnProperty("gammaMax"))
-                if (typeof message.gammaMax !== "number")
-                    return "gammaMax: number expected";
-            if (message.vegaMin != null && message.hasOwnProperty("vegaMin"))
-                if (typeof message.vegaMin !== "number")
-                    return "vegaMin: number expected";
-            if (message.vegaMax != null && message.hasOwnProperty("vegaMax"))
-                if (typeof message.vegaMax !== "number")
-                    return "vegaMax: number expected";
-            if (message.thetaMin != null && message.hasOwnProperty("thetaMin"))
-                if (typeof message.thetaMin !== "number")
-                    return "thetaMin: number expected";
-            if (message.thetaMax != null && message.hasOwnProperty("thetaMax"))
-                if (typeof message.thetaMax !== "number")
-                    return "thetaMax: number expected";
-            if (message.rhoMin != null && message.hasOwnProperty("rhoMin"))
-                if (typeof message.rhoMin !== "number")
-                    return "rhoMin: number expected";
-            if (message.rhoMax != null && message.hasOwnProperty("rhoMax"))
-                if (typeof message.rhoMax !== "number")
-                    return "rhoMax: number expected";
-            if (message.netOpenInterestMin != null && message.hasOwnProperty("netOpenInterestMin"))
-                if (typeof message.netOpenInterestMin !== "number")
-                    return "netOpenInterestMin: number expected";
-            if (message.netOpenInterestMax != null && message.hasOwnProperty("netOpenInterestMax"))
-                if (typeof message.netOpenInterestMax !== "number")
-                    return "netOpenInterestMax: number expected";
-            if (message.openInterestMin != null && message.hasOwnProperty("openInterestMin"))
-                if (typeof message.openInterestMin !== "number")
-                    return "openInterestMin: number expected";
-            if (message.openInterestMax != null && message.hasOwnProperty("openInterestMax"))
-                if (typeof message.openInterestMax !== "number")
-                    return "openInterestMax: number expected";
-            if (message.volMin != null && message.hasOwnProperty("volMin"))
-                if (typeof message.volMin !== "number")
-                    return "volMin: number expected";
-            if (message.volMax != null && message.hasOwnProperty("volMax"))
-                if (typeof message.volMax !== "number")
-                    return "volMax: number expected";
-            return null;
-        };
-
-        /**
-         * Creates a DataFilter message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetOptionChain.DataFilter} DataFilter
-         */
-        DataFilter.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetOptionChain.DataFilter)
-                return object;
-            var message = new $root.Qot_GetOptionChain.DataFilter();
-            if (object.impliedVolatilityMin != null)
-                message.impliedVolatilityMin = Number(object.impliedVolatilityMin);
-            if (object.impliedVolatilityMax != null)
-                message.impliedVolatilityMax = Number(object.impliedVolatilityMax);
-            if (object.deltaMin != null)
-                message.deltaMin = Number(object.deltaMin);
-            if (object.deltaMax != null)
-                message.deltaMax = Number(object.deltaMax);
-            if (object.gammaMin != null)
-                message.gammaMin = Number(object.gammaMin);
-            if (object.gammaMax != null)
-                message.gammaMax = Number(object.gammaMax);
-            if (object.vegaMin != null)
-                message.vegaMin = Number(object.vegaMin);
-            if (object.vegaMax != null)
-                message.vegaMax = Number(object.vegaMax);
-            if (object.thetaMin != null)
-                message.thetaMin = Number(object.thetaMin);
-            if (object.thetaMax != null)
-                message.thetaMax = Number(object.thetaMax);
-            if (object.rhoMin != null)
-                message.rhoMin = Number(object.rhoMin);
-            if (object.rhoMax != null)
-                message.rhoMax = Number(object.rhoMax);
-            if (object.netOpenInterestMin != null)
-                message.netOpenInterestMin = Number(object.netOpenInterestMin);
-            if (object.netOpenInterestMax != null)
-                message.netOpenInterestMax = Number(object.netOpenInterestMax);
-            if (object.openInterestMin != null)
-                message.openInterestMin = Number(object.openInterestMin);
-            if (object.openInterestMax != null)
-                message.openInterestMax = Number(object.openInterestMax);
-            if (object.volMin != null)
-                message.volMin = Number(object.volMin);
-            if (object.volMax != null)
-                message.volMax = Number(object.volMax);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a DataFilter message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @static
-         * @param {Qot_GetOptionChain.DataFilter} message DataFilter
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        DataFilter.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.impliedVolatilityMin = 0;
-                object.impliedVolatilityMax = 0;
-                object.deltaMin = 0;
-                object.deltaMax = 0;
-                object.gammaMin = 0;
-                object.gammaMax = 0;
-                object.vegaMin = 0;
-                object.vegaMax = 0;
-                object.thetaMin = 0;
-                object.thetaMax = 0;
-                object.rhoMin = 0;
-                object.rhoMax = 0;
-                object.netOpenInterestMin = 0;
-                object.netOpenInterestMax = 0;
-                object.openInterestMin = 0;
-                object.openInterestMax = 0;
-                object.volMin = 0;
-                object.volMax = 0;
-            }
-            if (message.impliedVolatilityMin != null && message.hasOwnProperty("impliedVolatilityMin"))
-                object.impliedVolatilityMin = options.json && !isFinite(message.impliedVolatilityMin) ? String(message.impliedVolatilityMin) : message.impliedVolatilityMin;
-            if (message.impliedVolatilityMax != null && message.hasOwnProperty("impliedVolatilityMax"))
-                object.impliedVolatilityMax = options.json && !isFinite(message.impliedVolatilityMax) ? String(message.impliedVolatilityMax) : message.impliedVolatilityMax;
-            if (message.deltaMin != null && message.hasOwnProperty("deltaMin"))
-                object.deltaMin = options.json && !isFinite(message.deltaMin) ? String(message.deltaMin) : message.deltaMin;
-            if (message.deltaMax != null && message.hasOwnProperty("deltaMax"))
-                object.deltaMax = options.json && !isFinite(message.deltaMax) ? String(message.deltaMax) : message.deltaMax;
-            if (message.gammaMin != null && message.hasOwnProperty("gammaMin"))
-                object.gammaMin = options.json && !isFinite(message.gammaMin) ? String(message.gammaMin) : message.gammaMin;
-            if (message.gammaMax != null && message.hasOwnProperty("gammaMax"))
-                object.gammaMax = options.json && !isFinite(message.gammaMax) ? String(message.gammaMax) : message.gammaMax;
-            if (message.vegaMin != null && message.hasOwnProperty("vegaMin"))
-                object.vegaMin = options.json && !isFinite(message.vegaMin) ? String(message.vegaMin) : message.vegaMin;
-            if (message.vegaMax != null && message.hasOwnProperty("vegaMax"))
-                object.vegaMax = options.json && !isFinite(message.vegaMax) ? String(message.vegaMax) : message.vegaMax;
-            if (message.thetaMin != null && message.hasOwnProperty("thetaMin"))
-                object.thetaMin = options.json && !isFinite(message.thetaMin) ? String(message.thetaMin) : message.thetaMin;
-            if (message.thetaMax != null && message.hasOwnProperty("thetaMax"))
-                object.thetaMax = options.json && !isFinite(message.thetaMax) ? String(message.thetaMax) : message.thetaMax;
-            if (message.rhoMin != null && message.hasOwnProperty("rhoMin"))
-                object.rhoMin = options.json && !isFinite(message.rhoMin) ? String(message.rhoMin) : message.rhoMin;
-            if (message.rhoMax != null && message.hasOwnProperty("rhoMax"))
-                object.rhoMax = options.json && !isFinite(message.rhoMax) ? String(message.rhoMax) : message.rhoMax;
-            if (message.netOpenInterestMin != null && message.hasOwnProperty("netOpenInterestMin"))
-                object.netOpenInterestMin = options.json && !isFinite(message.netOpenInterestMin) ? String(message.netOpenInterestMin) : message.netOpenInterestMin;
-            if (message.netOpenInterestMax != null && message.hasOwnProperty("netOpenInterestMax"))
-                object.netOpenInterestMax = options.json && !isFinite(message.netOpenInterestMax) ? String(message.netOpenInterestMax) : message.netOpenInterestMax;
-            if (message.openInterestMin != null && message.hasOwnProperty("openInterestMin"))
-                object.openInterestMin = options.json && !isFinite(message.openInterestMin) ? String(message.openInterestMin) : message.openInterestMin;
-            if (message.openInterestMax != null && message.hasOwnProperty("openInterestMax"))
-                object.openInterestMax = options.json && !isFinite(message.openInterestMax) ? String(message.openInterestMax) : message.openInterestMax;
-            if (message.volMin != null && message.hasOwnProperty("volMin"))
-                object.volMin = options.json && !isFinite(message.volMin) ? String(message.volMin) : message.volMin;
-            if (message.volMax != null && message.hasOwnProperty("volMax"))
-                object.volMax = options.json && !isFinite(message.volMax) ? String(message.volMax) : message.volMax;
-            return object;
-        };
-
-        /**
-         * Converts this DataFilter to JSON.
-         * @function toJSON
-         * @memberof Qot_GetOptionChain.DataFilter
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        DataFilter.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return DataFilter;
-    })();
-
     Qot_GetOptionChain.C2S = (function() {
 
         /**
@@ -32876,7 +29246,6 @@ $root.Qot_GetOptionChain = (function() {
          * @property {number|null} [condition] C2S condition
          * @property {string} beginTime C2S beginTime
          * @property {string} endTime C2S endTime
-         * @property {Qot_GetOptionChain.IDataFilter|null} [dataFilter] C2S dataFilter
          */
 
         /**
@@ -32943,14 +29312,6 @@ $root.Qot_GetOptionChain = (function() {
         C2S.prototype.endTime = "";
 
         /**
-         * C2S dataFilter.
-         * @member {Qot_GetOptionChain.IDataFilter|null|undefined} dataFilter
-         * @memberof Qot_GetOptionChain.C2S
-         * @instance
-         */
-        C2S.prototype.dataFilter = null;
-
-        /**
          * Creates a new C2S instance using the specified properties.
          * @function create
          * @memberof Qot_GetOptionChain.C2S
@@ -32983,8 +29344,6 @@ $root.Qot_GetOptionChain = (function() {
             writer.uint32(/* id 5, wireType 2 =*/42).string(message.endTime);
             if (message.indexOptionType != null && message.hasOwnProperty("indexOptionType"))
                 writer.uint32(/* id 6, wireType 0 =*/48).int32(message.indexOptionType);
-            if (message.dataFilter != null && message.hasOwnProperty("dataFilter"))
-                $root.Qot_GetOptionChain.DataFilter.encode(message.dataFilter, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             return writer;
         };
 
@@ -33036,9 +29395,6 @@ $root.Qot_GetOptionChain = (function() {
                     break;
                 case 5:
                     message.endTime = reader.string();
-                    break;
-                case 7:
-                    message.dataFilter = $root.Qot_GetOptionChain.DataFilter.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -33099,11 +29455,6 @@ $root.Qot_GetOptionChain = (function() {
                 return "beginTime: string expected";
             if (!$util.isString(message.endTime))
                 return "endTime: string expected";
-            if (message.dataFilter != null && message.hasOwnProperty("dataFilter")) {
-                var error = $root.Qot_GetOptionChain.DataFilter.verify(message.dataFilter);
-                if (error)
-                    return "dataFilter." + error;
-            }
             return null;
         };
 
@@ -33134,11 +29485,6 @@ $root.Qot_GetOptionChain = (function() {
                 message.beginTime = String(object.beginTime);
             if (object.endTime != null)
                 message.endTime = String(object.endTime);
-            if (object.dataFilter != null) {
-                if (typeof object.dataFilter !== "object")
-                    throw TypeError(".Qot_GetOptionChain.C2S.dataFilter: object expected");
-                message.dataFilter = $root.Qot_GetOptionChain.DataFilter.fromObject(object.dataFilter);
-            }
             return message;
         };
 
@@ -33162,7 +29508,6 @@ $root.Qot_GetOptionChain = (function() {
                 object.beginTime = "";
                 object.endTime = "";
                 object.indexOptionType = 0;
-                object.dataFilter = null;
             }
             if (message.owner != null && message.hasOwnProperty("owner"))
                 object.owner = $root.Qot_Common.Security.toObject(message.owner, options);
@@ -33176,8 +29521,6 @@ $root.Qot_GetOptionChain = (function() {
                 object.endTime = message.endTime;
             if (message.indexOptionType != null && message.hasOwnProperty("indexOptionType"))
                 object.indexOptionType = message.indexOptionType;
-            if (message.dataFilter != null && message.hasOwnProperty("dataFilter"))
-                object.dataFilter = $root.Qot_GetOptionChain.DataFilter.toObject(message.dataFilter, options);
             return object;
         };
 
@@ -39198,1442 +35541,6 @@ $root.Qot_GetPlateSet = (function() {
     return Qot_GetPlateSet;
 })();
 
-$root.Qot_GetPriceReminder = (function() {
-
-    /**
-     * Namespace Qot_GetPriceReminder.
-     * @exports Qot_GetPriceReminder
-     * @namespace
-     */
-    var Qot_GetPriceReminder = {};
-
-    Qot_GetPriceReminder.PriceReminderItem = (function() {
-
-        /**
-         * Properties of a PriceReminderItem.
-         * @memberof Qot_GetPriceReminder
-         * @interface IPriceReminderItem
-         * @property {number|Long} key PriceReminderItem key
-         * @property {number} type PriceReminderItem type
-         * @property {number} value PriceReminderItem value
-         * @property {string} note PriceReminderItem note
-         * @property {number} freq PriceReminderItem freq
-         * @property {boolean} isEnable PriceReminderItem isEnable
-         */
-
-        /**
-         * Constructs a new PriceReminderItem.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a PriceReminderItem.
-         * @implements IPriceReminderItem
-         * @constructor
-         * @param {Qot_GetPriceReminder.IPriceReminderItem=} [properties] Properties to set
-         */
-        function PriceReminderItem(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * PriceReminderItem key.
-         * @member {number|Long} key
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.key = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * PriceReminderItem type.
-         * @member {number} type
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.type = 0;
-
-        /**
-         * PriceReminderItem value.
-         * @member {number} value
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.value = 0;
-
-        /**
-         * PriceReminderItem note.
-         * @member {string} note
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.note = "";
-
-        /**
-         * PriceReminderItem freq.
-         * @member {number} freq
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.freq = 0;
-
-        /**
-         * PriceReminderItem isEnable.
-         * @member {boolean} isEnable
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         */
-        PriceReminderItem.prototype.isEnable = false;
-
-        /**
-         * Creates a new PriceReminderItem instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminderItem=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.PriceReminderItem} PriceReminderItem instance
-         */
-        PriceReminderItem.create = function create(properties) {
-            return new PriceReminderItem(properties);
-        };
-
-        /**
-         * Encodes the specified PriceReminderItem message. Does not implicitly {@link Qot_GetPriceReminder.PriceReminderItem.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminderItem} message PriceReminderItem message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PriceReminderItem.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.key);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.type);
-            writer.uint32(/* id 3, wireType 1 =*/25).double(message.value);
-            writer.uint32(/* id 4, wireType 2 =*/34).string(message.note);
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.freq);
-            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.isEnable);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified PriceReminderItem message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.PriceReminderItem.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminderItem} message PriceReminderItem message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PriceReminderItem.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a PriceReminderItem message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.PriceReminderItem} PriceReminderItem
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        PriceReminderItem.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.PriceReminderItem();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.key = reader.int64();
-                    break;
-                case 2:
-                    message.type = reader.int32();
-                    break;
-                case 3:
-                    message.value = reader.double();
-                    break;
-                case 4:
-                    message.note = reader.string();
-                    break;
-                case 5:
-                    message.freq = reader.int32();
-                    break;
-                case 6:
-                    message.isEnable = reader.bool();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("key"))
-                throw $util.ProtocolError("missing required 'key'", { instance: message });
-            if (!message.hasOwnProperty("type"))
-                throw $util.ProtocolError("missing required 'type'", { instance: message });
-            if (!message.hasOwnProperty("value"))
-                throw $util.ProtocolError("missing required 'value'", { instance: message });
-            if (!message.hasOwnProperty("note"))
-                throw $util.ProtocolError("missing required 'note'", { instance: message });
-            if (!message.hasOwnProperty("freq"))
-                throw $util.ProtocolError("missing required 'freq'", { instance: message });
-            if (!message.hasOwnProperty("isEnable"))
-                throw $util.ProtocolError("missing required 'isEnable'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a PriceReminderItem message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.PriceReminderItem} PriceReminderItem
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        PriceReminderItem.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a PriceReminderItem message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        PriceReminderItem.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.key) && !(message.key && $util.isInteger(message.key.low) && $util.isInteger(message.key.high)))
-                return "key: integer|Long expected";
-            if (!$util.isInteger(message.type))
-                return "type: integer expected";
-            if (typeof message.value !== "number")
-                return "value: number expected";
-            if (!$util.isString(message.note))
-                return "note: string expected";
-            if (!$util.isInteger(message.freq))
-                return "freq: integer expected";
-            if (typeof message.isEnable !== "boolean")
-                return "isEnable: boolean expected";
-            return null;
-        };
-
-        /**
-         * Creates a PriceReminderItem message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.PriceReminderItem} PriceReminderItem
-         */
-        PriceReminderItem.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.PriceReminderItem)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.PriceReminderItem();
-            if (object.key != null)
-                if ($util.Long)
-                    (message.key = $util.Long.fromValue(object.key)).unsigned = false;
-                else if (typeof object.key === "string")
-                    message.key = parseInt(object.key, 10);
-                else if (typeof object.key === "number")
-                    message.key = object.key;
-                else if (typeof object.key === "object")
-                    message.key = new $util.LongBits(object.key.low >>> 0, object.key.high >>> 0).toNumber();
-            if (object.type != null)
-                message.type = object.type | 0;
-            if (object.value != null)
-                message.value = Number(object.value);
-            if (object.note != null)
-                message.note = String(object.note);
-            if (object.freq != null)
-                message.freq = object.freq | 0;
-            if (object.isEnable != null)
-                message.isEnable = Boolean(object.isEnable);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a PriceReminderItem message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @static
-         * @param {Qot_GetPriceReminder.PriceReminderItem} message PriceReminderItem
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        PriceReminderItem.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.key = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.key = options.longs === String ? "0" : 0;
-                object.type = 0;
-                object.value = 0;
-                object.note = "";
-                object.freq = 0;
-                object.isEnable = false;
-            }
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (typeof message.key === "number")
-                    object.key = options.longs === String ? String(message.key) : message.key;
-                else
-                    object.key = options.longs === String ? $util.Long.prototype.toString.call(message.key) : options.longs === Number ? new $util.LongBits(message.key.low >>> 0, message.key.high >>> 0).toNumber() : message.key;
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.value != null && message.hasOwnProperty("value"))
-                object.value = options.json && !isFinite(message.value) ? String(message.value) : message.value;
-            if (message.note != null && message.hasOwnProperty("note"))
-                object.note = message.note;
-            if (message.freq != null && message.hasOwnProperty("freq"))
-                object.freq = message.freq;
-            if (message.isEnable != null && message.hasOwnProperty("isEnable"))
-                object.isEnable = message.isEnable;
-            return object;
-        };
-
-        /**
-         * Converts this PriceReminderItem to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.PriceReminderItem
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        PriceReminderItem.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return PriceReminderItem;
-    })();
-
-    Qot_GetPriceReminder.PriceReminder = (function() {
-
-        /**
-         * Properties of a PriceReminder.
-         * @memberof Qot_GetPriceReminder
-         * @interface IPriceReminder
-         * @property {Qot_Common.ISecurity} security PriceReminder security
-         * @property {Array.<Qot_GetPriceReminder.IPriceReminderItem>|null} [itemList] PriceReminder itemList
-         */
-
-        /**
-         * Constructs a new PriceReminder.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a PriceReminder.
-         * @implements IPriceReminder
-         * @constructor
-         * @param {Qot_GetPriceReminder.IPriceReminder=} [properties] Properties to set
-         */
-        function PriceReminder(properties) {
-            this.itemList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * PriceReminder security.
-         * @member {Qot_Common.ISecurity} security
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @instance
-         */
-        PriceReminder.prototype.security = null;
-
-        /**
-         * PriceReminder itemList.
-         * @member {Array.<Qot_GetPriceReminder.IPriceReminderItem>} itemList
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @instance
-         */
-        PriceReminder.prototype.itemList = $util.emptyArray;
-
-        /**
-         * Creates a new PriceReminder instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminder=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.PriceReminder} PriceReminder instance
-         */
-        PriceReminder.create = function create(properties) {
-            return new PriceReminder(properties);
-        };
-
-        /**
-         * Encodes the specified PriceReminder message. Does not implicitly {@link Qot_GetPriceReminder.PriceReminder.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminder} message PriceReminder message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PriceReminder.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.itemList != null && message.itemList.length)
-                for (var i = 0; i < message.itemList.length; ++i)
-                    $root.Qot_GetPriceReminder.PriceReminderItem.encode(message.itemList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified PriceReminder message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.PriceReminder.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Qot_GetPriceReminder.IPriceReminder} message PriceReminder message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        PriceReminder.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a PriceReminder message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.PriceReminder} PriceReminder
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        PriceReminder.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.PriceReminder();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    if (!(message.itemList && message.itemList.length))
-                        message.itemList = [];
-                    message.itemList.push($root.Qot_GetPriceReminder.PriceReminderItem.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("security"))
-                throw $util.ProtocolError("missing required 'security'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a PriceReminder message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.PriceReminder} PriceReminder
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        PriceReminder.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a PriceReminder message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        PriceReminder.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_Common.Security.verify(message.security);
-                if (error)
-                    return "security." + error;
-            }
-            if (message.itemList != null && message.hasOwnProperty("itemList")) {
-                if (!Array.isArray(message.itemList))
-                    return "itemList: array expected";
-                for (var i = 0; i < message.itemList.length; ++i) {
-                    var error = $root.Qot_GetPriceReminder.PriceReminderItem.verify(message.itemList[i]);
-                    if (error)
-                        return "itemList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a PriceReminder message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.PriceReminder} PriceReminder
-         */
-        PriceReminder.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.PriceReminder)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.PriceReminder();
-            if (object.security != null) {
-                if (typeof object.security !== "object")
-                    throw TypeError(".Qot_GetPriceReminder.PriceReminder.security: object expected");
-                message.security = $root.Qot_Common.Security.fromObject(object.security);
-            }
-            if (object.itemList) {
-                if (!Array.isArray(object.itemList))
-                    throw TypeError(".Qot_GetPriceReminder.PriceReminder.itemList: array expected");
-                message.itemList = [];
-                for (var i = 0; i < object.itemList.length; ++i) {
-                    if (typeof object.itemList[i] !== "object")
-                        throw TypeError(".Qot_GetPriceReminder.PriceReminder.itemList: object expected");
-                    message.itemList[i] = $root.Qot_GetPriceReminder.PriceReminderItem.fromObject(object.itemList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a PriceReminder message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @static
-         * @param {Qot_GetPriceReminder.PriceReminder} message PriceReminder
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        PriceReminder.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.itemList = [];
-            if (options.defaults)
-                object.security = null;
-            if (message.security != null && message.hasOwnProperty("security"))
-                object.security = $root.Qot_Common.Security.toObject(message.security, options);
-            if (message.itemList && message.itemList.length) {
-                object.itemList = [];
-                for (var j = 0; j < message.itemList.length; ++j)
-                    object.itemList[j] = $root.Qot_GetPriceReminder.PriceReminderItem.toObject(message.itemList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this PriceReminder to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.PriceReminder
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        PriceReminder.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return PriceReminder;
-    })();
-
-    Qot_GetPriceReminder.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof Qot_GetPriceReminder
-         * @interface IC2S
-         * @property {Qot_Common.ISecurity|null} [security] C2S security
-         * @property {number|null} [market] C2S market
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {Qot_GetPriceReminder.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S security.
-         * @member {Qot_Common.ISecurity|null|undefined} security
-         * @memberof Qot_GetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.security = null;
-
-        /**
-         * C2S market.
-         * @member {number} market
-         * @memberof Qot_GetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.market = 0;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Qot_GetPriceReminder.IC2S=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link Qot_GetPriceReminder.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Qot_GetPriceReminder.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.security != null && message.hasOwnProperty("security"))
-                $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.market != null && message.hasOwnProperty("market"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.market);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Qot_GetPriceReminder.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.market = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.security != null && message.hasOwnProperty("security")) {
-                var error = $root.Qot_Common.Security.verify(message.security);
-                if (error)
-                    return "security." + error;
-            }
-            if (message.market != null && message.hasOwnProperty("market"))
-                if (!$util.isInteger(message.market))
-                    return "market: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.C2S)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.C2S();
-            if (object.security != null) {
-                if (typeof object.security !== "object")
-                    throw TypeError(".Qot_GetPriceReminder.C2S.security: object expected");
-                message.security = $root.Qot_Common.Security.fromObject(object.security);
-            }
-            if (object.market != null)
-                message.market = object.market | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.C2S
-         * @static
-         * @param {Qot_GetPriceReminder.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.security = null;
-                object.market = 0;
-            }
-            if (message.security != null && message.hasOwnProperty("security"))
-                object.security = $root.Qot_Common.Security.toObject(message.security, options);
-            if (message.market != null && message.hasOwnProperty("market"))
-                object.market = message.market;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    Qot_GetPriceReminder.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_GetPriceReminder
-         * @interface IS2C
-         * @property {Array.<Qot_GetPriceReminder.IPriceReminder>|null} [priceReminderList] S2C priceReminderList
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_GetPriceReminder.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            this.priceReminderList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C priceReminderList.
-         * @member {Array.<Qot_GetPriceReminder.IPriceReminder>} priceReminderList
-         * @memberof Qot_GetPriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.priceReminderList = $util.emptyArray;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Qot_GetPriceReminder.IS2C=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_GetPriceReminder.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Qot_GetPriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.priceReminderList != null && message.priceReminderList.length)
-                for (var i = 0; i < message.priceReminderList.length; ++i)
-                    $root.Qot_GetPriceReminder.PriceReminder.encode(message.priceReminderList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Qot_GetPriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.priceReminderList && message.priceReminderList.length))
-                        message.priceReminderList = [];
-                    message.priceReminderList.push($root.Qot_GetPriceReminder.PriceReminder.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.priceReminderList != null && message.hasOwnProperty("priceReminderList")) {
-                if (!Array.isArray(message.priceReminderList))
-                    return "priceReminderList: array expected";
-                for (var i = 0; i < message.priceReminderList.length; ++i) {
-                    var error = $root.Qot_GetPriceReminder.PriceReminder.verify(message.priceReminderList[i]);
-                    if (error)
-                        return "priceReminderList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.S2C)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.S2C();
-            if (object.priceReminderList) {
-                if (!Array.isArray(object.priceReminderList))
-                    throw TypeError(".Qot_GetPriceReminder.S2C.priceReminderList: array expected");
-                message.priceReminderList = [];
-                for (var i = 0; i < object.priceReminderList.length; ++i) {
-                    if (typeof object.priceReminderList[i] !== "object")
-                        throw TypeError(".Qot_GetPriceReminder.S2C.priceReminderList: object expected");
-                    message.priceReminderList[i] = $root.Qot_GetPriceReminder.PriceReminder.fromObject(object.priceReminderList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.S2C
-         * @static
-         * @param {Qot_GetPriceReminder.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.priceReminderList = [];
-            if (message.priceReminderList && message.priceReminderList.length) {
-                object.priceReminderList = [];
-                for (var j = 0; j < message.priceReminderList.length; ++j)
-                    object.priceReminderList[j] = $root.Qot_GetPriceReminder.PriceReminder.toObject(message.priceReminderList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_GetPriceReminder.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof Qot_GetPriceReminder
-         * @interface IRequest
-         * @property {Qot_GetPriceReminder.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {Qot_GetPriceReminder.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {Qot_GetPriceReminder.IC2S} c2s
-         * @memberof Qot_GetPriceReminder.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Qot_GetPriceReminder.IRequest=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link Qot_GetPriceReminder.Request.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Qot_GetPriceReminder.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_GetPriceReminder.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Qot_GetPriceReminder.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.Qot_GetPriceReminder.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_GetPriceReminder.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.Request)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".Qot_GetPriceReminder.Request.c2s: object expected");
-                message.c2s = $root.Qot_GetPriceReminder.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.Request
-         * @static
-         * @param {Qot_GetPriceReminder.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.Qot_GetPriceReminder.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    Qot_GetPriceReminder.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_GetPriceReminder
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_GetPriceReminder.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_GetPriceReminder
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_GetPriceReminder.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_GetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_GetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_GetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_GetPriceReminder.IS2C|null|undefined} s2c
-         * @memberof Qot_GetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Qot_GetPriceReminder.IResponse=} [properties] Properties to set
-         * @returns {Qot_GetPriceReminder.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_GetPriceReminder.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Qot_GetPriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_GetPriceReminder.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_GetPriceReminder.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Qot_GetPriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetPriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetPriceReminder.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_GetPriceReminder.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetPriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_GetPriceReminder.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetPriceReminder.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetPriceReminder.Response)
-                return object;
-            var message = new $root.Qot_GetPriceReminder.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_GetPriceReminder.Response.s2c: object expected");
-                message.s2c = $root.Qot_GetPriceReminder.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetPriceReminder.Response
-         * @static
-         * @param {Qot_GetPriceReminder.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_GetPriceReminder.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_GetPriceReminder.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_GetPriceReminder;
-})();
-
 $root.Qot_GetReference = (function() {
 
     /**
@@ -40649,13 +35556,11 @@ $root.Qot_GetReference = (function() {
      * @enum {string}
      * @property {number} ReferenceType_Unknow=0 ReferenceType_Unknow value
      * @property {number} ReferenceType_Warrant=1 ReferenceType_Warrant value
-     * @property {number} ReferenceType_Future=2 ReferenceType_Future value
      */
     Qot_GetReference.ReferenceType = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "ReferenceType_Unknow"] = 0;
         values[valuesById[1] = "ReferenceType_Warrant"] = 1;
-        values[valuesById[2] = "ReferenceType_Future"] = 2;
         return values;
     })();
 
@@ -44342,7 +39247,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @property {number|null} [upperStrikePrice] WarrantSnapshotExData upperStrikePrice
          * @property {number|null} [lowerStrikePrice] WarrantSnapshotExData lowerStrikePrice
          * @property {number|null} [inLinePriceStatus] WarrantSnapshotExData inLinePriceStatus
-         * @property {string|null} [issuerCode] WarrantSnapshotExData issuerCode
          */
 
         /**
@@ -44553,14 +39457,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
         WarrantSnapshotExData.prototype.inLinePriceStatus = 0;
 
         /**
-         * WarrantSnapshotExData issuerCode.
-         * @member {string} issuerCode
-         * @memberof Qot_GetSecuritySnapshot.WarrantSnapshotExData
-         * @instance
-         */
-        WarrantSnapshotExData.prototype.issuerCode = "";
-
-        /**
          * Creates a new WarrantSnapshotExData instance using the specified properties.
          * @function create
          * @memberof Qot_GetSecuritySnapshot.WarrantSnapshotExData
@@ -44619,8 +39515,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 writer.uint32(/* id 23, wireType 1 =*/185).double(message.lowerStrikePrice);
             if (message.inLinePriceStatus != null && message.hasOwnProperty("inLinePriceStatus"))
                 writer.uint32(/* id 24, wireType 0 =*/192).int32(message.inLinePriceStatus);
-            if (message.issuerCode != null && message.hasOwnProperty("issuerCode"))
-                writer.uint32(/* id 25, wireType 2 =*/202).string(message.issuerCode);
             return writer;
         };
 
@@ -44726,9 +39620,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     break;
                 case 24:
                     message.inLinePriceStatus = reader.int32();
-                    break;
-                case 25:
-                    message.issuerCode = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -44853,9 +39744,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
             if (message.inLinePriceStatus != null && message.hasOwnProperty("inLinePriceStatus"))
                 if (!$util.isInteger(message.inLinePriceStatus))
                     return "inLinePriceStatus: integer expected";
-            if (message.issuerCode != null && message.hasOwnProperty("issuerCode"))
-                if (!$util.isString(message.issuerCode))
-                    return "issuerCode: string expected";
             return null;
         };
 
@@ -44936,8 +39824,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 message.lowerStrikePrice = Number(object.lowerStrikePrice);
             if (object.inLinePriceStatus != null)
                 message.inLinePriceStatus = object.inLinePriceStatus | 0;
-            if (object.issuerCode != null)
-                message.issuerCode = String(object.issuerCode);
             return message;
         };
 
@@ -44987,7 +39873,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.upperStrikePrice = 0;
                 object.lowerStrikePrice = 0;
                 object.inLinePriceStatus = 0;
-                object.issuerCode = "";
             }
             if (message.conversionRate != null && message.hasOwnProperty("conversionRate"))
                 object.conversionRate = options.json && !isFinite(message.conversionRate) ? String(message.conversionRate) : message.conversionRate;
@@ -45043,8 +39928,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.lowerStrikePrice = options.json && !isFinite(message.lowerStrikePrice) ? String(message.lowerStrikePrice) : message.lowerStrikePrice;
             if (message.inLinePriceStatus != null && message.hasOwnProperty("inLinePriceStatus"))
                 object.inLinePriceStatus = message.inLinePriceStatus;
-            if (message.issuerCode != null && message.hasOwnProperty("issuerCode"))
-                object.issuerCode = message.issuerCode;
             return object;
         };
 
@@ -46160,304 +41043,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
         return PlateSnapshotExData;
     })();
 
-    Qot_GetSecuritySnapshot.FutureSnapshotExData = (function() {
-
-        /**
-         * Properties of a FutureSnapshotExData.
-         * @memberof Qot_GetSecuritySnapshot
-         * @interface IFutureSnapshotExData
-         * @property {number} lastSettlePrice FutureSnapshotExData lastSettlePrice
-         * @property {number} position FutureSnapshotExData position
-         * @property {number} positionChange FutureSnapshotExData positionChange
-         * @property {string} lastTradeTime FutureSnapshotExData lastTradeTime
-         * @property {number|null} [lastTradeTimestamp] FutureSnapshotExData lastTradeTimestamp
-         * @property {boolean} isMainContract FutureSnapshotExData isMainContract
-         */
-
-        /**
-         * Constructs a new FutureSnapshotExData.
-         * @memberof Qot_GetSecuritySnapshot
-         * @classdesc Represents a FutureSnapshotExData.
-         * @implements IFutureSnapshotExData
-         * @constructor
-         * @param {Qot_GetSecuritySnapshot.IFutureSnapshotExData=} [properties] Properties to set
-         */
-        function FutureSnapshotExData(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * FutureSnapshotExData lastSettlePrice.
-         * @member {number} lastSettlePrice
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.lastSettlePrice = 0;
-
-        /**
-         * FutureSnapshotExData position.
-         * @member {number} position
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.position = 0;
-
-        /**
-         * FutureSnapshotExData positionChange.
-         * @member {number} positionChange
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.positionChange = 0;
-
-        /**
-         * FutureSnapshotExData lastTradeTime.
-         * @member {string} lastTradeTime
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.lastTradeTime = "";
-
-        /**
-         * FutureSnapshotExData lastTradeTimestamp.
-         * @member {number} lastTradeTimestamp
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.lastTradeTimestamp = 0;
-
-        /**
-         * FutureSnapshotExData isMainContract.
-         * @member {boolean} isMainContract
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         */
-        FutureSnapshotExData.prototype.isMainContract = false;
-
-        /**
-         * Creates a new FutureSnapshotExData instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Qot_GetSecuritySnapshot.IFutureSnapshotExData=} [properties] Properties to set
-         * @returns {Qot_GetSecuritySnapshot.FutureSnapshotExData} FutureSnapshotExData instance
-         */
-        FutureSnapshotExData.create = function create(properties) {
-            return new FutureSnapshotExData(properties);
-        };
-
-        /**
-         * Encodes the specified FutureSnapshotExData message. Does not implicitly {@link Qot_GetSecuritySnapshot.FutureSnapshotExData.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Qot_GetSecuritySnapshot.IFutureSnapshotExData} message FutureSnapshotExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureSnapshotExData.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 1 =*/9).double(message.lastSettlePrice);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.position);
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.positionChange);
-            writer.uint32(/* id 4, wireType 2 =*/34).string(message.lastTradeTime);
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                writer.uint32(/* id 5, wireType 1 =*/41).double(message.lastTradeTimestamp);
-            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.isMainContract);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified FutureSnapshotExData message, length delimited. Does not implicitly {@link Qot_GetSecuritySnapshot.FutureSnapshotExData.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Qot_GetSecuritySnapshot.IFutureSnapshotExData} message FutureSnapshotExData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        FutureSnapshotExData.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a FutureSnapshotExData message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetSecuritySnapshot.FutureSnapshotExData} FutureSnapshotExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureSnapshotExData.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetSecuritySnapshot.FutureSnapshotExData();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.lastSettlePrice = reader.double();
-                    break;
-                case 2:
-                    message.position = reader.int32();
-                    break;
-                case 3:
-                    message.positionChange = reader.int32();
-                    break;
-                case 4:
-                    message.lastTradeTime = reader.string();
-                    break;
-                case 5:
-                    message.lastTradeTimestamp = reader.double();
-                    break;
-                case 6:
-                    message.isMainContract = reader.bool();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("lastSettlePrice"))
-                throw $util.ProtocolError("missing required 'lastSettlePrice'", { instance: message });
-            if (!message.hasOwnProperty("position"))
-                throw $util.ProtocolError("missing required 'position'", { instance: message });
-            if (!message.hasOwnProperty("positionChange"))
-                throw $util.ProtocolError("missing required 'positionChange'", { instance: message });
-            if (!message.hasOwnProperty("lastTradeTime"))
-                throw $util.ProtocolError("missing required 'lastTradeTime'", { instance: message });
-            if (!message.hasOwnProperty("isMainContract"))
-                throw $util.ProtocolError("missing required 'isMainContract'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a FutureSnapshotExData message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetSecuritySnapshot.FutureSnapshotExData} FutureSnapshotExData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        FutureSnapshotExData.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a FutureSnapshotExData message.
-         * @function verify
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        FutureSnapshotExData.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (typeof message.lastSettlePrice !== "number")
-                return "lastSettlePrice: number expected";
-            if (!$util.isInteger(message.position))
-                return "position: integer expected";
-            if (!$util.isInteger(message.positionChange))
-                return "positionChange: integer expected";
-            if (!$util.isString(message.lastTradeTime))
-                return "lastTradeTime: string expected";
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                if (typeof message.lastTradeTimestamp !== "number")
-                    return "lastTradeTimestamp: number expected";
-            if (typeof message.isMainContract !== "boolean")
-                return "isMainContract: boolean expected";
-            return null;
-        };
-
-        /**
-         * Creates a FutureSnapshotExData message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetSecuritySnapshot.FutureSnapshotExData} FutureSnapshotExData
-         */
-        FutureSnapshotExData.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetSecuritySnapshot.FutureSnapshotExData)
-                return object;
-            var message = new $root.Qot_GetSecuritySnapshot.FutureSnapshotExData();
-            if (object.lastSettlePrice != null)
-                message.lastSettlePrice = Number(object.lastSettlePrice);
-            if (object.position != null)
-                message.position = object.position | 0;
-            if (object.positionChange != null)
-                message.positionChange = object.positionChange | 0;
-            if (object.lastTradeTime != null)
-                message.lastTradeTime = String(object.lastTradeTime);
-            if (object.lastTradeTimestamp != null)
-                message.lastTradeTimestamp = Number(object.lastTradeTimestamp);
-            if (object.isMainContract != null)
-                message.isMainContract = Boolean(object.isMainContract);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a FutureSnapshotExData message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @static
-         * @param {Qot_GetSecuritySnapshot.FutureSnapshotExData} message FutureSnapshotExData
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        FutureSnapshotExData.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.lastSettlePrice = 0;
-                object.position = 0;
-                object.positionChange = 0;
-                object.lastTradeTime = "";
-                object.lastTradeTimestamp = 0;
-                object.isMainContract = false;
-            }
-            if (message.lastSettlePrice != null && message.hasOwnProperty("lastSettlePrice"))
-                object.lastSettlePrice = options.json && !isFinite(message.lastSettlePrice) ? String(message.lastSettlePrice) : message.lastSettlePrice;
-            if (message.position != null && message.hasOwnProperty("position"))
-                object.position = message.position;
-            if (message.positionChange != null && message.hasOwnProperty("positionChange"))
-                object.positionChange = message.positionChange;
-            if (message.lastTradeTime != null && message.hasOwnProperty("lastTradeTime"))
-                object.lastTradeTime = message.lastTradeTime;
-            if (message.lastTradeTimestamp != null && message.hasOwnProperty("lastTradeTimestamp"))
-                object.lastTradeTimestamp = options.json && !isFinite(message.lastTradeTimestamp) ? String(message.lastTradeTimestamp) : message.lastTradeTimestamp;
-            if (message.isMainContract != null && message.hasOwnProperty("isMainContract"))
-                object.isMainContract = message.isMainContract;
-            return object;
-        };
-
-        /**
-         * Converts this FutureSnapshotExData to JSON.
-         * @function toJSON
-         * @memberof Qot_GetSecuritySnapshot.FutureSnapshotExData
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        FutureSnapshotExData.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return FutureSnapshotExData;
-    })();
-
     Qot_GetSecuritySnapshot.SnapshotBasicData = (function() {
 
         /**
@@ -46503,7 +41088,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @property {Qot_Common.IPreAfterMarketData|null} [preMarket] SnapshotBasicData preMarket
          * @property {Qot_Common.IPreAfterMarketData|null} [afterMarket] SnapshotBasicData afterMarket
          * @property {number|null} [secStatus] SnapshotBasicData secStatus
-         * @property {number|null} [closePrice5Minute] SnapshotBasicData closePrice5Minute
          */
 
         /**
@@ -46834,14 +41418,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
         SnapshotBasicData.prototype.secStatus = 0;
 
         /**
-         * SnapshotBasicData closePrice5Minute.
-         * @member {number} closePrice5Minute
-         * @memberof Qot_GetSecuritySnapshot.SnapshotBasicData
-         * @instance
-         */
-        SnapshotBasicData.prototype.closePrice5Minute = 0;
-
-        /**
          * Creates a new SnapshotBasicData instance using the specified properties.
          * @function create
          * @memberof Qot_GetSecuritySnapshot.SnapshotBasicData
@@ -46928,8 +41504,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 $root.Qot_Common.PreAfterMarketData.encode(message.afterMarket, writer.uint32(/* id 38, wireType 2 =*/306).fork()).ldelim();
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 writer.uint32(/* id 39, wireType 0 =*/312).int32(message.secStatus);
-            if (message.closePrice5Minute != null && message.hasOwnProperty("closePrice5Minute"))
-                writer.uint32(/* id 40, wireType 1 =*/321).double(message.closePrice5Minute);
             return writer;
         };
 
@@ -47080,9 +41654,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     break;
                 case 39:
                     message.secStatus = reader.int32();
-                    break;
-                case 40:
-                    message.closePrice5Minute = reader.double();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -47258,9 +41829,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 if (!$util.isInteger(message.secStatus))
                     return "secStatus: integer expected";
-            if (message.closePrice5Minute != null && message.hasOwnProperty("closePrice5Minute"))
-                if (typeof message.closePrice5Minute !== "number")
-                    return "closePrice5Minute: number expected";
             return null;
         };
 
@@ -47391,8 +41959,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
             }
             if (object.secStatus != null)
                 message.secStatus = object.secStatus | 0;
-            if (object.closePrice5Minute != null)
-                message.closePrice5Minute = Number(object.closePrice5Minute);
             return message;
         };
 
@@ -47465,7 +42031,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.preMarket = null;
                 object.afterMarket = null;
                 object.secStatus = 0;
-                object.closePrice5Minute = 0;
             }
             if (message.security != null && message.hasOwnProperty("security"))
                 object.security = $root.Qot_Common.Security.toObject(message.security, options);
@@ -47557,8 +42122,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.afterMarket = $root.Qot_Common.PreAfterMarketData.toObject(message.afterMarket, options);
             if (message.secStatus != null && message.hasOwnProperty("secStatus"))
                 object.secStatus = message.secStatus;
-            if (message.closePrice5Minute != null && message.hasOwnProperty("closePrice5Minute"))
-                object.closePrice5Minute = options.json && !isFinite(message.closePrice5Minute) ? String(message.closePrice5Minute) : message.closePrice5Minute;
             return object;
         };
 
@@ -47588,7 +42151,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @property {Qot_GetSecuritySnapshot.IOptionSnapshotExData|null} [optionExData] Snapshot optionExData
          * @property {Qot_GetSecuritySnapshot.IIndexSnapshotExData|null} [indexExData] Snapshot indexExData
          * @property {Qot_GetSecuritySnapshot.IPlateSnapshotExData|null} [plateExData] Snapshot plateExData
-         * @property {Qot_GetSecuritySnapshot.IFutureSnapshotExData|null} [futureExData] Snapshot futureExData
          */
 
         /**
@@ -47655,14 +42217,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
         Snapshot.prototype.plateExData = null;
 
         /**
-         * Snapshot futureExData.
-         * @member {Qot_GetSecuritySnapshot.IFutureSnapshotExData|null|undefined} futureExData
-         * @memberof Qot_GetSecuritySnapshot.Snapshot
-         * @instance
-         */
-        Snapshot.prototype.futureExData = null;
-
-        /**
          * Creates a new Snapshot instance using the specified properties.
          * @function create
          * @memberof Qot_GetSecuritySnapshot.Snapshot
@@ -47697,8 +42251,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 $root.Qot_GetSecuritySnapshot.IndexSnapshotExData.encode(message.indexExData, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.plateExData != null && message.hasOwnProperty("plateExData"))
                 $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.encode(message.plateExData, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.encode(message.futureExData, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             return writer;
         };
 
@@ -47750,9 +42302,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     break;
                 case 6:
                     message.plateExData = $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.decode(reader, reader.uint32());
-                    break;
-                case 7:
-                    message.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -47821,11 +42370,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 if (error)
                     return "plateExData." + error;
             }
-            if (message.futureExData != null && message.hasOwnProperty("futureExData")) {
-                var error = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.verify(message.futureExData);
-                if (error)
-                    return "futureExData." + error;
-            }
             return null;
         };
 
@@ -47871,11 +42415,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     throw TypeError(".Qot_GetSecuritySnapshot.Snapshot.plateExData: object expected");
                 message.plateExData = $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.fromObject(object.plateExData);
             }
-            if (object.futureExData != null) {
-                if (typeof object.futureExData !== "object")
-                    throw TypeError(".Qot_GetSecuritySnapshot.Snapshot.futureExData: object expected");
-                message.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.fromObject(object.futureExData);
-            }
             return message;
         };
 
@@ -47899,7 +42438,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.optionExData = null;
                 object.indexExData = null;
                 object.plateExData = null;
-                object.futureExData = null;
             }
             if (message.basic != null && message.hasOwnProperty("basic"))
                 object.basic = $root.Qot_GetSecuritySnapshot.SnapshotBasicData.toObject(message.basic, options);
@@ -47913,8 +42451,6 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.indexExData = $root.Qot_GetSecuritySnapshot.IndexSnapshotExData.toObject(message.indexExData, options);
             if (message.plateExData != null && message.hasOwnProperty("plateExData"))
                 object.plateExData = $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.toObject(message.plateExData, options);
-            if (message.futureExData != null && message.hasOwnProperty("futureExData"))
-                object.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.toObject(message.futureExData, options);
             return object;
         };
 
@@ -53852,1093 +48388,6 @@ $root.Qot_GetTradeDate = (function() {
     return Qot_GetTradeDate;
 })();
 
-$root.Qot_GetUserSecurityGroup = (function() {
-
-    /**
-     * Namespace Qot_GetUserSecurityGroup.
-     * @exports Qot_GetUserSecurityGroup
-     * @namespace
-     */
-    var Qot_GetUserSecurityGroup = {};
-
-    /**
-     * GroupType enum.
-     * @name Qot_GetUserSecurityGroup.GroupType
-     * @enum {string}
-     * @property {number} GroupType_Unknown=0 GroupType_Unknown value
-     * @property {number} GroupType_Custom=1 GroupType_Custom value
-     * @property {number} GroupType_System=2 GroupType_System value
-     * @property {number} GroupType_All=3 GroupType_All value
-     */
-    Qot_GetUserSecurityGroup.GroupType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "GroupType_Unknown"] = 0;
-        values[valuesById[1] = "GroupType_Custom"] = 1;
-        values[valuesById[2] = "GroupType_System"] = 2;
-        values[valuesById[3] = "GroupType_All"] = 3;
-        return values;
-    })();
-
-    Qot_GetUserSecurityGroup.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof Qot_GetUserSecurityGroup
-         * @interface IC2S
-         * @property {number} groupType C2S groupType
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof Qot_GetUserSecurityGroup
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {Qot_GetUserSecurityGroup.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S groupType.
-         * @member {number} groupType
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @instance
-         */
-        C2S.prototype.groupType = 0;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IC2S=} [properties] Properties to set
-         * @returns {Qot_GetUserSecurityGroup.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link Qot_GetUserSecurityGroup.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.groupType);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_GetUserSecurityGroup.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetUserSecurityGroup.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetUserSecurityGroup.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.groupType = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("groupType"))
-                throw $util.ProtocolError("missing required 'groupType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetUserSecurityGroup.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.groupType))
-                return "groupType: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetUserSecurityGroup.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetUserSecurityGroup.C2S)
-                return object;
-            var message = new $root.Qot_GetUserSecurityGroup.C2S();
-            if (object.groupType != null)
-                message.groupType = object.groupType | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @static
-         * @param {Qot_GetUserSecurityGroup.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.groupType = 0;
-            if (message.groupType != null && message.hasOwnProperty("groupType"))
-                object.groupType = message.groupType;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof Qot_GetUserSecurityGroup.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    Qot_GetUserSecurityGroup.GroupData = (function() {
-
-        /**
-         * Properties of a GroupData.
-         * @memberof Qot_GetUserSecurityGroup
-         * @interface IGroupData
-         * @property {string} groupName GroupData groupName
-         * @property {number} groupType GroupData groupType
-         */
-
-        /**
-         * Constructs a new GroupData.
-         * @memberof Qot_GetUserSecurityGroup
-         * @classdesc Represents a GroupData.
-         * @implements IGroupData
-         * @constructor
-         * @param {Qot_GetUserSecurityGroup.IGroupData=} [properties] Properties to set
-         */
-        function GroupData(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * GroupData groupName.
-         * @member {string} groupName
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @instance
-         */
-        GroupData.prototype.groupName = "";
-
-        /**
-         * GroupData groupType.
-         * @member {number} groupType
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @instance
-         */
-        GroupData.prototype.groupType = 0;
-
-        /**
-         * Creates a new GroupData instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IGroupData=} [properties] Properties to set
-         * @returns {Qot_GetUserSecurityGroup.GroupData} GroupData instance
-         */
-        GroupData.create = function create(properties) {
-            return new GroupData(properties);
-        };
-
-        /**
-         * Encodes the specified GroupData message. Does not implicitly {@link Qot_GetUserSecurityGroup.GroupData.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IGroupData} message GroupData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        GroupData.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.groupName);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.groupType);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified GroupData message, length delimited. Does not implicitly {@link Qot_GetUserSecurityGroup.GroupData.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IGroupData} message GroupData message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        GroupData.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a GroupData message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetUserSecurityGroup.GroupData} GroupData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        GroupData.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetUserSecurityGroup.GroupData();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.groupName = reader.string();
-                    break;
-                case 2:
-                    message.groupType = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("groupName"))
-                throw $util.ProtocolError("missing required 'groupName'", { instance: message });
-            if (!message.hasOwnProperty("groupType"))
-                throw $util.ProtocolError("missing required 'groupType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a GroupData message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetUserSecurityGroup.GroupData} GroupData
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        GroupData.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a GroupData message.
-         * @function verify
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        GroupData.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.groupName))
-                return "groupName: string expected";
-            if (!$util.isInteger(message.groupType))
-                return "groupType: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a GroupData message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetUserSecurityGroup.GroupData} GroupData
-         */
-        GroupData.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetUserSecurityGroup.GroupData)
-                return object;
-            var message = new $root.Qot_GetUserSecurityGroup.GroupData();
-            if (object.groupName != null)
-                message.groupName = String(object.groupName);
-            if (object.groupType != null)
-                message.groupType = object.groupType | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a GroupData message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @static
-         * @param {Qot_GetUserSecurityGroup.GroupData} message GroupData
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        GroupData.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.groupName = "";
-                object.groupType = 0;
-            }
-            if (message.groupName != null && message.hasOwnProperty("groupName"))
-                object.groupName = message.groupName;
-            if (message.groupType != null && message.hasOwnProperty("groupType"))
-                object.groupType = message.groupType;
-            return object;
-        };
-
-        /**
-         * Converts this GroupData to JSON.
-         * @function toJSON
-         * @memberof Qot_GetUserSecurityGroup.GroupData
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        GroupData.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return GroupData;
-    })();
-
-    Qot_GetUserSecurityGroup.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_GetUserSecurityGroup
-         * @interface IS2C
-         * @property {Array.<Qot_GetUserSecurityGroup.IGroupData>|null} [groupList] S2C groupList
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_GetUserSecurityGroup
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_GetUserSecurityGroup.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            this.groupList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C groupList.
-         * @member {Array.<Qot_GetUserSecurityGroup.IGroupData>} groupList
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @instance
-         */
-        S2C.prototype.groupList = $util.emptyArray;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IS2C=} [properties] Properties to set
-         * @returns {Qot_GetUserSecurityGroup.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_GetUserSecurityGroup.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.groupList != null && message.groupList.length)
-                for (var i = 0; i < message.groupList.length; ++i)
-                    $root.Qot_GetUserSecurityGroup.GroupData.encode(message.groupList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_GetUserSecurityGroup.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetUserSecurityGroup.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetUserSecurityGroup.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.groupList && message.groupList.length))
-                        message.groupList = [];
-                    message.groupList.push($root.Qot_GetUserSecurityGroup.GroupData.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetUserSecurityGroup.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.groupList != null && message.hasOwnProperty("groupList")) {
-                if (!Array.isArray(message.groupList))
-                    return "groupList: array expected";
-                for (var i = 0; i < message.groupList.length; ++i) {
-                    var error = $root.Qot_GetUserSecurityGroup.GroupData.verify(message.groupList[i]);
-                    if (error)
-                        return "groupList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetUserSecurityGroup.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetUserSecurityGroup.S2C)
-                return object;
-            var message = new $root.Qot_GetUserSecurityGroup.S2C();
-            if (object.groupList) {
-                if (!Array.isArray(object.groupList))
-                    throw TypeError(".Qot_GetUserSecurityGroup.S2C.groupList: array expected");
-                message.groupList = [];
-                for (var i = 0; i < object.groupList.length; ++i) {
-                    if (typeof object.groupList[i] !== "object")
-                        throw TypeError(".Qot_GetUserSecurityGroup.S2C.groupList: object expected");
-                    message.groupList[i] = $root.Qot_GetUserSecurityGroup.GroupData.fromObject(object.groupList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @static
-         * @param {Qot_GetUserSecurityGroup.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.groupList = [];
-            if (message.groupList && message.groupList.length) {
-                object.groupList = [];
-                for (var j = 0; j < message.groupList.length; ++j)
-                    object.groupList[j] = $root.Qot_GetUserSecurityGroup.GroupData.toObject(message.groupList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_GetUserSecurityGroup.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_GetUserSecurityGroup.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof Qot_GetUserSecurityGroup
-         * @interface IRequest
-         * @property {Qot_GetUserSecurityGroup.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof Qot_GetUserSecurityGroup
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {Qot_GetUserSecurityGroup.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {Qot_GetUserSecurityGroup.IC2S} c2s
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IRequest=} [properties] Properties to set
-         * @returns {Qot_GetUserSecurityGroup.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link Qot_GetUserSecurityGroup.Request.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_GetUserSecurityGroup.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_GetUserSecurityGroup.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetUserSecurityGroup.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetUserSecurityGroup.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.Qot_GetUserSecurityGroup.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetUserSecurityGroup.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_GetUserSecurityGroup.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetUserSecurityGroup.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetUserSecurityGroup.Request)
-                return object;
-            var message = new $root.Qot_GetUserSecurityGroup.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".Qot_GetUserSecurityGroup.Request.c2s: object expected");
-                message.c2s = $root.Qot_GetUserSecurityGroup.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @static
-         * @param {Qot_GetUserSecurityGroup.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.Qot_GetUserSecurityGroup.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof Qot_GetUserSecurityGroup.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    Qot_GetUserSecurityGroup.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_GetUserSecurityGroup
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_GetUserSecurityGroup.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_GetUserSecurityGroup
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_GetUserSecurityGroup.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_GetUserSecurityGroup.IS2C|null|undefined} s2c
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IResponse=} [properties] Properties to set
-         * @returns {Qot_GetUserSecurityGroup.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_GetUserSecurityGroup.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_GetUserSecurityGroup.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_GetUserSecurityGroup.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Qot_GetUserSecurityGroup.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_GetUserSecurityGroup.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetUserSecurityGroup.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_GetUserSecurityGroup.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_GetUserSecurityGroup.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_GetUserSecurityGroup.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_GetUserSecurityGroup.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_GetUserSecurityGroup.Response)
-                return object;
-            var message = new $root.Qot_GetUserSecurityGroup.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_GetUserSecurityGroup.Response.s2c: object expected");
-                message.s2c = $root.Qot_GetUserSecurityGroup.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @static
-         * @param {Qot_GetUserSecurityGroup.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_GetUserSecurityGroup.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_GetUserSecurityGroup.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_GetUserSecurityGroup;
-})();
-
 $root.Qot_GetUserSecurity = (function() {
 
     /**
@@ -58761,14 +52210,12 @@ $root.Qot_ModifyUserSecurity = (function() {
      * @property {number} ModifyUserSecurityOp_Unknown=0 ModifyUserSecurityOp_Unknown value
      * @property {number} ModifyUserSecurityOp_Add=1 ModifyUserSecurityOp_Add value
      * @property {number} ModifyUserSecurityOp_Del=2 ModifyUserSecurityOp_Del value
-     * @property {number} ModifyUserSecurityOp_MoveOut=3 ModifyUserSecurityOp_MoveOut value
      */
     Qot_ModifyUserSecurity.ModifyUserSecurityOp = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "ModifyUserSecurityOp_Unknown"] = 0;
         values[valuesById[1] = "ModifyUserSecurityOp_Add"] = 1;
         values[valuesById[2] = "ModifyUserSecurityOp_Del"] = 2;
-        values[valuesById[3] = "ModifyUserSecurityOp_MoveOut"] = 3;
         return values;
     })();
 
@@ -63732,2169 +57179,6 @@ $root.Qot_RequestRehab = (function() {
     return Qot_RequestRehab;
 })();
 
-$root.Qot_RequestTradeDate = (function() {
-
-    /**
-     * Namespace Qot_RequestTradeDate.
-     * @exports Qot_RequestTradeDate
-     * @namespace
-     */
-    var Qot_RequestTradeDate = {};
-
-    Qot_RequestTradeDate.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof Qot_RequestTradeDate
-         * @interface IC2S
-         * @property {number} market C2S market
-         * @property {string} beginTime C2S beginTime
-         * @property {string} endTime C2S endTime
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof Qot_RequestTradeDate
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {Qot_RequestTradeDate.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S market.
-         * @member {number} market
-         * @memberof Qot_RequestTradeDate.C2S
-         * @instance
-         */
-        C2S.prototype.market = 0;
-
-        /**
-         * C2S beginTime.
-         * @member {string} beginTime
-         * @memberof Qot_RequestTradeDate.C2S
-         * @instance
-         */
-        C2S.prototype.beginTime = "";
-
-        /**
-         * C2S endTime.
-         * @member {string} endTime
-         * @memberof Qot_RequestTradeDate.C2S
-         * @instance
-         */
-        C2S.prototype.endTime = "";
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Qot_RequestTradeDate.IC2S=} [properties] Properties to set
-         * @returns {Qot_RequestTradeDate.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link Qot_RequestTradeDate.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Qot_RequestTradeDate.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.market);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.beginTime);
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.endTime);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_RequestTradeDate.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Qot_RequestTradeDate.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_RequestTradeDate.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_RequestTradeDate.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.market = reader.int32();
-                    break;
-                case 2:
-                    message.beginTime = reader.string();
-                    break;
-                case 3:
-                    message.endTime = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("market"))
-                throw $util.ProtocolError("missing required 'market'", { instance: message });
-            if (!message.hasOwnProperty("beginTime"))
-                throw $util.ProtocolError("missing required 'beginTime'", { instance: message });
-            if (!message.hasOwnProperty("endTime"))
-                throw $util.ProtocolError("missing required 'endTime'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_RequestTradeDate.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.market))
-                return "market: integer expected";
-            if (!$util.isString(message.beginTime))
-                return "beginTime: string expected";
-            if (!$util.isString(message.endTime))
-                return "endTime: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_RequestTradeDate.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_RequestTradeDate.C2S)
-                return object;
-            var message = new $root.Qot_RequestTradeDate.C2S();
-            if (object.market != null)
-                message.market = object.market | 0;
-            if (object.beginTime != null)
-                message.beginTime = String(object.beginTime);
-            if (object.endTime != null)
-                message.endTime = String(object.endTime);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_RequestTradeDate.C2S
-         * @static
-         * @param {Qot_RequestTradeDate.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.market = 0;
-                object.beginTime = "";
-                object.endTime = "";
-            }
-            if (message.market != null && message.hasOwnProperty("market"))
-                object.market = message.market;
-            if (message.beginTime != null && message.hasOwnProperty("beginTime"))
-                object.beginTime = message.beginTime;
-            if (message.endTime != null && message.hasOwnProperty("endTime"))
-                object.endTime = message.endTime;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof Qot_RequestTradeDate.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    Qot_RequestTradeDate.TradeDate = (function() {
-
-        /**
-         * Properties of a TradeDate.
-         * @memberof Qot_RequestTradeDate
-         * @interface ITradeDate
-         * @property {string} time TradeDate time
-         * @property {number|null} [timestamp] TradeDate timestamp
-         * @property {number|null} [tradeDateType] TradeDate tradeDateType
-         */
-
-        /**
-         * Constructs a new TradeDate.
-         * @memberof Qot_RequestTradeDate
-         * @classdesc Represents a TradeDate.
-         * @implements ITradeDate
-         * @constructor
-         * @param {Qot_RequestTradeDate.ITradeDate=} [properties] Properties to set
-         */
-        function TradeDate(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * TradeDate time.
-         * @member {string} time
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @instance
-         */
-        TradeDate.prototype.time = "";
-
-        /**
-         * TradeDate timestamp.
-         * @member {number} timestamp
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @instance
-         */
-        TradeDate.prototype.timestamp = 0;
-
-        /**
-         * TradeDate tradeDateType.
-         * @member {number} tradeDateType
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @instance
-         */
-        TradeDate.prototype.tradeDateType = 0;
-
-        /**
-         * Creates a new TradeDate instance using the specified properties.
-         * @function create
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Qot_RequestTradeDate.ITradeDate=} [properties] Properties to set
-         * @returns {Qot_RequestTradeDate.TradeDate} TradeDate instance
-         */
-        TradeDate.create = function create(properties) {
-            return new TradeDate(properties);
-        };
-
-        /**
-         * Encodes the specified TradeDate message. Does not implicitly {@link Qot_RequestTradeDate.TradeDate.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Qot_RequestTradeDate.ITradeDate} message TradeDate message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        TradeDate.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.time);
-            if (message.timestamp != null && message.hasOwnProperty("timestamp"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.timestamp);
-            if (message.tradeDateType != null && message.hasOwnProperty("tradeDateType"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.tradeDateType);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified TradeDate message, length delimited. Does not implicitly {@link Qot_RequestTradeDate.TradeDate.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Qot_RequestTradeDate.ITradeDate} message TradeDate message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        TradeDate.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a TradeDate message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_RequestTradeDate.TradeDate} TradeDate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        TradeDate.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_RequestTradeDate.TradeDate();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.time = reader.string();
-                    break;
-                case 2:
-                    message.timestamp = reader.double();
-                    break;
-                case 3:
-                    message.tradeDateType = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("time"))
-                throw $util.ProtocolError("missing required 'time'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a TradeDate message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_RequestTradeDate.TradeDate} TradeDate
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        TradeDate.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a TradeDate message.
-         * @function verify
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        TradeDate.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.time))
-                return "time: string expected";
-            if (message.timestamp != null && message.hasOwnProperty("timestamp"))
-                if (typeof message.timestamp !== "number")
-                    return "timestamp: number expected";
-            if (message.tradeDateType != null && message.hasOwnProperty("tradeDateType"))
-                if (!$util.isInteger(message.tradeDateType))
-                    return "tradeDateType: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a TradeDate message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_RequestTradeDate.TradeDate} TradeDate
-         */
-        TradeDate.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_RequestTradeDate.TradeDate)
-                return object;
-            var message = new $root.Qot_RequestTradeDate.TradeDate();
-            if (object.time != null)
-                message.time = String(object.time);
-            if (object.timestamp != null)
-                message.timestamp = Number(object.timestamp);
-            if (object.tradeDateType != null)
-                message.tradeDateType = object.tradeDateType | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a TradeDate message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @static
-         * @param {Qot_RequestTradeDate.TradeDate} message TradeDate
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        TradeDate.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.time = "";
-                object.timestamp = 0;
-                object.tradeDateType = 0;
-            }
-            if (message.time != null && message.hasOwnProperty("time"))
-                object.time = message.time;
-            if (message.timestamp != null && message.hasOwnProperty("timestamp"))
-                object.timestamp = options.json && !isFinite(message.timestamp) ? String(message.timestamp) : message.timestamp;
-            if (message.tradeDateType != null && message.hasOwnProperty("tradeDateType"))
-                object.tradeDateType = message.tradeDateType;
-            return object;
-        };
-
-        /**
-         * Converts this TradeDate to JSON.
-         * @function toJSON
-         * @memberof Qot_RequestTradeDate.TradeDate
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        TradeDate.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return TradeDate;
-    })();
-
-    Qot_RequestTradeDate.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_RequestTradeDate
-         * @interface IS2C
-         * @property {Array.<Qot_RequestTradeDate.ITradeDate>|null} [tradeDateList] S2C tradeDateList
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_RequestTradeDate
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_RequestTradeDate.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            this.tradeDateList = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C tradeDateList.
-         * @member {Array.<Qot_RequestTradeDate.ITradeDate>} tradeDateList
-         * @memberof Qot_RequestTradeDate.S2C
-         * @instance
-         */
-        S2C.prototype.tradeDateList = $util.emptyArray;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Qot_RequestTradeDate.IS2C=} [properties] Properties to set
-         * @returns {Qot_RequestTradeDate.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_RequestTradeDate.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Qot_RequestTradeDate.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.tradeDateList != null && message.tradeDateList.length)
-                for (var i = 0; i < message.tradeDateList.length; ++i)
-                    $root.Qot_RequestTradeDate.TradeDate.encode(message.tradeDateList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_RequestTradeDate.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Qot_RequestTradeDate.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_RequestTradeDate.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_RequestTradeDate.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.tradeDateList && message.tradeDateList.length))
-                        message.tradeDateList = [];
-                    message.tradeDateList.push($root.Qot_RequestTradeDate.TradeDate.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_RequestTradeDate.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.tradeDateList != null && message.hasOwnProperty("tradeDateList")) {
-                if (!Array.isArray(message.tradeDateList))
-                    return "tradeDateList: array expected";
-                for (var i = 0; i < message.tradeDateList.length; ++i) {
-                    var error = $root.Qot_RequestTradeDate.TradeDate.verify(message.tradeDateList[i]);
-                    if (error)
-                        return "tradeDateList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_RequestTradeDate.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_RequestTradeDate.S2C)
-                return object;
-            var message = new $root.Qot_RequestTradeDate.S2C();
-            if (object.tradeDateList) {
-                if (!Array.isArray(object.tradeDateList))
-                    throw TypeError(".Qot_RequestTradeDate.S2C.tradeDateList: array expected");
-                message.tradeDateList = [];
-                for (var i = 0; i < object.tradeDateList.length; ++i) {
-                    if (typeof object.tradeDateList[i] !== "object")
-                        throw TypeError(".Qot_RequestTradeDate.S2C.tradeDateList: object expected");
-                    message.tradeDateList[i] = $root.Qot_RequestTradeDate.TradeDate.fromObject(object.tradeDateList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_RequestTradeDate.S2C
-         * @static
-         * @param {Qot_RequestTradeDate.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.tradeDateList = [];
-            if (message.tradeDateList && message.tradeDateList.length) {
-                object.tradeDateList = [];
-                for (var j = 0; j < message.tradeDateList.length; ++j)
-                    object.tradeDateList[j] = $root.Qot_RequestTradeDate.TradeDate.toObject(message.tradeDateList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_RequestTradeDate.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_RequestTradeDate.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof Qot_RequestTradeDate
-         * @interface IRequest
-         * @property {Qot_RequestTradeDate.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof Qot_RequestTradeDate
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {Qot_RequestTradeDate.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {Qot_RequestTradeDate.IC2S} c2s
-         * @memberof Qot_RequestTradeDate.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Qot_RequestTradeDate.IRequest=} [properties] Properties to set
-         * @returns {Qot_RequestTradeDate.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link Qot_RequestTradeDate.Request.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Qot_RequestTradeDate.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_RequestTradeDate.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_RequestTradeDate.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Qot_RequestTradeDate.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_RequestTradeDate.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_RequestTradeDate.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.Qot_RequestTradeDate.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_RequestTradeDate.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_RequestTradeDate.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_RequestTradeDate.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_RequestTradeDate.Request)
-                return object;
-            var message = new $root.Qot_RequestTradeDate.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".Qot_RequestTradeDate.Request.c2s: object expected");
-                message.c2s = $root.Qot_RequestTradeDate.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_RequestTradeDate.Request
-         * @static
-         * @param {Qot_RequestTradeDate.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.Qot_RequestTradeDate.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof Qot_RequestTradeDate.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    Qot_RequestTradeDate.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_RequestTradeDate
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_RequestTradeDate.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_RequestTradeDate
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_RequestTradeDate.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_RequestTradeDate.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_RequestTradeDate.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_RequestTradeDate.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_RequestTradeDate.IS2C|null|undefined} s2c
-         * @memberof Qot_RequestTradeDate.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Qot_RequestTradeDate.IResponse=} [properties] Properties to set
-         * @returns {Qot_RequestTradeDate.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_RequestTradeDate.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Qot_RequestTradeDate.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_RequestTradeDate.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_RequestTradeDate.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Qot_RequestTradeDate.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_RequestTradeDate.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_RequestTradeDate.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_RequestTradeDate.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_RequestTradeDate.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_RequestTradeDate.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_RequestTradeDate.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_RequestTradeDate.Response)
-                return object;
-            var message = new $root.Qot_RequestTradeDate.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_RequestTradeDate.Response.s2c: object expected");
-                message.s2c = $root.Qot_RequestTradeDate.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_RequestTradeDate.Response
-         * @static
-         * @param {Qot_RequestTradeDate.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_RequestTradeDate.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_RequestTradeDate.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_RequestTradeDate;
-})();
-
-$root.Qot_SetPriceReminder = (function() {
-
-    /**
-     * Namespace Qot_SetPriceReminder.
-     * @exports Qot_SetPriceReminder
-     * @namespace
-     */
-    var Qot_SetPriceReminder = {};
-
-    /**
-     * SetPriceReminderOp enum.
-     * @name Qot_SetPriceReminder.SetPriceReminderOp
-     * @enum {string}
-     * @property {number} SetPriceReminderOp_Unknown=0 SetPriceReminderOp_Unknown value
-     * @property {number} SetPriceReminderOp_Add=1 SetPriceReminderOp_Add value
-     * @property {number} SetPriceReminderOp_Del=2 SetPriceReminderOp_Del value
-     * @property {number} SetPriceReminderOp_Enable=3 SetPriceReminderOp_Enable value
-     * @property {number} SetPriceReminderOp_Disable=4 SetPriceReminderOp_Disable value
-     * @property {number} SetPriceReminderOp_Modify=5 SetPriceReminderOp_Modify value
-     */
-    Qot_SetPriceReminder.SetPriceReminderOp = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "SetPriceReminderOp_Unknown"] = 0;
-        values[valuesById[1] = "SetPriceReminderOp_Add"] = 1;
-        values[valuesById[2] = "SetPriceReminderOp_Del"] = 2;
-        values[valuesById[3] = "SetPriceReminderOp_Enable"] = 3;
-        values[valuesById[4] = "SetPriceReminderOp_Disable"] = 4;
-        values[valuesById[5] = "SetPriceReminderOp_Modify"] = 5;
-        return values;
-    })();
-
-    Qot_SetPriceReminder.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof Qot_SetPriceReminder
-         * @interface IC2S
-         * @property {Qot_Common.ISecurity} security C2S security
-         * @property {number} op C2S op
-         * @property {number|Long|null} [key] C2S key
-         * @property {number|null} [type] C2S type
-         * @property {number|null} [freq] C2S freq
-         * @property {number|null} [value] C2S value
-         * @property {string|null} [note] C2S note
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof Qot_SetPriceReminder
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {Qot_SetPriceReminder.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S security.
-         * @member {Qot_Common.ISecurity} security
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.security = null;
-
-        /**
-         * C2S op.
-         * @member {number} op
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.op = 0;
-
-        /**
-         * C2S key.
-         * @member {number|Long} key
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.key = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * C2S type.
-         * @member {number} type
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.type = 0;
-
-        /**
-         * C2S freq.
-         * @member {number} freq
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.freq = 0;
-
-        /**
-         * C2S value.
-         * @member {number} value
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.value = 0;
-
-        /**
-         * C2S note.
-         * @member {string} note
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         */
-        C2S.prototype.note = "";
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Qot_SetPriceReminder.IC2S=} [properties] Properties to set
-         * @returns {Qot_SetPriceReminder.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link Qot_SetPriceReminder.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Qot_SetPriceReminder.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.op);
-            if (message.key != null && message.hasOwnProperty("key"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.key);
-            if (message.type != null && message.hasOwnProperty("type"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.type);
-            if (message.value != null && message.hasOwnProperty("value"))
-                writer.uint32(/* id 5, wireType 1 =*/41).double(message.value);
-            if (message.note != null && message.hasOwnProperty("note"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.note);
-            if (message.freq != null && message.hasOwnProperty("freq"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.freq);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_SetPriceReminder.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Qot_SetPriceReminder.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_SetPriceReminder.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_SetPriceReminder.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.op = reader.int32();
-                    break;
-                case 3:
-                    message.key = reader.int64();
-                    break;
-                case 4:
-                    message.type = reader.int32();
-                    break;
-                case 7:
-                    message.freq = reader.int32();
-                    break;
-                case 5:
-                    message.value = reader.double();
-                    break;
-                case 6:
-                    message.note = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("security"))
-                throw $util.ProtocolError("missing required 'security'", { instance: message });
-            if (!message.hasOwnProperty("op"))
-                throw $util.ProtocolError("missing required 'op'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_SetPriceReminder.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_Common.Security.verify(message.security);
-                if (error)
-                    return "security." + error;
-            }
-            if (!$util.isInteger(message.op))
-                return "op: integer expected";
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (!$util.isInteger(message.key) && !(message.key && $util.isInteger(message.key.low) && $util.isInteger(message.key.high)))
-                    return "key: integer|Long expected";
-            if (message.type != null && message.hasOwnProperty("type"))
-                if (!$util.isInteger(message.type))
-                    return "type: integer expected";
-            if (message.freq != null && message.hasOwnProperty("freq"))
-                if (!$util.isInteger(message.freq))
-                    return "freq: integer expected";
-            if (message.value != null && message.hasOwnProperty("value"))
-                if (typeof message.value !== "number")
-                    return "value: number expected";
-            if (message.note != null && message.hasOwnProperty("note"))
-                if (!$util.isString(message.note))
-                    return "note: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_SetPriceReminder.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_SetPriceReminder.C2S)
-                return object;
-            var message = new $root.Qot_SetPriceReminder.C2S();
-            if (object.security != null) {
-                if (typeof object.security !== "object")
-                    throw TypeError(".Qot_SetPriceReminder.C2S.security: object expected");
-                message.security = $root.Qot_Common.Security.fromObject(object.security);
-            }
-            if (object.op != null)
-                message.op = object.op | 0;
-            if (object.key != null)
-                if ($util.Long)
-                    (message.key = $util.Long.fromValue(object.key)).unsigned = false;
-                else if (typeof object.key === "string")
-                    message.key = parseInt(object.key, 10);
-                else if (typeof object.key === "number")
-                    message.key = object.key;
-                else if (typeof object.key === "object")
-                    message.key = new $util.LongBits(object.key.low >>> 0, object.key.high >>> 0).toNumber();
-            if (object.type != null)
-                message.type = object.type | 0;
-            if (object.freq != null)
-                message.freq = object.freq | 0;
-            if (object.value != null)
-                message.value = Number(object.value);
-            if (object.note != null)
-                message.note = String(object.note);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_SetPriceReminder.C2S
-         * @static
-         * @param {Qot_SetPriceReminder.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.security = null;
-                object.op = 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.key = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.key = options.longs === String ? "0" : 0;
-                object.type = 0;
-                object.value = 0;
-                object.note = "";
-                object.freq = 0;
-            }
-            if (message.security != null && message.hasOwnProperty("security"))
-                object.security = $root.Qot_Common.Security.toObject(message.security, options);
-            if (message.op != null && message.hasOwnProperty("op"))
-                object.op = message.op;
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (typeof message.key === "number")
-                    object.key = options.longs === String ? String(message.key) : message.key;
-                else
-                    object.key = options.longs === String ? $util.Long.prototype.toString.call(message.key) : options.longs === Number ? new $util.LongBits(message.key.low >>> 0, message.key.high >>> 0).toNumber() : message.key;
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.value != null && message.hasOwnProperty("value"))
-                object.value = options.json && !isFinite(message.value) ? String(message.value) : message.value;
-            if (message.note != null && message.hasOwnProperty("note"))
-                object.note = message.note;
-            if (message.freq != null && message.hasOwnProperty("freq"))
-                object.freq = message.freq;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof Qot_SetPriceReminder.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    Qot_SetPriceReminder.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_SetPriceReminder
-         * @interface IS2C
-         * @property {number|Long} key S2C key
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_SetPriceReminder
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_SetPriceReminder.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C key.
-         * @member {number|Long} key
-         * @memberof Qot_SetPriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.key = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Qot_SetPriceReminder.IS2C=} [properties] Properties to set
-         * @returns {Qot_SetPriceReminder.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_SetPriceReminder.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Qot_SetPriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.key);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_SetPriceReminder.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Qot_SetPriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_SetPriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_SetPriceReminder.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.key = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("key"))
-                throw $util.ProtocolError("missing required 'key'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_SetPriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.key) && !(message.key && $util.isInteger(message.key.low) && $util.isInteger(message.key.high)))
-                return "key: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_SetPriceReminder.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_SetPriceReminder.S2C)
-                return object;
-            var message = new $root.Qot_SetPriceReminder.S2C();
-            if (object.key != null)
-                if ($util.Long)
-                    (message.key = $util.Long.fromValue(object.key)).unsigned = false;
-                else if (typeof object.key === "string")
-                    message.key = parseInt(object.key, 10);
-                else if (typeof object.key === "number")
-                    message.key = object.key;
-                else if (typeof object.key === "object")
-                    message.key = new $util.LongBits(object.key.low >>> 0, object.key.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_SetPriceReminder.S2C
-         * @static
-         * @param {Qot_SetPriceReminder.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.key = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.key = options.longs === String ? "0" : 0;
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (typeof message.key === "number")
-                    object.key = options.longs === String ? String(message.key) : message.key;
-                else
-                    object.key = options.longs === String ? $util.Long.prototype.toString.call(message.key) : options.longs === Number ? new $util.LongBits(message.key.low >>> 0, message.key.high >>> 0).toNumber() : message.key;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_SetPriceReminder.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_SetPriceReminder.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof Qot_SetPriceReminder
-         * @interface IRequest
-         * @property {Qot_SetPriceReminder.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof Qot_SetPriceReminder
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {Qot_SetPriceReminder.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {Qot_SetPriceReminder.IC2S} c2s
-         * @memberof Qot_SetPriceReminder.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Qot_SetPriceReminder.IRequest=} [properties] Properties to set
-         * @returns {Qot_SetPriceReminder.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link Qot_SetPriceReminder.Request.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Qot_SetPriceReminder.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_SetPriceReminder.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_SetPriceReminder.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Qot_SetPriceReminder.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_SetPriceReminder.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_SetPriceReminder.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.Qot_SetPriceReminder.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_SetPriceReminder.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_SetPriceReminder.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_SetPriceReminder.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_SetPriceReminder.Request)
-                return object;
-            var message = new $root.Qot_SetPriceReminder.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".Qot_SetPriceReminder.Request.c2s: object expected");
-                message.c2s = $root.Qot_SetPriceReminder.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_SetPriceReminder.Request
-         * @static
-         * @param {Qot_SetPriceReminder.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.Qot_SetPriceReminder.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof Qot_SetPriceReminder.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    Qot_SetPriceReminder.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_SetPriceReminder
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_SetPriceReminder.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_SetPriceReminder
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_SetPriceReminder.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_SetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_SetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_SetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_SetPriceReminder.IS2C|null|undefined} s2c
-         * @memberof Qot_SetPriceReminder.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Qot_SetPriceReminder.IResponse=} [properties] Properties to set
-         * @returns {Qot_SetPriceReminder.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_SetPriceReminder.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Qot_SetPriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_SetPriceReminder.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_SetPriceReminder.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Qot_SetPriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_SetPriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_SetPriceReminder.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_SetPriceReminder.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_SetPriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_SetPriceReminder.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_SetPriceReminder.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_SetPriceReminder.Response)
-                return object;
-            var message = new $root.Qot_SetPriceReminder.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_SetPriceReminder.Response.s2c: object expected");
-                message.s2c = $root.Qot_SetPriceReminder.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_SetPriceReminder.Response
-         * @static
-         * @param {Qot_SetPriceReminder.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_SetPriceReminder.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_SetPriceReminder.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_SetPriceReminder;
-})();
-
 $root.Qot_StockFilter = (function() {
 
     /**
@@ -65977,24 +57261,26 @@ $root.Qot_StockFilter = (function() {
      * @property {number} FinancialField_Unknown=0 FinancialField_Unknown value
      * @property {number} FinancialField_NetProfit=1 FinancialField_NetProfit value
      * @property {number} FinancialField_NetProfitGrowth=2 FinancialField_NetProfitGrowth value
-     * @property {number} FinancialField_SumOfBusiness=3 FinancialField_SumOfBusiness value
-     * @property {number} FinancialField_SumOfBusinessGrowth=4 FinancialField_SumOfBusinessGrowth value
-     * @property {number} FinancialField_NetProfitRate=5 FinancialField_NetProfitRate value
-     * @property {number} FinancialField_GrossProfitRate=6 FinancialField_GrossProfitRate value
-     * @property {number} FinancialField_DebtAssetRate=7 FinancialField_DebtAssetRate value
-     * @property {number} FinancialField_ReturnOnEquityRate=8 FinancialField_ReturnOnEquityRate value
+     * @property {number} FinancialField_GrossProfit=3 FinancialField_GrossProfit value
+     * @property {number} FinancialField_Turnover=4 FinancialField_Turnover value
+     * @property {number} FinancialField_TurnoverGrowth=5 FinancialField_TurnoverGrowth value
+     * @property {number} FinancialField_NetProfitRate=6 FinancialField_NetProfitRate value
+     * @property {number} FinancialField_GrossProfitRate=7 FinancialField_GrossProfitRate value
+     * @property {number} FinancialField_DebtAssetRate=8 FinancialField_DebtAssetRate value
+     * @property {number} FinancialField_ReturnOnEquityRate=9 FinancialField_ReturnOnEquityRate value
      */
     Qot_StockFilter.FinancialField = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "FinancialField_Unknown"] = 0;
         values[valuesById[1] = "FinancialField_NetProfit"] = 1;
         values[valuesById[2] = "FinancialField_NetProfitGrowth"] = 2;
-        values[valuesById[3] = "FinancialField_SumOfBusiness"] = 3;
-        values[valuesById[4] = "FinancialField_SumOfBusinessGrowth"] = 4;
-        values[valuesById[5] = "FinancialField_NetProfitRate"] = 5;
-        values[valuesById[6] = "FinancialField_GrossProfitRate"] = 6;
-        values[valuesById[7] = "FinancialField_DebtAssetRate"] = 7;
-        values[valuesById[8] = "FinancialField_ReturnOnEquityRate"] = 8;
+        values[valuesById[3] = "FinancialField_GrossProfit"] = 3;
+        values[valuesById[4] = "FinancialField_Turnover"] = 4;
+        values[valuesById[5] = "FinancialField_TurnoverGrowth"] = 5;
+        values[valuesById[6] = "FinancialField_NetProfitRate"] = 6;
+        values[valuesById[7] = "FinancialField_GrossProfitRate"] = 7;
+        values[valuesById[8] = "FinancialField_DebtAssetRate"] = 8;
+        values[valuesById[9] = "FinancialField_ReturnOnEquityRate"] = 9;
         return values;
     })();
 
@@ -66005,18 +57291,16 @@ $root.Qot_StockFilter = (function() {
      * @property {number} FinancialQuarter_Unknown=0 FinancialQuarter_Unknown value
      * @property {number} FinancialQuarter_Annual=1 FinancialQuarter_Annual value
      * @property {number} FinancialQuarter_FirstQuarter=2 FinancialQuarter_FirstQuarter value
-     * @property {number} FinancialQuarter_Interim=3 FinancialQuarter_Interim value
-     * @property {number} FinancialQuarter_ThirdQuarter=4 FinancialQuarter_ThirdQuarter value
-     * @property {number} FinancialQuarter_MostRecentQuarter=5 FinancialQuarter_MostRecentQuarter value
+     * @property {number} FinancialQuarter_SixQuarter=3 FinancialQuarter_SixQuarter value
+     * @property {number} FinancialQuarter_NineQuarter=4 FinancialQuarter_NineQuarter value
      */
     Qot_StockFilter.FinancialQuarter = (function() {
         var valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "FinancialQuarter_Unknown"] = 0;
         values[valuesById[1] = "FinancialQuarter_Annual"] = 1;
         values[valuesById[2] = "FinancialQuarter_FirstQuarter"] = 2;
-        values[valuesById[3] = "FinancialQuarter_Interim"] = 3;
-        values[valuesById[4] = "FinancialQuarter_ThirdQuarter"] = 4;
-        values[valuesById[5] = "FinancialQuarter_MostRecentQuarter"] = 5;
+        values[valuesById[3] = "FinancialQuarter_SixQuarter"] = 3;
+        values[valuesById[4] = "FinancialQuarter_NineQuarter"] = 4;
         return values;
     })();
 
@@ -66042,7 +57326,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of a BaseFilter.
          * @memberof Qot_StockFilter
          * @interface IBaseFilter
-         * @property {number} fieldName BaseFilter fieldName
+         * @property {number} field BaseFilter field
          * @property {number|null} [filterMin] BaseFilter filterMin
          * @property {number|null} [filterMax] BaseFilter filterMax
          * @property {boolean|null} [isNoFilter] BaseFilter isNoFilter
@@ -66065,12 +57349,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * BaseFilter fieldName.
-         * @member {number} fieldName
+         * BaseFilter field.
+         * @member {number} field
          * @memberof Qot_StockFilter.BaseFilter
          * @instance
          */
-        BaseFilter.prototype.fieldName = 0;
+        BaseFilter.prototype.field = 0;
 
         /**
          * BaseFilter filterMin.
@@ -66128,7 +57412,7 @@ $root.Qot_StockFilter = (function() {
         BaseFilter.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 writer.uint32(/* id 2, wireType 1 =*/17).double(message.filterMin);
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66172,7 +57456,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.filterMin = reader.double();
@@ -66191,8 +57475,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             return message;
         };
 
@@ -66223,8 +57507,8 @@ $root.Qot_StockFilter = (function() {
         BaseFilter.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 if (typeof message.filterMin !== "number")
                     return "filterMin: number expected";
@@ -66252,8 +57536,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.BaseFilter)
                 return object;
             var message = new $root.Qot_StockFilter.BaseFilter();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.filterMin != null)
                 message.filterMin = Number(object.filterMin);
             if (object.filterMax != null)
@@ -66279,14 +57563,14 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.filterMin = 0;
                 object.filterMax = 0;
                 object.isNoFilter = false;
                 object.sortDir = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 object.filterMin = options.json && !isFinite(message.filterMin) ? String(message.filterMin) : message.filterMin;
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66318,7 +57602,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of an AccumulateFilter.
          * @memberof Qot_StockFilter
          * @interface IAccumulateFilter
-         * @property {number} fieldName AccumulateFilter fieldName
+         * @property {number} field AccumulateFilter field
          * @property {number|null} [filterMin] AccumulateFilter filterMin
          * @property {number|null} [filterMax] AccumulateFilter filterMax
          * @property {boolean|null} [isNoFilter] AccumulateFilter isNoFilter
@@ -66342,12 +57626,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * AccumulateFilter fieldName.
-         * @member {number} fieldName
+         * AccumulateFilter field.
+         * @member {number} field
          * @memberof Qot_StockFilter.AccumulateFilter
          * @instance
          */
-        AccumulateFilter.prototype.fieldName = 0;
+        AccumulateFilter.prototype.field = 0;
 
         /**
          * AccumulateFilter filterMin.
@@ -66413,7 +57697,7 @@ $root.Qot_StockFilter = (function() {
         AccumulateFilter.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 writer.uint32(/* id 2, wireType 1 =*/17).double(message.filterMin);
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66458,7 +57742,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.filterMin = reader.double();
@@ -66480,8 +57764,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             if (!message.hasOwnProperty("days"))
                 throw $util.ProtocolError("missing required 'days'", { instance: message });
             return message;
@@ -66514,8 +57798,8 @@ $root.Qot_StockFilter = (function() {
         AccumulateFilter.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 if (typeof message.filterMin !== "number")
                     return "filterMin: number expected";
@@ -66545,8 +57829,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.AccumulateFilter)
                 return object;
             var message = new $root.Qot_StockFilter.AccumulateFilter();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.filterMin != null)
                 message.filterMin = Number(object.filterMin);
             if (object.filterMax != null)
@@ -66574,15 +57858,15 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.filterMin = 0;
                 object.filterMax = 0;
                 object.isNoFilter = false;
                 object.sortDir = 0;
                 object.days = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 object.filterMin = options.json && !isFinite(message.filterMin) ? String(message.filterMin) : message.filterMin;
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66616,7 +57900,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of a FinancialFilter.
          * @memberof Qot_StockFilter
          * @interface IFinancialFilter
-         * @property {number} fieldName FinancialFilter fieldName
+         * @property {number} field FinancialFilter field
          * @property {number|null} [filterMin] FinancialFilter filterMin
          * @property {number|null} [filterMax] FinancialFilter filterMax
          * @property {boolean|null} [isNoFilter] FinancialFilter isNoFilter
@@ -66640,12 +57924,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * FinancialFilter fieldName.
-         * @member {number} fieldName
+         * FinancialFilter field.
+         * @member {number} field
          * @memberof Qot_StockFilter.FinancialFilter
          * @instance
          */
-        FinancialFilter.prototype.fieldName = 0;
+        FinancialFilter.prototype.field = 0;
 
         /**
          * FinancialFilter filterMin.
@@ -66711,7 +57995,7 @@ $root.Qot_StockFilter = (function() {
         FinancialFilter.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 writer.uint32(/* id 2, wireType 1 =*/17).double(message.filterMin);
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66756,7 +58040,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.filterMin = reader.double();
@@ -66778,8 +58062,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             if (!message.hasOwnProperty("quarter"))
                 throw $util.ProtocolError("missing required 'quarter'", { instance: message });
             return message;
@@ -66812,8 +58096,8 @@ $root.Qot_StockFilter = (function() {
         FinancialFilter.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 if (typeof message.filterMin !== "number")
                     return "filterMin: number expected";
@@ -66843,8 +58127,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.FinancialFilter)
                 return object;
             var message = new $root.Qot_StockFilter.FinancialFilter();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.filterMin != null)
                 message.filterMin = Number(object.filterMin);
             if (object.filterMax != null)
@@ -66872,15 +58156,15 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.filterMin = 0;
                 object.filterMax = 0;
                 object.isNoFilter = false;
                 object.sortDir = 0;
                 object.quarter = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.filterMin != null && message.hasOwnProperty("filterMin"))
                 object.filterMin = options.json && !isFinite(message.filterMin) ? String(message.filterMin) : message.filterMin;
             if (message.filterMax != null && message.hasOwnProperty("filterMax"))
@@ -66914,7 +58198,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of a BaseData.
          * @memberof Qot_StockFilter
          * @interface IBaseData
-         * @property {number} fieldName BaseData fieldName
+         * @property {number} field BaseData field
          * @property {number} value BaseData value
          */
 
@@ -66934,12 +58218,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * BaseData fieldName.
-         * @member {number} fieldName
+         * BaseData field.
+         * @member {number} field
          * @memberof Qot_StockFilter.BaseData
          * @instance
          */
-        BaseData.prototype.fieldName = 0;
+        BaseData.prototype.field = 0;
 
         /**
          * BaseData value.
@@ -66973,7 +58257,7 @@ $root.Qot_StockFilter = (function() {
         BaseData.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.value);
             return writer;
         };
@@ -67010,7 +58294,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.value = reader.double();
@@ -67020,8 +58304,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             if (!message.hasOwnProperty("value"))
                 throw $util.ProtocolError("missing required 'value'", { instance: message });
             return message;
@@ -67054,8 +58338,8 @@ $root.Qot_StockFilter = (function() {
         BaseData.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (typeof message.value !== "number")
                 return "value: number expected";
             return null;
@@ -67073,8 +58357,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.BaseData)
                 return object;
             var message = new $root.Qot_StockFilter.BaseData();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.value != null)
                 message.value = Number(object.value);
             return message;
@@ -67094,11 +58378,11 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.value = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.value != null && message.hasOwnProperty("value"))
                 object.value = options.json && !isFinite(message.value) ? String(message.value) : message.value;
             return object;
@@ -67124,7 +58408,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of an AccumulateData.
          * @memberof Qot_StockFilter
          * @interface IAccumulateData
-         * @property {number} fieldName AccumulateData fieldName
+         * @property {number} field AccumulateData field
          * @property {number} value AccumulateData value
          * @property {number} days AccumulateData days
          */
@@ -67145,12 +58429,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * AccumulateData fieldName.
-         * @member {number} fieldName
+         * AccumulateData field.
+         * @member {number} field
          * @memberof Qot_StockFilter.AccumulateData
          * @instance
          */
-        AccumulateData.prototype.fieldName = 0;
+        AccumulateData.prototype.field = 0;
 
         /**
          * AccumulateData value.
@@ -67192,7 +58476,7 @@ $root.Qot_StockFilter = (function() {
         AccumulateData.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.value);
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.days);
             return writer;
@@ -67230,7 +58514,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.value = reader.double();
@@ -67243,8 +58527,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             if (!message.hasOwnProperty("value"))
                 throw $util.ProtocolError("missing required 'value'", { instance: message });
             if (!message.hasOwnProperty("days"))
@@ -67279,8 +58563,8 @@ $root.Qot_StockFilter = (function() {
         AccumulateData.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (typeof message.value !== "number")
                 return "value: number expected";
             if (!$util.isInteger(message.days))
@@ -67300,8 +58584,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.AccumulateData)
                 return object;
             var message = new $root.Qot_StockFilter.AccumulateData();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.value != null)
                 message.value = Number(object.value);
             if (object.days != null)
@@ -67323,12 +58607,12 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.value = 0;
                 object.days = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.value != null && message.hasOwnProperty("value"))
                 object.value = options.json && !isFinite(message.value) ? String(message.value) : message.value;
             if (message.days != null && message.hasOwnProperty("days"))
@@ -67356,7 +58640,7 @@ $root.Qot_StockFilter = (function() {
          * Properties of a FinancialData.
          * @memberof Qot_StockFilter
          * @interface IFinancialData
-         * @property {number} fieldName FinancialData fieldName
+         * @property {number} field FinancialData field
          * @property {number} value FinancialData value
          * @property {number} quarter FinancialData quarter
          */
@@ -67377,12 +58661,12 @@ $root.Qot_StockFilter = (function() {
         }
 
         /**
-         * FinancialData fieldName.
-         * @member {number} fieldName
+         * FinancialData field.
+         * @member {number} field
          * @memberof Qot_StockFilter.FinancialData
          * @instance
          */
-        FinancialData.prototype.fieldName = 0;
+        FinancialData.prototype.field = 0;
 
         /**
          * FinancialData value.
@@ -67424,7 +58708,7 @@ $root.Qot_StockFilter = (function() {
         FinancialData.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.fieldName);
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.field);
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.value);
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.quarter);
             return writer;
@@ -67462,7 +58746,7 @@ $root.Qot_StockFilter = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.fieldName = reader.int32();
+                    message.field = reader.int32();
                     break;
                 case 2:
                     message.value = reader.double();
@@ -67475,8 +58759,8 @@ $root.Qot_StockFilter = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("fieldName"))
-                throw $util.ProtocolError("missing required 'fieldName'", { instance: message });
+            if (!message.hasOwnProperty("field"))
+                throw $util.ProtocolError("missing required 'field'", { instance: message });
             if (!message.hasOwnProperty("value"))
                 throw $util.ProtocolError("missing required 'value'", { instance: message });
             if (!message.hasOwnProperty("quarter"))
@@ -67511,8 +58795,8 @@ $root.Qot_StockFilter = (function() {
         FinancialData.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.fieldName))
-                return "fieldName: integer expected";
+            if (!$util.isInteger(message.field))
+                return "field: integer expected";
             if (typeof message.value !== "number")
                 return "value: number expected";
             if (!$util.isInteger(message.quarter))
@@ -67532,8 +58816,8 @@ $root.Qot_StockFilter = (function() {
             if (object instanceof $root.Qot_StockFilter.FinancialData)
                 return object;
             var message = new $root.Qot_StockFilter.FinancialData();
-            if (object.fieldName != null)
-                message.fieldName = object.fieldName | 0;
+            if (object.field != null)
+                message.field = object.field | 0;
             if (object.value != null)
                 message.value = Number(object.value);
             if (object.quarter != null)
@@ -67555,12 +58839,12 @@ $root.Qot_StockFilter = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.fieldName = 0;
+                object.field = 0;
                 object.value = 0;
                 object.quarter = 0;
             }
-            if (message.fieldName != null && message.hasOwnProperty("fieldName"))
-                object.fieldName = message.fieldName;
+            if (message.field != null && message.hasOwnProperty("field"))
+                object.field = message.field;
             if (message.value != null && message.hasOwnProperty("value"))
                 object.value = options.json && !isFinite(message.value) ? String(message.value) : message.value;
             if (message.quarter != null && message.hasOwnProperty("quarter"))
@@ -69050,7 +60334,6 @@ $root.Qot_Sub = (function() {
          * @property {Array.<number>|null} [regPushRehabTypeList] C2S regPushRehabTypeList
          * @property {boolean|null} [isFirstPush] C2S isFirstPush
          * @property {boolean|null} [isUnsubAll] C2S isUnsubAll
-         * @property {boolean|null} [isSubOrderBookDetail] C2S isSubOrderBookDetail
          */
 
         /**
@@ -69128,14 +60411,6 @@ $root.Qot_Sub = (function() {
         C2S.prototype.isUnsubAll = false;
 
         /**
-         * C2S isSubOrderBookDetail.
-         * @member {boolean} isSubOrderBookDetail
-         * @memberof Qot_Sub.C2S
-         * @instance
-         */
-        C2S.prototype.isSubOrderBookDetail = false;
-
-        /**
          * Creates a new C2S instance using the specified properties.
          * @function create
          * @memberof Qot_Sub.C2S
@@ -69175,8 +60450,6 @@ $root.Qot_Sub = (function() {
                 writer.uint32(/* id 6, wireType 0 =*/48).bool(message.isFirstPush);
             if (message.isUnsubAll != null && message.hasOwnProperty("isUnsubAll"))
                 writer.uint32(/* id 7, wireType 0 =*/56).bool(message.isUnsubAll);
-            if (message.isSubOrderBookDetail != null && message.hasOwnProperty("isSubOrderBookDetail"))
-                writer.uint32(/* id 8, wireType 0 =*/64).bool(message.isSubOrderBookDetail);
             return writer;
         };
 
@@ -69247,9 +60520,6 @@ $root.Qot_Sub = (function() {
                     break;
                 case 7:
                     message.isUnsubAll = reader.bool();
-                    break;
-                case 8:
-                    message.isSubOrderBookDetail = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -69322,9 +60592,6 @@ $root.Qot_Sub = (function() {
             if (message.isUnsubAll != null && message.hasOwnProperty("isUnsubAll"))
                 if (typeof message.isUnsubAll !== "boolean")
                     return "isUnsubAll: boolean expected";
-            if (message.isSubOrderBookDetail != null && message.hasOwnProperty("isSubOrderBookDetail"))
-                if (typeof message.isSubOrderBookDetail !== "boolean")
-                    return "isSubOrderBookDetail: boolean expected";
             return null;
         };
 
@@ -69372,8 +60639,6 @@ $root.Qot_Sub = (function() {
                 message.isFirstPush = Boolean(object.isFirstPush);
             if (object.isUnsubAll != null)
                 message.isUnsubAll = Boolean(object.isUnsubAll);
-            if (object.isSubOrderBookDetail != null)
-                message.isSubOrderBookDetail = Boolean(object.isSubOrderBookDetail);
             return message;
         };
 
@@ -69400,7 +60665,6 @@ $root.Qot_Sub = (function() {
                 object.isRegOrUnRegPush = false;
                 object.isFirstPush = false;
                 object.isUnsubAll = false;
-                object.isSubOrderBookDetail = false;
             }
             if (message.securityList && message.securityList.length) {
                 object.securityList = [];
@@ -69425,8 +60689,6 @@ $root.Qot_Sub = (function() {
                 object.isFirstPush = message.isFirstPush;
             if (message.isUnsubAll != null && message.hasOwnProperty("isUnsubAll"))
                 object.isUnsubAll = message.isUnsubAll;
-            if (message.isSubOrderBookDetail != null && message.hasOwnProperty("isSubOrderBookDetail"))
-                object.isSubOrderBookDetail = message.isSubOrderBookDetail;
             return object;
         };
 
@@ -72805,701 +64067,6 @@ $root.Qot_UpdateOrderDetail = (function() {
     return Qot_UpdateOrderDetail;
 })();
 
-$root.Qot_UpdatePriceReminder = (function() {
-
-    /**
-     * Namespace Qot_UpdatePriceReminder.
-     * @exports Qot_UpdatePriceReminder
-     * @namespace
-     */
-    var Qot_UpdatePriceReminder = {};
-
-    /**
-     * MarketStatus enum.
-     * @name Qot_UpdatePriceReminder.MarketStatus
-     * @enum {string}
-     * @property {number} MarketStatus_Unknow=0 MarketStatus_Unknow value
-     * @property {number} MarketStatus_Open=1 MarketStatus_Open value
-     * @property {number} MarketStatus_USPre=2 MarketStatus_USPre value
-     * @property {number} MarketStatus_USAfter=3 MarketStatus_USAfter value
-     */
-    Qot_UpdatePriceReminder.MarketStatus = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "MarketStatus_Unknow"] = 0;
-        values[valuesById[1] = "MarketStatus_Open"] = 1;
-        values[valuesById[2] = "MarketStatus_USPre"] = 2;
-        values[valuesById[3] = "MarketStatus_USAfter"] = 3;
-        return values;
-    })();
-
-    Qot_UpdatePriceReminder.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Qot_UpdatePriceReminder
-         * @interface IS2C
-         * @property {Qot_Common.ISecurity} security S2C security
-         * @property {number} price S2C price
-         * @property {number} changeRate S2C changeRate
-         * @property {number} marketStatus S2C marketStatus
-         * @property {string} content S2C content
-         * @property {string} note S2C note
-         * @property {number|Long|null} [key] S2C key
-         * @property {number|null} [type] S2C type
-         * @property {number|null} [setValue] S2C setValue
-         * @property {number|null} [curValue] S2C curValue
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Qot_UpdatePriceReminder
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Qot_UpdatePriceReminder.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C security.
-         * @member {Qot_Common.ISecurity} security
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.security = null;
-
-        /**
-         * S2C price.
-         * @member {number} price
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.price = 0;
-
-        /**
-         * S2C changeRate.
-         * @member {number} changeRate
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.changeRate = 0;
-
-        /**
-         * S2C marketStatus.
-         * @member {number} marketStatus
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.marketStatus = 0;
-
-        /**
-         * S2C content.
-         * @member {string} content
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.content = "";
-
-        /**
-         * S2C note.
-         * @member {string} note
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.note = "";
-
-        /**
-         * S2C key.
-         * @member {number|Long} key
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.key = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * S2C type.
-         * @member {number} type
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.type = 0;
-
-        /**
-         * S2C setValue.
-         * @member {number} setValue
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.setValue = 0;
-
-        /**
-         * S2C curValue.
-         * @member {number} curValue
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         */
-        S2C.prototype.curValue = 0;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Qot_UpdatePriceReminder.IS2C=} [properties] Properties to set
-         * @returns {Qot_UpdatePriceReminder.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Qot_UpdatePriceReminder.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Qot_UpdatePriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            writer.uint32(/* id 2, wireType 1 =*/17).double(message.price);
-            writer.uint32(/* id 3, wireType 1 =*/25).double(message.changeRate);
-            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.marketStatus);
-            writer.uint32(/* id 5, wireType 2 =*/42).string(message.content);
-            writer.uint32(/* id 6, wireType 2 =*/50).string(message.note);
-            if (message.key != null && message.hasOwnProperty("key"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int64(message.key);
-            if (message.type != null && message.hasOwnProperty("type"))
-                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.type);
-            if (message.setValue != null && message.hasOwnProperty("setValue"))
-                writer.uint32(/* id 9, wireType 1 =*/73).double(message.setValue);
-            if (message.curValue != null && message.hasOwnProperty("curValue"))
-                writer.uint32(/* id 10, wireType 1 =*/81).double(message.curValue);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_UpdatePriceReminder.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Qot_UpdatePriceReminder.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_UpdatePriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_UpdatePriceReminder.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.price = reader.double();
-                    break;
-                case 3:
-                    message.changeRate = reader.double();
-                    break;
-                case 4:
-                    message.marketStatus = reader.int32();
-                    break;
-                case 5:
-                    message.content = reader.string();
-                    break;
-                case 6:
-                    message.note = reader.string();
-                    break;
-                case 7:
-                    message.key = reader.int64();
-                    break;
-                case 8:
-                    message.type = reader.int32();
-                    break;
-                case 9:
-                    message.setValue = reader.double();
-                    break;
-                case 10:
-                    message.curValue = reader.double();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("security"))
-                throw $util.ProtocolError("missing required 'security'", { instance: message });
-            if (!message.hasOwnProperty("price"))
-                throw $util.ProtocolError("missing required 'price'", { instance: message });
-            if (!message.hasOwnProperty("changeRate"))
-                throw $util.ProtocolError("missing required 'changeRate'", { instance: message });
-            if (!message.hasOwnProperty("marketStatus"))
-                throw $util.ProtocolError("missing required 'marketStatus'", { instance: message });
-            if (!message.hasOwnProperty("content"))
-                throw $util.ProtocolError("missing required 'content'", { instance: message });
-            if (!message.hasOwnProperty("note"))
-                throw $util.ProtocolError("missing required 'note'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_UpdatePriceReminder.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Qot_Common.Security.verify(message.security);
-                if (error)
-                    return "security." + error;
-            }
-            if (typeof message.price !== "number")
-                return "price: number expected";
-            if (typeof message.changeRate !== "number")
-                return "changeRate: number expected";
-            if (!$util.isInteger(message.marketStatus))
-                return "marketStatus: integer expected";
-            if (!$util.isString(message.content))
-                return "content: string expected";
-            if (!$util.isString(message.note))
-                return "note: string expected";
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (!$util.isInteger(message.key) && !(message.key && $util.isInteger(message.key.low) && $util.isInteger(message.key.high)))
-                    return "key: integer|Long expected";
-            if (message.type != null && message.hasOwnProperty("type"))
-                if (!$util.isInteger(message.type))
-                    return "type: integer expected";
-            if (message.setValue != null && message.hasOwnProperty("setValue"))
-                if (typeof message.setValue !== "number")
-                    return "setValue: number expected";
-            if (message.curValue != null && message.hasOwnProperty("curValue"))
-                if (typeof message.curValue !== "number")
-                    return "curValue: number expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_UpdatePriceReminder.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_UpdatePriceReminder.S2C)
-                return object;
-            var message = new $root.Qot_UpdatePriceReminder.S2C();
-            if (object.security != null) {
-                if (typeof object.security !== "object")
-                    throw TypeError(".Qot_UpdatePriceReminder.S2C.security: object expected");
-                message.security = $root.Qot_Common.Security.fromObject(object.security);
-            }
-            if (object.price != null)
-                message.price = Number(object.price);
-            if (object.changeRate != null)
-                message.changeRate = Number(object.changeRate);
-            if (object.marketStatus != null)
-                message.marketStatus = object.marketStatus | 0;
-            if (object.content != null)
-                message.content = String(object.content);
-            if (object.note != null)
-                message.note = String(object.note);
-            if (object.key != null)
-                if ($util.Long)
-                    (message.key = $util.Long.fromValue(object.key)).unsigned = false;
-                else if (typeof object.key === "string")
-                    message.key = parseInt(object.key, 10);
-                else if (typeof object.key === "number")
-                    message.key = object.key;
-                else if (typeof object.key === "object")
-                    message.key = new $util.LongBits(object.key.low >>> 0, object.key.high >>> 0).toNumber();
-            if (object.type != null)
-                message.type = object.type | 0;
-            if (object.setValue != null)
-                message.setValue = Number(object.setValue);
-            if (object.curValue != null)
-                message.curValue = Number(object.curValue);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @static
-         * @param {Qot_UpdatePriceReminder.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.security = null;
-                object.price = 0;
-                object.changeRate = 0;
-                object.marketStatus = 0;
-                object.content = "";
-                object.note = "";
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.key = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.key = options.longs === String ? "0" : 0;
-                object.type = 0;
-                object.setValue = 0;
-                object.curValue = 0;
-            }
-            if (message.security != null && message.hasOwnProperty("security"))
-                object.security = $root.Qot_Common.Security.toObject(message.security, options);
-            if (message.price != null && message.hasOwnProperty("price"))
-                object.price = options.json && !isFinite(message.price) ? String(message.price) : message.price;
-            if (message.changeRate != null && message.hasOwnProperty("changeRate"))
-                object.changeRate = options.json && !isFinite(message.changeRate) ? String(message.changeRate) : message.changeRate;
-            if (message.marketStatus != null && message.hasOwnProperty("marketStatus"))
-                object.marketStatus = message.marketStatus;
-            if (message.content != null && message.hasOwnProperty("content"))
-                object.content = message.content;
-            if (message.note != null && message.hasOwnProperty("note"))
-                object.note = message.note;
-            if (message.key != null && message.hasOwnProperty("key"))
-                if (typeof message.key === "number")
-                    object.key = options.longs === String ? String(message.key) : message.key;
-                else
-                    object.key = options.longs === String ? $util.Long.prototype.toString.call(message.key) : options.longs === Number ? new $util.LongBits(message.key.low >>> 0, message.key.high >>> 0).toNumber() : message.key;
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.setValue != null && message.hasOwnProperty("setValue"))
-                object.setValue = options.json && !isFinite(message.setValue) ? String(message.setValue) : message.setValue;
-            if (message.curValue != null && message.hasOwnProperty("curValue"))
-                object.curValue = options.json && !isFinite(message.curValue) ? String(message.curValue) : message.curValue;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Qot_UpdatePriceReminder.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Qot_UpdatePriceReminder.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Qot_UpdatePriceReminder
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Qot_UpdatePriceReminder.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Qot_UpdatePriceReminder
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Qot_UpdatePriceReminder.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Qot_UpdatePriceReminder.IS2C|null|undefined} s2c
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Qot_UpdatePriceReminder.IResponse=} [properties] Properties to set
-         * @returns {Qot_UpdatePriceReminder.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Qot_UpdatePriceReminder.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Qot_UpdatePriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Qot_UpdatePriceReminder.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_UpdatePriceReminder.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Qot_UpdatePriceReminder.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Qot_UpdatePriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_UpdatePriceReminder.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Qot_UpdatePriceReminder.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Qot_UpdatePriceReminder.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Qot_UpdatePriceReminder.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Qot_UpdatePriceReminder.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Qot_UpdatePriceReminder.Response)
-                return object;
-            var message = new $root.Qot_UpdatePriceReminder.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Qot_UpdatePriceReminder.Response.s2c: object expected");
-                message.s2c = $root.Qot_UpdatePriceReminder.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @static
-         * @param {Qot_UpdatePriceReminder.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Qot_UpdatePriceReminder.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Qot_UpdatePriceReminder.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Qot_UpdatePriceReminder;
-})();
-
 $root.Qot_UpdateRT = (function() {
 
     /**
@@ -74516,890 +65083,6 @@ $root.Qot_UpdateTicker = (function() {
     return Qot_UpdateTicker;
 })();
 
-$root.TestCmd = (function() {
-
-    /**
-     * Namespace TestCmd.
-     * @exports TestCmd
-     * @namespace
-     */
-    var TestCmd = {};
-
-    TestCmd.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof TestCmd
-         * @interface IC2S
-         * @property {string} cmd C2S cmd
-         * @property {string|null} [params] C2S params
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof TestCmd
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {TestCmd.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S cmd.
-         * @member {string} cmd
-         * @memberof TestCmd.C2S
-         * @instance
-         */
-        C2S.prototype.cmd = "";
-
-        /**
-         * C2S params.
-         * @member {string} params
-         * @memberof TestCmd.C2S
-         * @instance
-         */
-        C2S.prototype.params = "";
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {TestCmd.IC2S=} [properties] Properties to set
-         * @returns {TestCmd.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link TestCmd.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {TestCmd.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.cmd);
-            if (message.params != null && message.hasOwnProperty("params"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.params);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link TestCmd.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {TestCmd.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {TestCmd.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TestCmd.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.cmd = reader.string();
-                    break;
-                case 2:
-                    message.params = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("cmd"))
-                throw $util.ProtocolError("missing required 'cmd'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {TestCmd.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.cmd))
-                return "cmd: string expected";
-            if (message.params != null && message.hasOwnProperty("params"))
-                if (!$util.isString(message.params))
-                    return "params: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {TestCmd.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.TestCmd.C2S)
-                return object;
-            var message = new $root.TestCmd.C2S();
-            if (object.cmd != null)
-                message.cmd = String(object.cmd);
-            if (object.params != null)
-                message.params = String(object.params);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof TestCmd.C2S
-         * @static
-         * @param {TestCmd.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.cmd = "";
-                object.params = "";
-            }
-            if (message.cmd != null && message.hasOwnProperty("cmd"))
-                object.cmd = message.cmd;
-            if (message.params != null && message.hasOwnProperty("params"))
-                object.params = message.params;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof TestCmd.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    TestCmd.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof TestCmd
-         * @interface IS2C
-         * @property {string} cmd S2C cmd
-         * @property {string} result S2C result
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof TestCmd
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {TestCmd.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C cmd.
-         * @member {string} cmd
-         * @memberof TestCmd.S2C
-         * @instance
-         */
-        S2C.prototype.cmd = "";
-
-        /**
-         * S2C result.
-         * @member {string} result
-         * @memberof TestCmd.S2C
-         * @instance
-         */
-        S2C.prototype.result = "";
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {TestCmd.IS2C=} [properties] Properties to set
-         * @returns {TestCmd.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link TestCmd.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {TestCmd.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.cmd);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.result);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link TestCmd.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {TestCmd.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {TestCmd.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TestCmd.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.cmd = reader.string();
-                    break;
-                case 2:
-                    message.result = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("cmd"))
-                throw $util.ProtocolError("missing required 'cmd'", { instance: message });
-            if (!message.hasOwnProperty("result"))
-                throw $util.ProtocolError("missing required 'result'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {TestCmd.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.cmd))
-                return "cmd: string expected";
-            if (!$util.isString(message.result))
-                return "result: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {TestCmd.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.TestCmd.S2C)
-                return object;
-            var message = new $root.TestCmd.S2C();
-            if (object.cmd != null)
-                message.cmd = String(object.cmd);
-            if (object.result != null)
-                message.result = String(object.result);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof TestCmd.S2C
-         * @static
-         * @param {TestCmd.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.cmd = "";
-                object.result = "";
-            }
-            if (message.cmd != null && message.hasOwnProperty("cmd"))
-                object.cmd = message.cmd;
-            if (message.result != null && message.hasOwnProperty("result"))
-                object.result = message.result;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof TestCmd.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    TestCmd.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof TestCmd
-         * @interface IRequest
-         * @property {TestCmd.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof TestCmd
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {TestCmd.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {TestCmd.IC2S} c2s
-         * @memberof TestCmd.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof TestCmd.Request
-         * @static
-         * @param {TestCmd.IRequest=} [properties] Properties to set
-         * @returns {TestCmd.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link TestCmd.Request.verify|verify} messages.
-         * @function encode
-         * @memberof TestCmd.Request
-         * @static
-         * @param {TestCmd.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.TestCmd.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link TestCmd.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof TestCmd.Request
-         * @static
-         * @param {TestCmd.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof TestCmd.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {TestCmd.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TestCmd.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.TestCmd.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof TestCmd.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {TestCmd.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof TestCmd.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.TestCmd.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof TestCmd.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {TestCmd.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.TestCmd.Request)
-                return object;
-            var message = new $root.TestCmd.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".TestCmd.Request.c2s: object expected");
-                message.c2s = $root.TestCmd.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof TestCmd.Request
-         * @static
-         * @param {TestCmd.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.TestCmd.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof TestCmd.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    TestCmd.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof TestCmd
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {TestCmd.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof TestCmd
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {TestCmd.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof TestCmd.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof TestCmd.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof TestCmd.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {TestCmd.IS2C|null|undefined} s2c
-         * @memberof TestCmd.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof TestCmd.Response
-         * @static
-         * @param {TestCmd.IResponse=} [properties] Properties to set
-         * @returns {TestCmd.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link TestCmd.Response.verify|verify} messages.
-         * @function encode
-         * @memberof TestCmd.Response
-         * @static
-         * @param {TestCmd.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.TestCmd.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link TestCmd.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof TestCmd.Response
-         * @static
-         * @param {TestCmd.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof TestCmd.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {TestCmd.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TestCmd.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.TestCmd.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof TestCmd.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {TestCmd.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof TestCmd.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.TestCmd.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof TestCmd.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {TestCmd.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.TestCmd.Response)
-                return object;
-            var message = new $root.TestCmd.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".TestCmd.Response.s2c: object expected");
-                message.s2c = $root.TestCmd.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof TestCmd.Response
-         * @static
-         * @param {TestCmd.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.TestCmd.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof TestCmd.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return TestCmd;
-})();
-
 $root.Trd_Common = (function() {
 
     /**
@@ -75432,7 +65115,6 @@ $root.Trd_Common = (function() {
      * @property {number} TrdMarket_US=2 TrdMarket_US value
      * @property {number} TrdMarket_CN=3 TrdMarket_CN value
      * @property {number} TrdMarket_HKCC=4 TrdMarket_HKCC value
-     * @property {number} TrdMarket_Futures=5 TrdMarket_Futures value
      */
     Trd_Common.TrdMarket = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -75441,7 +65123,6 @@ $root.Trd_Common = (function() {
         values[valuesById[2] = "TrdMarket_US"] = 2;
         values[valuesById[3] = "TrdMarket_CN"] = 3;
         values[valuesById[4] = "TrdMarket_HKCC"] = 4;
-        values[valuesById[5] = "TrdMarket_Futures"] = 5;
         return values;
     })();
 
@@ -75623,278 +65304,6 @@ $root.Trd_Common = (function() {
         values[valuesById[1] = "TrdAccType_Cash"] = 1;
         values[valuesById[2] = "TrdAccType_Margin"] = 2;
         return values;
-    })();
-
-    /**
-     * Currency enum.
-     * @name Trd_Common.Currency
-     * @enum {string}
-     * @property {number} Currency_Unknown=0 Currency_Unknown value
-     * @property {number} Currency_HKD=1 Currency_HKD value
-     * @property {number} Currency_USD=2 Currency_USD value
-     * @property {number} Currency_CNH=3 Currency_CNH value
-     */
-    Trd_Common.Currency = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "Currency_Unknown"] = 0;
-        values[valuesById[1] = "Currency_HKD"] = 1;
-        values[valuesById[2] = "Currency_USD"] = 2;
-        values[valuesById[3] = "Currency_CNH"] = 3;
-        return values;
-    })();
-
-    /**
-     * CltRiskLevel enum.
-     * @name Trd_Common.CltRiskLevel
-     * @enum {string}
-     * @property {number} CltRiskLevel_Unknown=-1 CltRiskLevel_Unknown value
-     * @property {number} CltRiskLevel_Safe=0 CltRiskLevel_Safe value
-     * @property {number} CltRiskLevel_Warning=1 CltRiskLevel_Warning value
-     * @property {number} CltRiskLevel_Danger=2 CltRiskLevel_Danger value
-     * @property {number} CltRiskLevel_AbsoluteSafe=3 CltRiskLevel_AbsoluteSafe value
-     * @property {number} CltRiskLevel_OptDanger=4 CltRiskLevel_OptDanger value
-     */
-    Trd_Common.CltRiskLevel = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[-1] = "CltRiskLevel_Unknown"] = -1;
-        values[valuesById[0] = "CltRiskLevel_Safe"] = 0;
-        values[valuesById[1] = "CltRiskLevel_Warning"] = 1;
-        values[valuesById[2] = "CltRiskLevel_Danger"] = 2;
-        values[valuesById[3] = "CltRiskLevel_AbsoluteSafe"] = 3;
-        values[valuesById[4] = "CltRiskLevel_OptDanger"] = 4;
-        return values;
-    })();
-
-    Trd_Common.AccCashInfo = (function() {
-
-        /**
-         * Properties of an AccCashInfo.
-         * @memberof Trd_Common
-         * @interface IAccCashInfo
-         * @property {number|null} [currency] AccCashInfo currency
-         * @property {number|null} [cash] AccCashInfo cash
-         * @property {number|null} [availableBalance] AccCashInfo availableBalance
-         */
-
-        /**
-         * Constructs a new AccCashInfo.
-         * @memberof Trd_Common
-         * @classdesc Represents an AccCashInfo.
-         * @implements IAccCashInfo
-         * @constructor
-         * @param {Trd_Common.IAccCashInfo=} [properties] Properties to set
-         */
-        function AccCashInfo(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AccCashInfo currency.
-         * @member {number} currency
-         * @memberof Trd_Common.AccCashInfo
-         * @instance
-         */
-        AccCashInfo.prototype.currency = 0;
-
-        /**
-         * AccCashInfo cash.
-         * @member {number} cash
-         * @memberof Trd_Common.AccCashInfo
-         * @instance
-         */
-        AccCashInfo.prototype.cash = 0;
-
-        /**
-         * AccCashInfo availableBalance.
-         * @member {number} availableBalance
-         * @memberof Trd_Common.AccCashInfo
-         * @instance
-         */
-        AccCashInfo.prototype.availableBalance = 0;
-
-        /**
-         * Creates a new AccCashInfo instance using the specified properties.
-         * @function create
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Trd_Common.IAccCashInfo=} [properties] Properties to set
-         * @returns {Trd_Common.AccCashInfo} AccCashInfo instance
-         */
-        AccCashInfo.create = function create(properties) {
-            return new AccCashInfo(properties);
-        };
-
-        /**
-         * Encodes the specified AccCashInfo message. Does not implicitly {@link Trd_Common.AccCashInfo.verify|verify} messages.
-         * @function encode
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Trd_Common.IAccCashInfo} message AccCashInfo message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AccCashInfo.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.currency);
-            if (message.cash != null && message.hasOwnProperty("cash"))
-                writer.uint32(/* id 2, wireType 1 =*/17).double(message.cash);
-            if (message.availableBalance != null && message.hasOwnProperty("availableBalance"))
-                writer.uint32(/* id 3, wireType 1 =*/25).double(message.availableBalance);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AccCashInfo message, length delimited. Does not implicitly {@link Trd_Common.AccCashInfo.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Trd_Common.IAccCashInfo} message AccCashInfo message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AccCashInfo.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AccCashInfo message from the specified reader or buffer.
-         * @function decode
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Trd_Common.AccCashInfo} AccCashInfo
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AccCashInfo.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Trd_Common.AccCashInfo();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.currency = reader.int32();
-                    break;
-                case 2:
-                    message.cash = reader.double();
-                    break;
-                case 3:
-                    message.availableBalance = reader.double();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AccCashInfo message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Trd_Common.AccCashInfo} AccCashInfo
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AccCashInfo.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AccCashInfo message.
-         * @function verify
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AccCashInfo.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                if (!$util.isInteger(message.currency))
-                    return "currency: integer expected";
-            if (message.cash != null && message.hasOwnProperty("cash"))
-                if (typeof message.cash !== "number")
-                    return "cash: number expected";
-            if (message.availableBalance != null && message.hasOwnProperty("availableBalance"))
-                if (typeof message.availableBalance !== "number")
-                    return "availableBalance: number expected";
-            return null;
-        };
-
-        /**
-         * Creates an AccCashInfo message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Trd_Common.AccCashInfo} AccCashInfo
-         */
-        AccCashInfo.fromObject = function fromObject(object) {
-            if (object instanceof $root.Trd_Common.AccCashInfo)
-                return object;
-            var message = new $root.Trd_Common.AccCashInfo();
-            if (object.currency != null)
-                message.currency = object.currency | 0;
-            if (object.cash != null)
-                message.cash = Number(object.cash);
-            if (object.availableBalance != null)
-                message.availableBalance = Number(object.availableBalance);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AccCashInfo message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Trd_Common.AccCashInfo
-         * @static
-         * @param {Trd_Common.AccCashInfo} message AccCashInfo
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AccCashInfo.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.currency = 0;
-                object.cash = 0;
-                object.availableBalance = 0;
-            }
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                object.currency = message.currency;
-            if (message.cash != null && message.hasOwnProperty("cash"))
-                object.cash = options.json && !isFinite(message.cash) ? String(message.cash) : message.cash;
-            if (message.availableBalance != null && message.hasOwnProperty("availableBalance"))
-                object.availableBalance = options.json && !isFinite(message.availableBalance) ? String(message.availableBalance) : message.availableBalance;
-            return object;
-        };
-
-        /**
-         * Converts this AccCashInfo to JSON.
-         * @function toJSON
-         * @memberof Trd_Common.AccCashInfo
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AccCashInfo.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return AccCashInfo;
     })();
 
     Trd_Common.TrdHeader = (function() {
@@ -76468,14 +65877,6 @@ $root.Trd_Common = (function() {
          * @property {number} frozenCash Funds frozenCash
          * @property {number} debtCash Funds debtCash
          * @property {number} avlWithdrawalCash Funds avlWithdrawalCash
-         * @property {number|null} [currency] Funds currency
-         * @property {number|null} [availableFunds] Funds availableFunds
-         * @property {number|null} [unrealizedPL] Funds unrealizedPL
-         * @property {number|null} [realizedPL] Funds realizedPL
-         * @property {number|null} [riskLevel] Funds riskLevel
-         * @property {number|null} [initialMargin] Funds initialMargin
-         * @property {number|null} [maintenanceMargin] Funds maintenanceMargin
-         * @property {Array.<Trd_Common.IAccCashInfo>|null} [cashInfoList] Funds cashInfoList
          */
 
         /**
@@ -76487,7 +65888,6 @@ $root.Trd_Common = (function() {
          * @param {Trd_Common.IFunds=} [properties] Properties to set
          */
         function Funds(properties) {
-            this.cashInfoList = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -76551,70 +65951,6 @@ $root.Trd_Common = (function() {
         Funds.prototype.avlWithdrawalCash = 0;
 
         /**
-         * Funds currency.
-         * @member {number} currency
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.currency = 0;
-
-        /**
-         * Funds availableFunds.
-         * @member {number} availableFunds
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.availableFunds = 0;
-
-        /**
-         * Funds unrealizedPL.
-         * @member {number} unrealizedPL
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.unrealizedPL = 0;
-
-        /**
-         * Funds realizedPL.
-         * @member {number} realizedPL
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.realizedPL = 0;
-
-        /**
-         * Funds riskLevel.
-         * @member {number} riskLevel
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.riskLevel = 0;
-
-        /**
-         * Funds initialMargin.
-         * @member {number} initialMargin
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.initialMargin = 0;
-
-        /**
-         * Funds maintenanceMargin.
-         * @member {number} maintenanceMargin
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.maintenanceMargin = 0;
-
-        /**
-         * Funds cashInfoList.
-         * @member {Array.<Trd_Common.IAccCashInfo>} cashInfoList
-         * @memberof Trd_Common.Funds
-         * @instance
-         */
-        Funds.prototype.cashInfoList = $util.emptyArray;
-
-        /**
          * Creates a new Funds instance using the specified properties.
          * @function create
          * @memberof Trd_Common.Funds
@@ -76645,23 +65981,6 @@ $root.Trd_Common = (function() {
             writer.uint32(/* id 5, wireType 1 =*/41).double(message.frozenCash);
             writer.uint32(/* id 6, wireType 1 =*/49).double(message.debtCash);
             writer.uint32(/* id 7, wireType 1 =*/57).double(message.avlWithdrawalCash);
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.currency);
-            if (message.availableFunds != null && message.hasOwnProperty("availableFunds"))
-                writer.uint32(/* id 9, wireType 1 =*/73).double(message.availableFunds);
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                writer.uint32(/* id 10, wireType 1 =*/81).double(message.unrealizedPL);
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                writer.uint32(/* id 11, wireType 1 =*/89).double(message.realizedPL);
-            if (message.riskLevel != null && message.hasOwnProperty("riskLevel"))
-                writer.uint32(/* id 12, wireType 0 =*/96).int32(message.riskLevel);
-            if (message.initialMargin != null && message.hasOwnProperty("initialMargin"))
-                writer.uint32(/* id 13, wireType 1 =*/105).double(message.initialMargin);
-            if (message.maintenanceMargin != null && message.hasOwnProperty("maintenanceMargin"))
-                writer.uint32(/* id 14, wireType 1 =*/113).double(message.maintenanceMargin);
-            if (message.cashInfoList != null && message.cashInfoList.length)
-                for (var i = 0; i < message.cashInfoList.length; ++i)
-                    $root.Trd_Common.AccCashInfo.encode(message.cashInfoList[i], writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
             return writer;
         };
 
@@ -76716,32 +66035,6 @@ $root.Trd_Common = (function() {
                     break;
                 case 7:
                     message.avlWithdrawalCash = reader.double();
-                    break;
-                case 8:
-                    message.currency = reader.int32();
-                    break;
-                case 9:
-                    message.availableFunds = reader.double();
-                    break;
-                case 10:
-                    message.unrealizedPL = reader.double();
-                    break;
-                case 11:
-                    message.realizedPL = reader.double();
-                    break;
-                case 12:
-                    message.riskLevel = reader.int32();
-                    break;
-                case 13:
-                    message.initialMargin = reader.double();
-                    break;
-                case 14:
-                    message.maintenanceMargin = reader.double();
-                    break;
-                case 15:
-                    if (!(message.cashInfoList && message.cashInfoList.length))
-                        message.cashInfoList = [];
-                    message.cashInfoList.push($root.Trd_Common.AccCashInfo.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -76806,36 +66099,6 @@ $root.Trd_Common = (function() {
                 return "debtCash: number expected";
             if (typeof message.avlWithdrawalCash !== "number")
                 return "avlWithdrawalCash: number expected";
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                if (!$util.isInteger(message.currency))
-                    return "currency: integer expected";
-            if (message.availableFunds != null && message.hasOwnProperty("availableFunds"))
-                if (typeof message.availableFunds !== "number")
-                    return "availableFunds: number expected";
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                if (typeof message.unrealizedPL !== "number")
-                    return "unrealizedPL: number expected";
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                if (typeof message.realizedPL !== "number")
-                    return "realizedPL: number expected";
-            if (message.riskLevel != null && message.hasOwnProperty("riskLevel"))
-                if (!$util.isInteger(message.riskLevel))
-                    return "riskLevel: integer expected";
-            if (message.initialMargin != null && message.hasOwnProperty("initialMargin"))
-                if (typeof message.initialMargin !== "number")
-                    return "initialMargin: number expected";
-            if (message.maintenanceMargin != null && message.hasOwnProperty("maintenanceMargin"))
-                if (typeof message.maintenanceMargin !== "number")
-                    return "maintenanceMargin: number expected";
-            if (message.cashInfoList != null && message.hasOwnProperty("cashInfoList")) {
-                if (!Array.isArray(message.cashInfoList))
-                    return "cashInfoList: array expected";
-                for (var i = 0; i < message.cashInfoList.length; ++i) {
-                    var error = $root.Trd_Common.AccCashInfo.verify(message.cashInfoList[i]);
-                    if (error)
-                        return "cashInfoList." + error;
-                }
-            }
             return null;
         };
 
@@ -76865,30 +66128,6 @@ $root.Trd_Common = (function() {
                 message.debtCash = Number(object.debtCash);
             if (object.avlWithdrawalCash != null)
                 message.avlWithdrawalCash = Number(object.avlWithdrawalCash);
-            if (object.currency != null)
-                message.currency = object.currency | 0;
-            if (object.availableFunds != null)
-                message.availableFunds = Number(object.availableFunds);
-            if (object.unrealizedPL != null)
-                message.unrealizedPL = Number(object.unrealizedPL);
-            if (object.realizedPL != null)
-                message.realizedPL = Number(object.realizedPL);
-            if (object.riskLevel != null)
-                message.riskLevel = object.riskLevel | 0;
-            if (object.initialMargin != null)
-                message.initialMargin = Number(object.initialMargin);
-            if (object.maintenanceMargin != null)
-                message.maintenanceMargin = Number(object.maintenanceMargin);
-            if (object.cashInfoList) {
-                if (!Array.isArray(object.cashInfoList))
-                    throw TypeError(".Trd_Common.Funds.cashInfoList: array expected");
-                message.cashInfoList = [];
-                for (var i = 0; i < object.cashInfoList.length; ++i) {
-                    if (typeof object.cashInfoList[i] !== "object")
-                        throw TypeError(".Trd_Common.Funds.cashInfoList: object expected");
-                    message.cashInfoList[i] = $root.Trd_Common.AccCashInfo.fromObject(object.cashInfoList[i]);
-                }
-            }
             return message;
         };
 
@@ -76905,8 +66144,6 @@ $root.Trd_Common = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.arrays || options.defaults)
-                object.cashInfoList = [];
             if (options.defaults) {
                 object.power = 0;
                 object.totalAssets = 0;
@@ -76915,13 +66152,6 @@ $root.Trd_Common = (function() {
                 object.frozenCash = 0;
                 object.debtCash = 0;
                 object.avlWithdrawalCash = 0;
-                object.currency = 0;
-                object.availableFunds = 0;
-                object.unrealizedPL = 0;
-                object.realizedPL = 0;
-                object.riskLevel = 0;
-                object.initialMargin = 0;
-                object.maintenanceMargin = 0;
             }
             if (message.power != null && message.hasOwnProperty("power"))
                 object.power = options.json && !isFinite(message.power) ? String(message.power) : message.power;
@@ -76937,25 +66167,6 @@ $root.Trd_Common = (function() {
                 object.debtCash = options.json && !isFinite(message.debtCash) ? String(message.debtCash) : message.debtCash;
             if (message.avlWithdrawalCash != null && message.hasOwnProperty("avlWithdrawalCash"))
                 object.avlWithdrawalCash = options.json && !isFinite(message.avlWithdrawalCash) ? String(message.avlWithdrawalCash) : message.avlWithdrawalCash;
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                object.currency = message.currency;
-            if (message.availableFunds != null && message.hasOwnProperty("availableFunds"))
-                object.availableFunds = options.json && !isFinite(message.availableFunds) ? String(message.availableFunds) : message.availableFunds;
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                object.unrealizedPL = options.json && !isFinite(message.unrealizedPL) ? String(message.unrealizedPL) : message.unrealizedPL;
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                object.realizedPL = options.json && !isFinite(message.realizedPL) ? String(message.realizedPL) : message.realizedPL;
-            if (message.riskLevel != null && message.hasOwnProperty("riskLevel"))
-                object.riskLevel = message.riskLevel;
-            if (message.initialMargin != null && message.hasOwnProperty("initialMargin"))
-                object.initialMargin = options.json && !isFinite(message.initialMargin) ? String(message.initialMargin) : message.initialMargin;
-            if (message.maintenanceMargin != null && message.hasOwnProperty("maintenanceMargin"))
-                object.maintenanceMargin = options.json && !isFinite(message.maintenanceMargin) ? String(message.maintenanceMargin) : message.maintenanceMargin;
-            if (message.cashInfoList && message.cashInfoList.length) {
-                object.cashInfoList = [];
-                for (var j = 0; j < message.cashInfoList.length; ++j)
-                    object.cashInfoList[j] = $root.Trd_Common.AccCashInfo.toObject(message.cashInfoList[j], options);
-            }
             return object;
         };
 
@@ -76997,8 +66208,6 @@ $root.Trd_Common = (function() {
          * @property {number|null} [tdBuyQty] Position tdBuyQty
          * @property {number|null} [tdSellVal] Position tdSellVal
          * @property {number|null} [tdSellQty] Position tdSellQty
-         * @property {number|null} [unrealizedPL] Position unrealizedPL
-         * @property {number|null} [realizedPL] Position realizedPL
          */
 
         /**
@@ -77161,22 +66370,6 @@ $root.Trd_Common = (function() {
         Position.prototype.tdSellQty = 0;
 
         /**
-         * Position unrealizedPL.
-         * @member {number} unrealizedPL
-         * @memberof Trd_Common.Position
-         * @instance
-         */
-        Position.prototype.unrealizedPL = 0;
-
-        /**
-         * Position realizedPL.
-         * @member {number} realizedPL
-         * @memberof Trd_Common.Position
-         * @instance
-         */
-        Position.prototype.realizedPL = 0;
-
-        /**
          * Creates a new Position instance using the specified properties.
          * @function create
          * @memberof Trd_Common.Position
@@ -77227,10 +66420,6 @@ $root.Trd_Common = (function() {
                 writer.uint32(/* id 25, wireType 1 =*/201).double(message.tdSellVal);
             if (message.tdSellQty != null && message.hasOwnProperty("tdSellQty"))
                 writer.uint32(/* id 26, wireType 1 =*/209).double(message.tdSellQty);
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                writer.uint32(/* id 28, wireType 1 =*/225).double(message.unrealizedPL);
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                writer.uint32(/* id 29, wireType 1 =*/233).double(message.realizedPL);
             return writer;
         };
 
@@ -77318,12 +66507,6 @@ $root.Trd_Common = (function() {
                     break;
                 case 26:
                     message.tdSellQty = reader.double();
-                    break;
-                case 28:
-                    message.unrealizedPL = reader.double();
-                    break;
-                case 29:
-                    message.realizedPL = reader.double();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -77423,12 +66606,6 @@ $root.Trd_Common = (function() {
             if (message.tdSellQty != null && message.hasOwnProperty("tdSellQty"))
                 if (typeof message.tdSellQty !== "number")
                     return "tdSellQty: number expected";
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                if (typeof message.unrealizedPL !== "number")
-                    return "unrealizedPL: number expected";
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                if (typeof message.realizedPL !== "number")
-                    return "realizedPL: number expected";
             return null;
         };
 
@@ -77487,10 +66664,6 @@ $root.Trd_Common = (function() {
                 message.tdSellVal = Number(object.tdSellVal);
             if (object.tdSellQty != null)
                 message.tdSellQty = Number(object.tdSellQty);
-            if (object.unrealizedPL != null)
-                message.unrealizedPL = Number(object.unrealizedPL);
-            if (object.realizedPL != null)
-                message.realizedPL = Number(object.realizedPL);
             return message;
         };
 
@@ -77530,8 +66703,6 @@ $root.Trd_Common = (function() {
                 object.tdBuyQty = 0;
                 object.tdSellVal = 0;
                 object.tdSellQty = 0;
-                object.unrealizedPL = 0;
-                object.realizedPL = 0;
             }
             if (message.positionID != null && message.hasOwnProperty("positionID"))
                 if (typeof message.positionID === "number")
@@ -77572,10 +66743,6 @@ $root.Trd_Common = (function() {
                 object.tdSellVal = options.json && !isFinite(message.tdSellVal) ? String(message.tdSellVal) : message.tdSellVal;
             if (message.tdSellQty != null && message.hasOwnProperty("tdSellQty"))
                 object.tdSellQty = options.json && !isFinite(message.tdSellQty) ? String(message.tdSellQty) : message.tdSellQty;
-            if (message.unrealizedPL != null && message.hasOwnProperty("unrealizedPL"))
-                object.unrealizedPL = options.json && !isFinite(message.unrealizedPL) ? String(message.unrealizedPL) : message.unrealizedPL;
-            if (message.realizedPL != null && message.hasOwnProperty("realizedPL"))
-                object.realizedPL = options.json && !isFinite(message.realizedPL) ? String(message.realizedPL) : message.realizedPL;
             return object;
         };
 
@@ -80187,7 +69354,6 @@ $root.Trd_GetFunds = (function() {
          * @interface IC2S
          * @property {Trd_Common.ITrdHeader} header C2S header
          * @property {boolean|null} [refreshCache] C2S refreshCache
-         * @property {number|null} [currency] C2S currency
          */
 
         /**
@@ -80222,14 +69388,6 @@ $root.Trd_GetFunds = (function() {
         C2S.prototype.refreshCache = false;
 
         /**
-         * C2S currency.
-         * @member {number} currency
-         * @memberof Trd_GetFunds.C2S
-         * @instance
-         */
-        C2S.prototype.currency = 0;
-
-        /**
          * Creates a new C2S instance using the specified properties.
          * @function create
          * @memberof Trd_GetFunds.C2S
@@ -80256,8 +69414,6 @@ $root.Trd_GetFunds = (function() {
             $root.Trd_Common.TrdHeader.encode(message.header, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.refreshCache != null && message.hasOwnProperty("refreshCache"))
                 writer.uint32(/* id 2, wireType 0 =*/16).bool(message.refreshCache);
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.currency);
             return writer;
         };
 
@@ -80297,9 +69453,6 @@ $root.Trd_GetFunds = (function() {
                     break;
                 case 2:
                     message.refreshCache = reader.bool();
-                    break;
-                case 3:
-                    message.currency = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -80346,9 +69499,6 @@ $root.Trd_GetFunds = (function() {
             if (message.refreshCache != null && message.hasOwnProperty("refreshCache"))
                 if (typeof message.refreshCache !== "boolean")
                     return "refreshCache: boolean expected";
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                if (!$util.isInteger(message.currency))
-                    return "currency: integer expected";
             return null;
         };
 
@@ -80371,8 +69521,6 @@ $root.Trd_GetFunds = (function() {
             }
             if (object.refreshCache != null)
                 message.refreshCache = Boolean(object.refreshCache);
-            if (object.currency != null)
-                message.currency = object.currency | 0;
             return message;
         };
 
@@ -80392,14 +69540,11 @@ $root.Trd_GetFunds = (function() {
             if (options.defaults) {
                 object.header = null;
                 object.refreshCache = false;
-                object.currency = 0;
             }
             if (message.header != null && message.hasOwnProperty("header"))
                 object.header = $root.Trd_Common.TrdHeader.toObject(message.header, options);
             if (message.refreshCache != null && message.hasOwnProperty("refreshCache"))
                 object.refreshCache = message.refreshCache;
-            if (message.currency != null && message.hasOwnProperty("currency"))
-                object.currency = message.currency;
             return object;
         };
 
