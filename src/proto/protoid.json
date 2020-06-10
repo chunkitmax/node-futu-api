@@ -1,10 +1,12 @@
 {
+  "InitWebSocket": 1,
   "InitConnect": 1001,
   "GetGlobalState": 1002,
   "Notify": 1003,
   "KeepAlive": 1004,
   "GetUserInfo": 1005,
   "GetDelayStatistics": 1007,
+
   "Qot_Sub": 3001,
   "Qot_RegQotPush": 3002,
   "Qot_GetSubInfo": 3003,
@@ -23,12 +25,14 @@
   "Qot_GetOrderDetail": 3016,
   "Qot_UpdateOrderDetail": 3017,
   "Qot_UpdatePriceReminder": 3019,
+
   "Qot_GetHistoryKL": 3100,
   "Qot_GetHistoryKLPoints": 3101,
   "Qot_GetRehab": 3102,
   "Qot_RequestHistoryKL": 3103,
   "Qot_RequestHistoryKLQuota": 3104,
   "Qot_RequestRehab": 3105,
+
   "Qot_GetTradeDate": 3200,
   "Qot_GetSuspend": 3201,
   "Qot_GetStaticInfo": 3202,
@@ -52,6 +56,7 @@
   "Qot_SetPriceReminder": 3220,
   "Qot_GetPriceReminder": 3221,
   "Qot_GetUserSecurityGroup": 3222,
+  
   "Trd_GetAccList": 2001,
   "Trd_UnlockTrade": 2005,
   "Trd_SubAccPush": 2008,
