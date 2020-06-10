@@ -1,13 +1,15 @@
-import Ws from 'ws'
-import { FutuConfig } from './Futu'
-import Path from 'path'
-import Fs from 'fs'
-import Assert from 'assert'
-import L from 'loglevel'
-import Proto from './proto/proto'
-import ProtoId from './proto/protoid.json'
-import ProtoBuf, { Type, Writer, Message } from 'protobufjs'
-import ByteBuffer from 'bytebuffer'
+import Assert from 'assert';
+import ByteBuffer from 'bytebuffer';
+import Crypto from 'crypto';
+import Fs from 'fs';
+import L from 'loglevel';
+import Path from 'path';
+import ProtoBuf, { Message, Type, Writer } from 'protobufjs';
+import Ws from 'ws';
+
+import Futu, { FutuConfig } from './Futu';
+import Proto from './proto/proto';
+import ProtoId from './proto/protoid.json';
 
 // follow official code but doc does not mention this
 const HeadSign = "ft-v1.0\0"
@@ -29,6 +31,17 @@ type FutuRet = {
   data: ArrayBuffer
 }
 
+type FutuRequest = {
+  c2s: any
+}
+
+type FutuResponse = {
+  retType: number
+  retMsg: string
+  errCode: number
+  s2c: any
+}
+
 export default class WebSocket {
 
   private ws: Ws & {
@@ -36,10 +49,14 @@ export default class WebSocket {
   }
 
   private locks: {
-    [reqId: number]: (err?: Error, data?: FutuRet) => void
+    [reqId: number]: undefined|((err?: Error, data?: FutuRet) => void)
   } = {}
 
+  private connID: number|Long|undefined
+  private header: Proto.Trd_Common.ITrdHeader|undefined
+
   private reconnectTimer: NodeJS.Timeout|undefined
+  private isLoggedIn = false
   private exitFlag = false
 
   private reqId = 0
@@ -53,16 +70,8 @@ export default class WebSocket {
     process.on('SIGTERM', () => { this.exitFlag = true; this.clean() })
   }
 
-  private clean() {
-    const closeError = new Error('Is shutting down...')
-    Object.values(this.locks).forEach(lock => lock(closeError))
-    this.locks = []
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer)
-    }
-    try {
-      this.ws.close()
-    } finally {}
+  public get ready() {
+    return this.isLoggedIn
   }
 
   private setup() {
@@ -72,10 +81,10 @@ export default class WebSocket {
     }
     this.ws = (new Ws(`${this.config.isSSL? 'wss' : 'ws'}://${this.config.ip}:${this.config.port}`)) as any
     this.ws.sendCmd = this.sendCmd.bind(this)
-    this.ws.onopen = this.onOpen
+    this.ws.onopen = this.onOpen.bind(this)
     this.ws.onmessage = this.releaseLock.bind(this)
-    this.ws.onerror = this.onError
-    this.ws.onclose = this.onClose
+    this.ws.onerror = this.onError.bind(this)
+    this.ws.onclose = this.onClose.bind(this)
     this.reconnectTimer = undefined
     return this.ws
   }
@@ -83,7 +92,7 @@ export default class WebSocket {
   private sendCmd(id: number, buffer: Uint8Array): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
       const reqId = ++this.reqId
-      this.ws.send(this.pack(id, reqId, buffer), err => {
+      this.ws.send(this.pack(id, reqId, buffer).toArrayBuffer(), err => {
         if (err) return reject(err)
         // TODO: can setting many timeout cause performance issues?
         let timeoutTimer = setTimeout(() => {
@@ -93,10 +102,10 @@ export default class WebSocket {
         const lock = (err?: Error, data?: FutuRet) => {
           if (timeoutTimer) clearTimeout(timeoutTimer)
           if (err) return reject(err)
-          // not sure what the errCode and errMsg would if error occurred
-          //   header structure is different from the one on api doc
           if (!data) {
             return reject(new Error('Return obj is undeifned'))
+          } else if (data.error !== 0) {
+            return reject(new Error(data.errMsg))
           } else if (data.sign.indexOf(HeadSign) === -1) {
             return reject(new Error('Wrong Header Flag'))
           } else {
@@ -108,12 +117,127 @@ export default class WebSocket {
     })
   }
 
+  protected request(name: keyof (typeof ProtoId), req?: any): Promise<any> {
+    if (this.isLoggedIn) {
+      const _req = Object.assign({}, req, {
+        packetID: {
+          connID: this.connID,
+          serialNo: Date.now()
+        } as Proto.Common.IPacketID,
+        header: this.header,
+        userID: this.config.userID
+      })
+      return this._request(name, _req)
+    } else {
+      throw new Error('Connection is not ready yet')
+    }
+  }
+
+  private async _request(name: keyof (typeof ProtoId), req?: any): Promise<any> {
+    const proto = Proto[name] as unknown as FutuProto
+    Assert.ok(!proto.Request || req, 'Request obj is required')
+    if (proto.Request) {
+      if (proto.C2S) {
+        const errMsg = proto.C2S.verify(req)
+        if (errMsg) throw new Error(errMsg)
+      } else {
+        throw new Error('Invalid request obj')
+      }
+      const buffer = proto.Request.encode({
+              c2s: req
+            }).finish(),
+            response = await this.ws.sendCmd(ProtoId[name], buffer)
+      let retObj = proto.Response!.decode(new Uint8Array(response)) as any as FutuResponse
+      if (retObj.errCode === 0 && retObj.retType !== -1) {
+        return retObj.s2c
+      } else {
+        throw new Error(retObj.retMsg)
+      }
+    }
+    throw new Error('Cannot send request to this api')
+  }
+
+  private async onOpen(e: Ws.OpenEvent) {
+    if (this.ws) {
+      this.clean(false)
+      // TODO: setup (e.g. InitConnect)
+      let keyMD5 = ""
+      if (this.config.wsKey) {
+        // keyMD5 = Crypto.createHash('md5').update(this.config.wsKey).digest('hex')
+        keyMD5 = this.config.wsKey
+      }
+      try {
+        await this._request('InitWebSocket', {
+          websocketKey: keyMD5
+        } as Proto.InitWebSocket.IC2S)
+        // TODO: useless (InitConnect on websocket causes api call failure afterwards)
+        // get connID
+        // const { connID, keepAliveInterval } = (await this._request('InitConnect', {
+        //   clientVer: 101,
+        //   clientID: `client-${Date.now()%1000}`,
+        //   recvNotify: this.config.recvNotify
+        // } as Proto.InitConnect.IC2S)) as Proto.InitConnect.IS2C
+        // this.connID = connID
+        // unlock trade features
+        await this._request('Trd_UnlockTrade', {
+          pwdMD5: this.config.pwdMd5,
+          unlock: true
+        } as Proto.Trd_UnlockTrade.IC2S)
+        // find account
+        const { accList } = (await this._request('Trd_GetAccList', {
+          userID: this.config.userID
+        } as Proto.Trd_GetAccList.IC2S) as Proto.Trd_GetAccList.IS2C)
+        if (!accList || accList.length === 0) throw new Error('Cannot get acc list')
+        const matchedAcc = accList.find(acc => 
+          acc.trdEnv === this.config.account.env! &&
+          acc.trdMarketAuthList!.includes(this.config.account.market!) &&
+          acc.accType === this.config.account.accType!
+        )
+        if (!matchedAcc) throw new Error('No matched account')
+        // prepare header
+        this.header = {
+          trdEnv: this.config.account.env!,
+          accID: matchedAcc.accID,
+          trdMarket: this.config.account.market!
+        }
+        this.isLoggedIn = true
+      } catch (err) {
+        L.error(err)
+      }
+    }
+  }
+
+  private onError(e: Ws.ErrorEvent) {
+    if (this.exitFlag) {
+      L.warn('Websocket disconnected')
+    } else {
+      L.error('Error occured', e)
+      if (!this.reconnectTimer) {
+        this.clean()
+        this.reconnectTimer = setTimeout(() => this.setup(), 1000)
+      }
+    }
+  }
+
+  private onClose(e: Ws.CloseEvent) {
+    if (this.exitFlag) {
+      L.warn('Websocket disconnected')
+    } else {
+      L.error('Websocket disconnected')
+      if (!this.reconnectTimer) {
+        this.clean()
+        this.reconnectTimer = setTimeout(() => this.setup(), 1000)
+      }
+    }
+  }
+
   private releaseLock(msg: Ws.MessageEvent) {
     const { data } = msg
-    if (data && data instanceof ArrayBuffer) {
+    if (data && data instanceof Buffer) {
       const ret = this.unpack(data)
-      if (ret) {
-        this.locks[ret.section](undefined, ret)
+      if (ret && ret.section && this.locks[ret.section]) {
+        this.locks[ret.section]!(undefined, ret)
+        delete this.locks[ret.section]
       }
     }
   }
@@ -128,66 +252,37 @@ export default class WebSocket {
     return buf
   }
 
-  private unpack(data: ArrayBuffer) {
-    if (data instanceof ArrayBuffer) {
-      var buf = new ByteBuffer(data.byteLength, false)
-      // @ts-ignore
-      let result: FutuRet = {}
-      buf.append(data)
-      buf.flip()
-      result.sign = buf.readUTF8String(8)
-      result.cmd = buf.readUint32()
-      result.section = buf.readUint64().toNumber()
-      result.error = buf.readInt32()
-      //https://github.com/nodejs/node/issues/4775
-      result.errMsg = buf.readUTF8String(20).replace(/\0/g, '')
-      if (data.byteLength > HeadLength) {
-        result.data = buf.readBytes(data.byteLength - HeadLength).toArrayBuffer()
-      }
-      return result
+  private unpack(data: Buffer) {
+    var buf = new ByteBuffer(data.byteLength, false)
+    // @ts-ignore
+    let result: FutuRet = {}
+    buf.append(data)
+    buf.flip()
+    result.sign = buf.readUTF8String(8)
+    result.cmd = buf.readUint32()
+    result.section = buf.readUint64().toNumber()
+    result.error = buf.readInt32()
+    //https://github.com/nodejs/node/issues/4775
+    result.errMsg = buf.readUTF8String(20).replace(/\0/g, '')
+    if (data.byteLength > HeadLength) {
+      result.data = buf.readBytes(data.byteLength - HeadLength).toArrayBuffer()
     }
-    return null
+    return result
   }
 
-  protected request(name: keyof (typeof ProtoId), req?: any): any {
-    const proto = Proto[name] as unknown as FutuProto
-    Assert.ok(!proto.Request || req, 'Request obj is required')
-    if (proto.Request) {
-      if (!proto.C2S || !proto.C2S.verify(req)) {
-        throw new Error('Invalid request obj')
-      }
-      const request = req as Type,
-            buffer = request.encode({
-              c2s: req
-            }).finish()
-      this.ws.send(buffer)
-    } else {
-      this.ws
+  private clean(close=true) {
+    const closeError = new Error('Closing websocket connection')
+    Object.values(this.locks).forEach(lock => lock!(closeError))
+    this.locks = []
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer)
     }
-  }
-
-  private onOpen(e: Ws.OpenEvent) {
-    if (this.ws) {
-      // TODO: setup (e.g. InitConnect)
+    if (close) {
+      try {
+        this.ws.close()
+      } finally {}
     }
-  }
-
-  private onError(e: Ws.ErrorEvent) {
-    L.error('Error occured', e)
-    if (!this.reconnectTimer) {
-      this.reconnectTimer = setTimeout(() => this.setup(), 1000)
-    }
-  }
-
-  private onClose(e: Ws.CloseEvent) {
-    if (this.exitFlag) {
-      L.warn('Websocket disconnected')
-    } else {
-      L.error('Websocket disconnected')
-      if (!this.reconnectTimer) {
-        this.reconnectTimer = setTimeout(() => this.setup(), 1000)
-      }
-    }
+    this.isLoggedIn = false
   }
 
 }
