@@ -13,7 +13,7 @@ import Util from 'util';
 //  *    "ip": "localhost"
 //  * }
 //  */
-import FutuConfig from '../../user_config.json';
+import UserConfig from '../../user_config.json';
 import Futu, { Proto } from '../futu';
 import { Qot_Common, Trd_Common } from '../proto/proto';
 
@@ -36,7 +36,7 @@ async function AssertShouldResolve<T>(block: (() => Promise<T>) | Promise<T>, me
   }
 }
 
-const ft = new Futu(FutuConfig)
+const ft = new Futu(UserConfig)
 
 describe('Futu', () => {
   before(async () => {
