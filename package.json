@@ -33,6 +33,7 @@
     "@types/ws": "^7.2.5",
     "bytebuffer": "^5.0.1",
     "loglevel": "^1.6.8",
+    "long": "^4.0.0",
     "protobufjs": "^6.8.8",
     "ws": "^7.3.0"
   }
