@@ -1,3 +1,5 @@
+import './utils/object';
+
 import Assert from 'assert';
 import ByteBuffer from 'bytebuffer';
 import Crypto from 'crypto';
@@ -8,47 +10,21 @@ import ProtoBuf, { Message, Type, Writer } from 'protobufjs';
 import { inspect } from 'util';
 import Ws from 'ws';
 
-import Futu, { FutuConfig } from './Futu';
+import Futu, { FutuConfig } from './futu';
 import Proto from './proto/proto';
 import ProtoId from './proto/protoid.json';
+import PushEmitter from './push_emitter';
+import { valueof } from './types/ts';
+import { FutuProto, FutuResponse, FutuRet, OnPushListener, WsApiCmd } from './types/types';
+import { FutuError, ParameterError, SystemError, TimeoutError } from './utils/error';
+import { ProtoName } from './utils/proto';
 
 // follow official code but doc does not mention this
 const HeadSign = "ft-v1.0\0"
 const HeadLength = 44
 
-type FutuProto = {
-  C2S?: typeof Message
-  S2C?: typeof Message
-  Request?: typeof Message
-  Response?: typeof Message
-}
 
-type FutuRet = {
-  sign: string
-  cmd: number
-  section: number
-  error: number
-  errMsg: string
-  data: ArrayBuffer
-}
-
-type FutuRequest = {
-  c2s: any
-}
-
-type FutuResponse = {
-  retType: number
-  retMsg: string
-  errCode: number
-  s2c: any
-}
-
-enum WsApiCmd {
-  Init = 1,
-  OpenDisConnect
-}
-
-export default class WebSocket {
+export default class WebSocket extends PushEmitter {
 
   private ws: Ws & {
     sendCmd: (id: number, buffer: Uint8Array) => Promise<ArrayBuffer>
@@ -56,6 +32,12 @@ export default class WebSocket {
 
   private locks: {
     [reqId: number]: undefined|((err?: Error, data?: FutuRet) => void)
+  } = {}
+
+  private onPushListeners: {
+    [cmd: number]: undefined|{
+      [stock: string]: OnPushListener<valueof<typeof Proto>[valueof<valueof<typeof Proto>>]>[]
+    }
   } = {}
 
   private connID: number|Long|undefined
@@ -70,14 +52,45 @@ export default class WebSocket {
   // TODO: handle push subscription
 
   constructor(private config: FutuConfig) {
+    super()
     this.ws = this.setup()
     process.on('exit', () => { this.exitFlag = true; this.clean() })
     process.on('SIGINT', () => { this.exitFlag = true; this.clean() })
     process.on('SIGTERM', () => { this.exitFlag = true; this.clean() })
   }
 
-  public get ready() {
+  protected get ready() {
     return this.isLoggedIn
+  }
+
+  protected addOnPushListener<T>(
+    cmdOrName: valueof<typeof ProtoId>|keyof (typeof ProtoId),
+    security: Proto.Qot_Common.Security,
+    listener: OnPushListener<T>
+  ) {
+    let cmd: valueof<typeof ProtoId> = -1
+    if (typeof cmdOrName === 'string') {
+      if (Proto[cmdOrName]) {
+        cmd = ProtoId[cmdOrName] as number
+      } else if (!isNaN(parseInt(cmdOrName))) {
+        cmd = parseInt(cmdOrName)
+      } else {
+        throw new ParameterError('Invalid cmd')
+      }
+    } else if (ProtoName[cmdOrName]) {
+      cmd = cmdOrName
+    } else {
+      throw new ParameterError('Invalid cmd')
+    }
+    if (!this.onPushListeners[cmd]) {
+      this.onPushListeners[cmd] = {
+        [`${security.code}|${security.market}`]: [listener]
+      }
+    } else if (!this.onPushListeners[cmd]![`${security.code}|${security.market}`]) {
+      this.onPushListeners[cmd]![`${security.code}|${security.market}`] = [listener]
+    } else {
+      this.onPushListeners[cmd]
+    }
   }
 
   private setup() {
@@ -101,7 +114,7 @@ export default class WebSocket {
       // TODO: can setting many timeout cause performance issues?
       let timeoutTimer = setTimeout(() => {
         delete this.locks[reqId]
-        return reject(new Error('Timeout'))
+        return reject(new TimeoutError('Timeout'))
       }, this.config.reqTimeout)
       this.ws.send(this.pack(cmd, reqId, buffer).toArrayBuffer(), err => {
         if (!this.locks[reqId]) {
@@ -110,11 +123,11 @@ export default class WebSocket {
             if (timeoutTimer) clearTimeout(timeoutTimer)
             if (err) return reject(err)
             if (!data) {
-              return reject(new Error('Return obj is undeifned'))
+              return reject(new FutuError('Return obj is undeifned'))
             } else if (data.error !== 0) {
-              return reject(new Error(data.errMsg))
+              return reject(new FutuError(data.errMsg))
             } else if (data.sign.indexOf(HeadSign) === -1) {
-              return reject(new Error('Wrong Header Flag'))
+              return reject(new FutuError('Wrong Header Flag'))
             } else {
               return resolve(data.data)
             }
@@ -137,7 +150,7 @@ export default class WebSocket {
       })
       return this._request(name, _req)
     } else {
-      throw new Error('Connection is not ready yet')
+      throw new SystemError('Connection is not ready yet')
     }
   }
 
@@ -147,22 +160,22 @@ export default class WebSocket {
     if (proto.Request) {
       if (proto.C2S) {
         const errMsg = proto.C2S.verify(req)
-        if (errMsg) throw new Error(errMsg)
+        if (errMsg) throw new ParameterError(errMsg)
       } else {
-        throw new Error('Invalid request obj')
+        throw new ParameterError('Cannot get C2S class by this name')
       }
       const buffer = proto.Request.encode({
               c2s: req
             }).finish(),
-            response = await this.ws.sendCmd(ProtoId[name], buffer)
-      let retObj = proto.Response!.decode(new Uint8Array(response)) as any as FutuResponse
+            response = await this.ws.sendCmd(ProtoId[name], buffer),
+            retObj = proto.Response!.decode(new Uint8Array(response)) as any as FutuResponse
       if (retObj.errCode === 0 && retObj.retType !== -1) {
         return retObj.s2c
       } else {
-        throw new Error(retObj.retMsg)
+        throw new FutuError(retObj.retMsg)
       }
     }
-    throw new Error('Cannot send request to this api')
+    throw new ParameterError('Cannot get request class by this name')
   }
 
   private async onOpen(e: Ws.OpenEvent) {
@@ -187,26 +200,26 @@ export default class WebSocket {
         const { accList } = (await this._request('Trd_GetAccList', {
           userID: this.config.userID
         } as Proto.Trd_GetAccList.IC2S) as Proto.Trd_GetAccList.IS2C)
-        if (!accList || accList.length === 0) throw new Error('Cannot get acc list')
+        if (!accList || accList.length === 0) throw new SystemError('Cannot get acc list')
         const matchedAcc = accList.find(acc =>
-          acc.trdEnv === this.config.account.env! &&
-          acc.trdMarketAuthList!.includes(this.config.account.market!) &&
-          acc.accType === this.config.account.accType!
+          acc.trdEnv === this.config.account!.env! &&
+          acc.trdMarketAuthList!.includes(this.config.account!.market!) &&
+          acc.accType === this.config.account!.accType!
         )
-        if (!matchedAcc) throw new Error('No matched account')
+        if (!matchedAcc) throw new SystemError('No matched account')
         // prepare header
         this.header = {
-          trdEnv: this.config.account.env!,
+          trdEnv: this.config.account!.env!,
           accID: matchedAcc.accID,
-          trdMarket: this.config.account.market!
+          trdMarket: this.config.account!.market!
         }
         const { connID, qotLogined, trdLogined } = (await this._request('GetGlobalState', {
           userID: this.config.userID
         } as Proto.GetGlobalState.IC2S)) as Proto.GetGlobalState.IS2C
-        if (!connID) throw new Error('Cannot get connID')
+        if (!connID) throw new SystemError('Cannot get connID')
         this.connID = connID
         this.isLoggedIn = qotLogined && trdLogined
-        if (!this.isLoggedIn) throw new Error('Either API for Quote and Trade is not permitted')
+        if (!this.isLoggedIn) throw new SystemError('Either API for Quote and Trade is not permitted')
         L.info('Finish initialization')
       } catch (err) {
         L.error(err)
@@ -241,6 +254,20 @@ export default class WebSocket {
     }
   }
 
+  private _onPush(res: FutuRet) {
+    const proto = Proto[ProtoName[res.cmd]] as unknown as FutuProto
+    if (proto.Response) {
+      const retObj = proto.Response!.decode(new Uint8Array(res.data)) as any as FutuResponse
+      if (retObj.errCode === 0 && retObj.retType !== -1) {
+        return super.onPush(res.cmd, retObj.s2c)
+      } else {
+        throw new FutuError(retObj.retMsg)
+      }
+    } else {
+      L.warn('Cannot decode this received msg', res)
+    }
+  }
+
   private releaseLock(msg: Ws.MessageEvent) {
     const { data } = msg
     if (data && data instanceof Buffer) {
@@ -256,8 +283,9 @@ export default class WebSocket {
             this.reconnectTimer = setTimeout(() => this.setup(), 1000)
           }
         }
-      } else {
-        L.warn(inspect(ret, { depth: 3 }))
+      } else { // Push
+
+        this._onPush(ret)
       }
     }
   }
@@ -291,16 +319,19 @@ export default class WebSocket {
   }
 
   private clean(close=true) {
-    const closeError = new Error('Closing websocket connection')
+    const closeError = new SystemError('Closing websocket connection')
     Object.values(this.locks).forEach(lock => lock!(closeError))
     this.locks = []
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer)
     }
+    if (super.emitter) {
+      super.emitter.removeAllListeners()
+    }
     if (close) {
       try {
         this.ws.close()
-      } finally {}
+      } catch (e) {}
     }
     this.isLoggedIn = false
   }
