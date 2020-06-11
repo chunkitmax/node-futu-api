@@ -2826,31 +2826,69 @@ $root.GetDelayStatistics = (function() {
     return GetDelayStatistics;
 })();
 
-$root.GetGlobalState = (function() {
+$root.GetUserInfo = (function() {
 
     /**
-     * Namespace GetGlobalState.
-     * @exports GetGlobalState
+     * Namespace GetUserInfo.
+     * @exports GetUserInfo
      * @namespace
      */
-    var GetGlobalState = {};
+    var GetUserInfo = {};
 
-    GetGlobalState.C2S = (function() {
+    /**
+     * UpdateType enum.
+     * @name GetUserInfo.UpdateType
+     * @enum {string}
+     * @property {number} UpdateType_None=0 UpdateType_None value
+     * @property {number} UpdateType_Advice=1 UpdateType_Advice value
+     * @property {number} UpdateType_Force=2 UpdateType_Force value
+     */
+    GetUserInfo.UpdateType = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "UpdateType_None"] = 0;
+        values[valuesById[1] = "UpdateType_Advice"] = 1;
+        values[valuesById[2] = "UpdateType_Force"] = 2;
+        return values;
+    })();
+
+    /**
+     * UserInfoField enum.
+     * @name GetUserInfo.UserInfoField
+     * @enum {string}
+     * @property {number} UserInfoField_Basic=1 UserInfoField_Basic value
+     * @property {number} UserInfoField_API=2 UserInfoField_API value
+     * @property {number} UserInfoField_QotRight=4 UserInfoField_QotRight value
+     * @property {number} UserInfoField_Disclaimer=8 UserInfoField_Disclaimer value
+     * @property {number} UserInfoField_Update=16 UserInfoField_Update value
+     * @property {number} UserInfoField_WebKey=2048 UserInfoField_WebKey value
+     */
+    GetUserInfo.UserInfoField = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[1] = "UserInfoField_Basic"] = 1;
+        values[valuesById[2] = "UserInfoField_API"] = 2;
+        values[valuesById[4] = "UserInfoField_QotRight"] = 4;
+        values[valuesById[8] = "UserInfoField_Disclaimer"] = 8;
+        values[valuesById[16] = "UserInfoField_Update"] = 16;
+        values[valuesById[2048] = "UserInfoField_WebKey"] = 2048;
+        return values;
+    })();
+
+    GetUserInfo.C2S = (function() {
 
         /**
          * Properties of a C2S.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @interface IC2S
-         * @property {number|Long} userID C2S userID
+         * @property {number|null} [flag] C2S flag
          */
 
         /**
          * Constructs a new C2S.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @classdesc Represents a C2S.
          * @implements IC2S
          * @constructor
-         * @param {GetGlobalState.IC2S=} [properties] Properties to set
+         * @param {GetUserInfo.IC2S=} [properties] Properties to set
          */
         function C2S(properties) {
             if (properties)
@@ -2860,47 +2898,48 @@ $root.GetGlobalState = (function() {
         }
 
         /**
-         * C2S userID.
-         * @member {number|Long} userID
-         * @memberof GetGlobalState.C2S
+         * C2S flag.
+         * @member {number} flag
+         * @memberof GetUserInfo.C2S
          * @instance
          */
-        C2S.prototype.userID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        C2S.prototype.flag = 0;
 
         /**
          * Creates a new C2S instance using the specified properties.
          * @function create
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
-         * @param {GetGlobalState.IC2S=} [properties] Properties to set
-         * @returns {GetGlobalState.C2S} C2S instance
+         * @param {GetUserInfo.IC2S=} [properties] Properties to set
+         * @returns {GetUserInfo.C2S} C2S instance
          */
         C2S.create = function create(properties) {
             return new C2S(properties);
         };
 
         /**
-         * Encodes the specified C2S message. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
+         * Encodes the specified C2S message. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
          * @function encode
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
-         * @param {GetGlobalState.IC2S} message C2S message or plain object to encode
+         * @param {GetUserInfo.IC2S} message C2S message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
         C2S.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.userID);
+            if (message.flag != null && message.hasOwnProperty("flag"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.flag);
             return writer;
         };
 
         /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
-         * @param {GetGlobalState.IC2S} message C2S message or plain object to encode
+         * @param {GetUserInfo.IC2S} message C2S message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -2911,41 +2950,39 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a C2S message from the specified reader or buffer.
          * @function decode
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {GetGlobalState.C2S} C2S
+         * @returns {GetUserInfo.C2S} C2S
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         C2S.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.C2S();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.C2S();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 1:
-                    message.userID = reader.uint64();
+                case 2:
+                    message.flag = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
                     break;
                 }
             }
-            if (!message.hasOwnProperty("userID"))
-                throw $util.ProtocolError("missing required 'userID'", { instance: message });
             return message;
         };
 
         /**
          * Decodes a C2S message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetGlobalState.C2S} C2S
+         * @returns {GetUserInfo.C2S} C2S
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -2958,7 +2995,7 @@ $root.GetGlobalState = (function() {
         /**
          * Verifies a C2S message.
          * @function verify
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
@@ -2966,41 +3003,35 @@ $root.GetGlobalState = (function() {
         C2S.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.userID) && !(message.userID && $util.isInteger(message.userID.low) && $util.isInteger(message.userID.high)))
-                return "userID: integer|Long expected";
+            if (message.flag != null && message.hasOwnProperty("flag"))
+                if (!$util.isInteger(message.flag))
+                    return "flag: integer expected";
             return null;
         };
 
         /**
          * Creates a C2S message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {GetGlobalState.C2S} C2S
+         * @returns {GetUserInfo.C2S} C2S
          */
         C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetGlobalState.C2S)
+            if (object instanceof $root.GetUserInfo.C2S)
                 return object;
-            var message = new $root.GetGlobalState.C2S();
-            if (object.userID != null)
-                if ($util.Long)
-                    (message.userID = $util.Long.fromValue(object.userID)).unsigned = true;
-                else if (typeof object.userID === "string")
-                    message.userID = parseInt(object.userID, 10);
-                else if (typeof object.userID === "number")
-                    message.userID = object.userID;
-                else if (typeof object.userID === "object")
-                    message.userID = new $util.LongBits(object.userID.low >>> 0, object.userID.high >>> 0).toNumber(true);
+            var message = new $root.GetUserInfo.C2S();
+            if (object.flag != null)
+                message.flag = object.flag | 0;
             return message;
         };
 
         /**
          * Creates a plain object from a C2S message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @static
-         * @param {GetGlobalState.C2S} message C2S
+         * @param {GetUserInfo.C2S} message C2S
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
@@ -3009,23 +3040,16 @@ $root.GetGlobalState = (function() {
                 options = {};
             var object = {};
             if (options.defaults)
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, true);
-                    object.userID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.userID = options.longs === String ? "0" : 0;
-            if (message.userID != null && message.hasOwnProperty("userID"))
-                if (typeof message.userID === "number")
-                    object.userID = options.longs === String ? String(message.userID) : message.userID;
-                else
-                    object.userID = options.longs === String ? $util.Long.prototype.toString.call(message.userID) : options.longs === Number ? new $util.LongBits(message.userID.low >>> 0, message.userID.high >>> 0).toNumber(true) : message.userID;
+                object.flag = 0;
+            if (message.flag != null && message.hasOwnProperty("flag"))
+                object.flag = message.flag;
             return object;
         };
 
         /**
          * Converts this C2S to JSON.
          * @function toJSON
-         * @memberof GetGlobalState.C2S
+         * @memberof GetUserInfo.C2S
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
@@ -3036,36 +3060,36 @@ $root.GetGlobalState = (function() {
         return C2S;
     })();
 
-    GetGlobalState.S2C = (function() {
+    GetUserInfo.S2C = (function() {
 
         /**
          * Properties of a S2C.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @interface IS2C
-         * @property {number} marketHK S2C marketHK
-         * @property {number} marketUS S2C marketUS
-         * @property {number} marketSH S2C marketSH
-         * @property {number} marketSZ S2C marketSZ
-         * @property {number} marketHKFuture S2C marketHKFuture
-         * @property {number|null} [marketUSFuture] S2C marketUSFuture
-         * @property {boolean} qotLogined S2C qotLogined
-         * @property {boolean} trdLogined S2C trdLogined
-         * @property {number} serverVer S2C serverVer
-         * @property {number} serverBuildNo S2C serverBuildNo
-         * @property {number|Long} time S2C time
-         * @property {number|null} [localTime] S2C localTime
-         * @property {Common.IProgramStatus|null} [programStatus] S2C programStatus
-         * @property {string|null} [qotSvrIpAddr] S2C qotSvrIpAddr
-         * @property {string|null} [trdSvrIpAddr] S2C trdSvrIpAddr
+         * @property {string|null} [nickName] S2C nickName
+         * @property {string|null} [avatarUrl] S2C avatarUrl
+         * @property {string|null} [apiLevel] S2C apiLevel
+         * @property {number|null} [hkQotRight] S2C hkQotRight
+         * @property {number|null} [usQotRight] S2C usQotRight
+         * @property {number|null} [cnQotRight] S2C cnQotRight
+         * @property {boolean|null} [isNeedAgreeDisclaimer] S2C isNeedAgreeDisclaimer
+         * @property {number|Long|null} [userID] S2C userID
+         * @property {number|null} [updateType] S2C updateType
+         * @property {string|null} [webKey] S2C webKey
+         * @property {number|null} [hkOptionQotRight] S2C hkOptionQotRight
+         * @property {boolean|null} [hasUSOptionQotRight] S2C hasUSOptionQotRight
+         * @property {number|null} [hkFutureQotRight] S2C hkFutureQotRight
+         * @property {number|null} [subQuota] S2C subQuota
+         * @property {number|null} [historyKLQuota] S2C historyKLQuota
          */
 
         /**
          * Constructs a new S2C.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @classdesc Represents a S2C.
          * @implements IS2C
          * @constructor
-         * @param {GetGlobalState.IS2C=} [properties] Properties to set
+         * @param {GetUserInfo.IS2C=} [properties] Properties to set
          */
         function S2C(properties) {
             if (properties)
@@ -3075,178 +3099,188 @@ $root.GetGlobalState = (function() {
         }
 
         /**
-         * S2C marketHK.
-         * @member {number} marketHK
-         * @memberof GetGlobalState.S2C
+         * S2C nickName.
+         * @member {string} nickName
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketHK = 0;
+        S2C.prototype.nickName = "";
 
         /**
-         * S2C marketUS.
-         * @member {number} marketUS
-         * @memberof GetGlobalState.S2C
+         * S2C avatarUrl.
+         * @member {string} avatarUrl
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketUS = 0;
+        S2C.prototype.avatarUrl = "";
 
         /**
-         * S2C marketSH.
-         * @member {number} marketSH
-         * @memberof GetGlobalState.S2C
+         * S2C apiLevel.
+         * @member {string} apiLevel
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketSH = 0;
+        S2C.prototype.apiLevel = "";
 
         /**
-         * S2C marketSZ.
-         * @member {number} marketSZ
-         * @memberof GetGlobalState.S2C
+         * S2C hkQotRight.
+         * @member {number} hkQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketSZ = 0;
+        S2C.prototype.hkQotRight = 0;
 
         /**
-         * S2C marketHKFuture.
-         * @member {number} marketHKFuture
-         * @memberof GetGlobalState.S2C
+         * S2C usQotRight.
+         * @member {number} usQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketHKFuture = 0;
+        S2C.prototype.usQotRight = 0;
 
         /**
-         * S2C marketUSFuture.
-         * @member {number} marketUSFuture
-         * @memberof GetGlobalState.S2C
+         * S2C cnQotRight.
+         * @member {number} cnQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.marketUSFuture = 0;
+        S2C.prototype.cnQotRight = 0;
 
         /**
-         * S2C qotLogined.
-         * @member {boolean} qotLogined
-         * @memberof GetGlobalState.S2C
+         * S2C isNeedAgreeDisclaimer.
+         * @member {boolean} isNeedAgreeDisclaimer
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.qotLogined = false;
+        S2C.prototype.isNeedAgreeDisclaimer = false;
 
         /**
-         * S2C trdLogined.
-         * @member {boolean} trdLogined
-         * @memberof GetGlobalState.S2C
+         * S2C userID.
+         * @member {number|Long} userID
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.trdLogined = false;
+        S2C.prototype.userID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * S2C serverVer.
-         * @member {number} serverVer
-         * @memberof GetGlobalState.S2C
+         * S2C updateType.
+         * @member {number} updateType
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.serverVer = 0;
+        S2C.prototype.updateType = 0;
 
         /**
-         * S2C serverBuildNo.
-         * @member {number} serverBuildNo
-         * @memberof GetGlobalState.S2C
+         * S2C webKey.
+         * @member {string} webKey
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.serverBuildNo = 0;
+        S2C.prototype.webKey = "";
 
         /**
-         * S2C time.
-         * @member {number|Long} time
-         * @memberof GetGlobalState.S2C
+         * S2C hkOptionQotRight.
+         * @member {number} hkOptionQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        S2C.prototype.hkOptionQotRight = 0;
 
         /**
-         * S2C localTime.
-         * @member {number} localTime
-         * @memberof GetGlobalState.S2C
+         * S2C hasUSOptionQotRight.
+         * @member {boolean} hasUSOptionQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.localTime = 0;
+        S2C.prototype.hasUSOptionQotRight = false;
 
         /**
-         * S2C programStatus.
-         * @member {Common.IProgramStatus|null|undefined} programStatus
-         * @memberof GetGlobalState.S2C
+         * S2C hkFutureQotRight.
+         * @member {number} hkFutureQotRight
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.programStatus = null;
+        S2C.prototype.hkFutureQotRight = 0;
 
         /**
-         * S2C qotSvrIpAddr.
-         * @member {string} qotSvrIpAddr
-         * @memberof GetGlobalState.S2C
+         * S2C subQuota.
+         * @member {number} subQuota
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.qotSvrIpAddr = "";
+        S2C.prototype.subQuota = 0;
 
         /**
-         * S2C trdSvrIpAddr.
-         * @member {string} trdSvrIpAddr
-         * @memberof GetGlobalState.S2C
+         * S2C historyKLQuota.
+         * @member {number} historyKLQuota
+         * @memberof GetUserInfo.S2C
          * @instance
          */
-        S2C.prototype.trdSvrIpAddr = "";
+        S2C.prototype.historyKLQuota = 0;
 
         /**
          * Creates a new S2C instance using the specified properties.
          * @function create
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
-         * @param {GetGlobalState.IS2C=} [properties] Properties to set
-         * @returns {GetGlobalState.S2C} S2C instance
+         * @param {GetUserInfo.IS2C=} [properties] Properties to set
+         * @returns {GetUserInfo.S2C} S2C instance
          */
         S2C.create = function create(properties) {
             return new S2C(properties);
         };
 
         /**
-         * Encodes the specified S2C message. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
+         * Encodes the specified S2C message. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
          * @function encode
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
-         * @param {GetGlobalState.IS2C} message S2C message or plain object to encode
+         * @param {GetUserInfo.IS2C} message S2C message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
         S2C.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.marketHK);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.marketUS);
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.marketSH);
-            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.marketSZ);
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.marketHKFuture);
-            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.qotLogined);
-            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.trdLogined);
-            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.serverVer);
-            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.serverBuildNo);
-            writer.uint32(/* id 10, wireType 0 =*/80).int64(message.time);
-            if (message.localTime != null && message.hasOwnProperty("localTime"))
-                writer.uint32(/* id 11, wireType 1 =*/89).double(message.localTime);
-            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
-                $root.Common.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
-            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
-                writer.uint32(/* id 13, wireType 2 =*/106).string(message.qotSvrIpAddr);
-            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
-                writer.uint32(/* id 14, wireType 2 =*/114).string(message.trdSvrIpAddr);
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.marketUSFuture);
+            if (message.nickName != null && message.hasOwnProperty("nickName"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.nickName);
+            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.avatarUrl);
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.apiLevel);
+            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.hkQotRight);
+            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.usQotRight);
+            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.cnQotRight);
+            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
+                writer.uint32(/* id 7, wireType 0 =*/56).bool(message.isNeedAgreeDisclaimer);
+            if (message.userID != null && message.hasOwnProperty("userID"))
+                writer.uint32(/* id 8, wireType 0 =*/64).int64(message.userID);
+            if (message.updateType != null && message.hasOwnProperty("updateType"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.updateType);
+            if (message.webKey != null && message.hasOwnProperty("webKey"))
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.webKey);
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                writer.uint32(/* id 11, wireType 0 =*/88).int32(message.hkOptionQotRight);
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.hasUSOptionQotRight);
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.hkFutureQotRight);
+            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
+                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.subQuota);
+            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
+                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.historyKLQuota);
             return writer;
         };
 
         /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
-         * @param {GetGlobalState.IS2C} message S2C message or plain object to encode
+         * @param {GetUserInfo.IS2C} message S2C message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -3257,101 +3291,81 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a S2C message from the specified reader or buffer.
          * @function decode
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {GetGlobalState.S2C} S2C
+         * @returns {GetUserInfo.S2C} S2C
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         S2C.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.S2C();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.S2C();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.marketHK = reader.int32();
+                    message.nickName = reader.string();
                     break;
                 case 2:
-                    message.marketUS = reader.int32();
+                    message.avatarUrl = reader.string();
                     break;
                 case 3:
-                    message.marketSH = reader.int32();
+                    message.apiLevel = reader.string();
                     break;
                 case 4:
-                    message.marketSZ = reader.int32();
+                    message.hkQotRight = reader.int32();
                     break;
                 case 5:
-                    message.marketHKFuture = reader.int32();
-                    break;
-                case 15:
-                    message.marketUSFuture = reader.int32();
+                    message.usQotRight = reader.int32();
                     break;
                 case 6:
-                    message.qotLogined = reader.bool();
+                    message.cnQotRight = reader.int32();
                     break;
                 case 7:
-                    message.trdLogined = reader.bool();
+                    message.isNeedAgreeDisclaimer = reader.bool();
                     break;
                 case 8:
-                    message.serverVer = reader.int32();
+                    message.userID = reader.int64();
                     break;
                 case 9:
-                    message.serverBuildNo = reader.int32();
+                    message.updateType = reader.int32();
                     break;
                 case 10:
-                    message.time = reader.int64();
+                    message.webKey = reader.string();
                     break;
                 case 11:
-                    message.localTime = reader.double();
+                    message.hkOptionQotRight = reader.int32();
                     break;
                 case 12:
-                    message.programStatus = $root.Common.ProgramStatus.decode(reader, reader.uint32());
+                    message.hasUSOptionQotRight = reader.bool();
                     break;
                 case 13:
-                    message.qotSvrIpAddr = reader.string();
+                    message.hkFutureQotRight = reader.int32();
                     break;
                 case 14:
-                    message.trdSvrIpAddr = reader.string();
+                    message.subQuota = reader.int32();
+                    break;
+                case 15:
+                    message.historyKLQuota = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
                     break;
                 }
             }
-            if (!message.hasOwnProperty("marketHK"))
-                throw $util.ProtocolError("missing required 'marketHK'", { instance: message });
-            if (!message.hasOwnProperty("marketUS"))
-                throw $util.ProtocolError("missing required 'marketUS'", { instance: message });
-            if (!message.hasOwnProperty("marketSH"))
-                throw $util.ProtocolError("missing required 'marketSH'", { instance: message });
-            if (!message.hasOwnProperty("marketSZ"))
-                throw $util.ProtocolError("missing required 'marketSZ'", { instance: message });
-            if (!message.hasOwnProperty("marketHKFuture"))
-                throw $util.ProtocolError("missing required 'marketHKFuture'", { instance: message });
-            if (!message.hasOwnProperty("qotLogined"))
-                throw $util.ProtocolError("missing required 'qotLogined'", { instance: message });
-            if (!message.hasOwnProperty("trdLogined"))
-                throw $util.ProtocolError("missing required 'trdLogined'", { instance: message });
-            if (!message.hasOwnProperty("serverVer"))
-                throw $util.ProtocolError("missing required 'serverVer'", { instance: message });
-            if (!message.hasOwnProperty("serverBuildNo"))
-                throw $util.ProtocolError("missing required 'serverBuildNo'", { instance: message });
-            if (!message.hasOwnProperty("time"))
-                throw $util.ProtocolError("missing required 'time'", { instance: message });
             return message;
         };
 
         /**
          * Decodes a S2C message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetGlobalState.S2C} S2C
+         * @returns {GetUserInfo.S2C} S2C
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -3364,7 +3378,7 @@ $root.GetGlobalState = (function() {
         /**
          * Verifies a S2C message.
          * @function verify
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
@@ -3372,107 +3386,112 @@ $root.GetGlobalState = (function() {
         S2C.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.marketHK))
-                return "marketHK: integer expected";
-            if (!$util.isInteger(message.marketUS))
-                return "marketUS: integer expected";
-            if (!$util.isInteger(message.marketSH))
-                return "marketSH: integer expected";
-            if (!$util.isInteger(message.marketSZ))
-                return "marketSZ: integer expected";
-            if (!$util.isInteger(message.marketHKFuture))
-                return "marketHKFuture: integer expected";
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                if (!$util.isInteger(message.marketUSFuture))
-                    return "marketUSFuture: integer expected";
-            if (typeof message.qotLogined !== "boolean")
-                return "qotLogined: boolean expected";
-            if (typeof message.trdLogined !== "boolean")
-                return "trdLogined: boolean expected";
-            if (!$util.isInteger(message.serverVer))
-                return "serverVer: integer expected";
-            if (!$util.isInteger(message.serverBuildNo))
-                return "serverBuildNo: integer expected";
-            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
-                return "time: integer|Long expected";
-            if (message.localTime != null && message.hasOwnProperty("localTime"))
-                if (typeof message.localTime !== "number")
-                    return "localTime: number expected";
-            if (message.programStatus != null && message.hasOwnProperty("programStatus")) {
-                var error = $root.Common.ProgramStatus.verify(message.programStatus);
-                if (error)
-                    return "programStatus." + error;
-            }
-            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
-                if (!$util.isString(message.qotSvrIpAddr))
-                    return "qotSvrIpAddr: string expected";
-            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
-                if (!$util.isString(message.trdSvrIpAddr))
-                    return "trdSvrIpAddr: string expected";
+            if (message.nickName != null && message.hasOwnProperty("nickName"))
+                if (!$util.isString(message.nickName))
+                    return "nickName: string expected";
+            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
+                if (!$util.isString(message.avatarUrl))
+                    return "avatarUrl: string expected";
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                if (!$util.isString(message.apiLevel))
+                    return "apiLevel: string expected";
+            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
+                if (!$util.isInteger(message.hkQotRight))
+                    return "hkQotRight: integer expected";
+            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
+                if (!$util.isInteger(message.usQotRight))
+                    return "usQotRight: integer expected";
+            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
+                if (!$util.isInteger(message.cnQotRight))
+                    return "cnQotRight: integer expected";
+            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
+                if (typeof message.isNeedAgreeDisclaimer !== "boolean")
+                    return "isNeedAgreeDisclaimer: boolean expected";
+            if (message.userID != null && message.hasOwnProperty("userID"))
+                if (!$util.isInteger(message.userID) && !(message.userID && $util.isInteger(message.userID.low) && $util.isInteger(message.userID.high)))
+                    return "userID: integer|Long expected";
+            if (message.updateType != null && message.hasOwnProperty("updateType"))
+                if (!$util.isInteger(message.updateType))
+                    return "updateType: integer expected";
+            if (message.webKey != null && message.hasOwnProperty("webKey"))
+                if (!$util.isString(message.webKey))
+                    return "webKey: string expected";
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                if (!$util.isInteger(message.hkOptionQotRight))
+                    return "hkOptionQotRight: integer expected";
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                if (typeof message.hasUSOptionQotRight !== "boolean")
+                    return "hasUSOptionQotRight: boolean expected";
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                if (!$util.isInteger(message.hkFutureQotRight))
+                    return "hkFutureQotRight: integer expected";
+            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
+                if (!$util.isInteger(message.subQuota))
+                    return "subQuota: integer expected";
+            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
+                if (!$util.isInteger(message.historyKLQuota))
+                    return "historyKLQuota: integer expected";
             return null;
         };
 
         /**
          * Creates a S2C message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {GetGlobalState.S2C} S2C
+         * @returns {GetUserInfo.S2C} S2C
          */
         S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetGlobalState.S2C)
+            if (object instanceof $root.GetUserInfo.S2C)
                 return object;
-            var message = new $root.GetGlobalState.S2C();
-            if (object.marketHK != null)
-                message.marketHK = object.marketHK | 0;
-            if (object.marketUS != null)
-                message.marketUS = object.marketUS | 0;
-            if (object.marketSH != null)
-                message.marketSH = object.marketSH | 0;
-            if (object.marketSZ != null)
-                message.marketSZ = object.marketSZ | 0;
-            if (object.marketHKFuture != null)
-                message.marketHKFuture = object.marketHKFuture | 0;
-            if (object.marketUSFuture != null)
-                message.marketUSFuture = object.marketUSFuture | 0;
-            if (object.qotLogined != null)
-                message.qotLogined = Boolean(object.qotLogined);
-            if (object.trdLogined != null)
-                message.trdLogined = Boolean(object.trdLogined);
-            if (object.serverVer != null)
-                message.serverVer = object.serverVer | 0;
-            if (object.serverBuildNo != null)
-                message.serverBuildNo = object.serverBuildNo | 0;
-            if (object.time != null)
+            var message = new $root.GetUserInfo.S2C();
+            if (object.nickName != null)
+                message.nickName = String(object.nickName);
+            if (object.avatarUrl != null)
+                message.avatarUrl = String(object.avatarUrl);
+            if (object.apiLevel != null)
+                message.apiLevel = String(object.apiLevel);
+            if (object.hkQotRight != null)
+                message.hkQotRight = object.hkQotRight | 0;
+            if (object.usQotRight != null)
+                message.usQotRight = object.usQotRight | 0;
+            if (object.cnQotRight != null)
+                message.cnQotRight = object.cnQotRight | 0;
+            if (object.isNeedAgreeDisclaimer != null)
+                message.isNeedAgreeDisclaimer = Boolean(object.isNeedAgreeDisclaimer);
+            if (object.userID != null)
                 if ($util.Long)
-                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
-                else if (typeof object.time === "string")
-                    message.time = parseInt(object.time, 10);
-                else if (typeof object.time === "number")
-                    message.time = object.time;
-                else if (typeof object.time === "object")
-                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
-            if (object.localTime != null)
-                message.localTime = Number(object.localTime);
-            if (object.programStatus != null) {
-                if (typeof object.programStatus !== "object")
-                    throw TypeError(".GetGlobalState.S2C.programStatus: object expected");
-                message.programStatus = $root.Common.ProgramStatus.fromObject(object.programStatus);
-            }
-            if (object.qotSvrIpAddr != null)
-                message.qotSvrIpAddr = String(object.qotSvrIpAddr);
-            if (object.trdSvrIpAddr != null)
-                message.trdSvrIpAddr = String(object.trdSvrIpAddr);
+                    (message.userID = $util.Long.fromValue(object.userID)).unsigned = false;
+                else if (typeof object.userID === "string")
+                    message.userID = parseInt(object.userID, 10);
+                else if (typeof object.userID === "number")
+                    message.userID = object.userID;
+                else if (typeof object.userID === "object")
+                    message.userID = new $util.LongBits(object.userID.low >>> 0, object.userID.high >>> 0).toNumber();
+            if (object.updateType != null)
+                message.updateType = object.updateType | 0;
+            if (object.webKey != null)
+                message.webKey = String(object.webKey);
+            if (object.hkOptionQotRight != null)
+                message.hkOptionQotRight = object.hkOptionQotRight | 0;
+            if (object.hasUSOptionQotRight != null)
+                message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
+            if (object.hkFutureQotRight != null)
+                message.hkFutureQotRight = object.hkFutureQotRight | 0;
+            if (object.subQuota != null)
+                message.subQuota = object.subQuota | 0;
+            if (object.historyKLQuota != null)
+                message.historyKLQuota = object.historyKLQuota | 0;
             return message;
         };
 
         /**
          * Creates a plain object from a S2C message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @static
-         * @param {GetGlobalState.S2C} message S2C
+         * @param {GetUserInfo.S2C} message S2C
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
@@ -3481,66 +3500,66 @@ $root.GetGlobalState = (function() {
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.marketHK = 0;
-                object.marketUS = 0;
-                object.marketSH = 0;
-                object.marketSZ = 0;
-                object.marketHKFuture = 0;
-                object.qotLogined = false;
-                object.trdLogined = false;
-                object.serverVer = 0;
-                object.serverBuildNo = 0;
+                object.nickName = "";
+                object.avatarUrl = "";
+                object.apiLevel = "";
+                object.hkQotRight = 0;
+                object.usQotRight = 0;
+                object.cnQotRight = 0;
+                object.isNeedAgreeDisclaimer = false;
                 if ($util.Long) {
                     var long = new $util.Long(0, 0, false);
-                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.userID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.time = options.longs === String ? "0" : 0;
-                object.localTime = 0;
-                object.programStatus = null;
-                object.qotSvrIpAddr = "";
-                object.trdSvrIpAddr = "";
-                object.marketUSFuture = 0;
+                    object.userID = options.longs === String ? "0" : 0;
+                object.updateType = 0;
+                object.webKey = "";
+                object.hkOptionQotRight = 0;
+                object.hasUSOptionQotRight = false;
+                object.hkFutureQotRight = 0;
+                object.subQuota = 0;
+                object.historyKLQuota = 0;
             }
-            if (message.marketHK != null && message.hasOwnProperty("marketHK"))
-                object.marketHK = message.marketHK;
-            if (message.marketUS != null && message.hasOwnProperty("marketUS"))
-                object.marketUS = message.marketUS;
-            if (message.marketSH != null && message.hasOwnProperty("marketSH"))
-                object.marketSH = message.marketSH;
-            if (message.marketSZ != null && message.hasOwnProperty("marketSZ"))
-                object.marketSZ = message.marketSZ;
-            if (message.marketHKFuture != null && message.hasOwnProperty("marketHKFuture"))
-                object.marketHKFuture = message.marketHKFuture;
-            if (message.qotLogined != null && message.hasOwnProperty("qotLogined"))
-                object.qotLogined = message.qotLogined;
-            if (message.trdLogined != null && message.hasOwnProperty("trdLogined"))
-                object.trdLogined = message.trdLogined;
-            if (message.serverVer != null && message.hasOwnProperty("serverVer"))
-                object.serverVer = message.serverVer;
-            if (message.serverBuildNo != null && message.hasOwnProperty("serverBuildNo"))
-                object.serverBuildNo = message.serverBuildNo;
-            if (message.time != null && message.hasOwnProperty("time"))
-                if (typeof message.time === "number")
-                    object.time = options.longs === String ? String(message.time) : message.time;
+            if (message.nickName != null && message.hasOwnProperty("nickName"))
+                object.nickName = message.nickName;
+            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
+                object.avatarUrl = message.avatarUrl;
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                object.apiLevel = message.apiLevel;
+            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
+                object.hkQotRight = message.hkQotRight;
+            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
+                object.usQotRight = message.usQotRight;
+            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
+                object.cnQotRight = message.cnQotRight;
+            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
+                object.isNeedAgreeDisclaimer = message.isNeedAgreeDisclaimer;
+            if (message.userID != null && message.hasOwnProperty("userID"))
+                if (typeof message.userID === "number")
+                    object.userID = options.longs === String ? String(message.userID) : message.userID;
                 else
-                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
-            if (message.localTime != null && message.hasOwnProperty("localTime"))
-                object.localTime = options.json && !isFinite(message.localTime) ? String(message.localTime) : message.localTime;
-            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
-                object.programStatus = $root.Common.ProgramStatus.toObject(message.programStatus, options);
-            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
-                object.qotSvrIpAddr = message.qotSvrIpAddr;
-            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
-                object.trdSvrIpAddr = message.trdSvrIpAddr;
-            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
-                object.marketUSFuture = message.marketUSFuture;
+                    object.userID = options.longs === String ? $util.Long.prototype.toString.call(message.userID) : options.longs === Number ? new $util.LongBits(message.userID.low >>> 0, message.userID.high >>> 0).toNumber() : message.userID;
+            if (message.updateType != null && message.hasOwnProperty("updateType"))
+                object.updateType = message.updateType;
+            if (message.webKey != null && message.hasOwnProperty("webKey"))
+                object.webKey = message.webKey;
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                object.hkOptionQotRight = message.hkOptionQotRight;
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                object.hasUSOptionQotRight = message.hasUSOptionQotRight;
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                object.hkFutureQotRight = message.hkFutureQotRight;
+            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
+                object.subQuota = message.subQuota;
+            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
+                object.historyKLQuota = message.historyKLQuota;
             return object;
         };
 
         /**
          * Converts this S2C to JSON.
          * @function toJSON
-         * @memberof GetGlobalState.S2C
+         * @memberof GetUserInfo.S2C
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
@@ -3551,22 +3570,22 @@ $root.GetGlobalState = (function() {
         return S2C;
     })();
 
-    GetGlobalState.Request = (function() {
+    GetUserInfo.Request = (function() {
 
         /**
          * Properties of a Request.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @interface IRequest
-         * @property {GetGlobalState.IC2S} c2s Request c2s
+         * @property {GetUserInfo.IC2S} c2s Request c2s
          */
 
         /**
          * Constructs a new Request.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @classdesc Represents a Request.
          * @implements IRequest
          * @constructor
-         * @param {GetGlobalState.IRequest=} [properties] Properties to set
+         * @param {GetUserInfo.IRequest=} [properties] Properties to set
          */
         function Request(properties) {
             if (properties)
@@ -3577,8 +3596,8 @@ $root.GetGlobalState = (function() {
 
         /**
          * Request c2s.
-         * @member {GetGlobalState.IC2S} c2s
-         * @memberof GetGlobalState.Request
+         * @member {GetUserInfo.IC2S} c2s
+         * @memberof GetUserInfo.Request
          * @instance
          */
         Request.prototype.c2s = null;
@@ -3586,37 +3605,37 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a new Request instance using the specified properties.
          * @function create
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
-         * @param {GetGlobalState.IRequest=} [properties] Properties to set
-         * @returns {GetGlobalState.Request} Request instance
+         * @param {GetUserInfo.IRequest=} [properties] Properties to set
+         * @returns {GetUserInfo.Request} Request instance
          */
         Request.create = function create(properties) {
             return new Request(properties);
         };
 
         /**
-         * Encodes the specified Request message. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
+         * Encodes the specified Request message. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
          * @function encode
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
-         * @param {GetGlobalState.IRequest} message Request message or plain object to encode
+         * @param {GetUserInfo.IRequest} message Request message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
         Request.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            $root.GetGlobalState.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            $root.GetUserInfo.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
 
         /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
-         * @param {GetGlobalState.IRequest} message Request message or plain object to encode
+         * @param {GetUserInfo.IRequest} message Request message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -3627,23 +3646,23 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a Request message from the specified reader or buffer.
          * @function decode
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {GetGlobalState.Request} Request
+         * @returns {GetUserInfo.Request} Request
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Request.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.Request();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.Request();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.c2s = $root.GetGlobalState.C2S.decode(reader, reader.uint32());
+                    message.c2s = $root.GetUserInfo.C2S.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3658,10 +3677,10 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a Request message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetGlobalState.Request} Request
+         * @returns {GetUserInfo.Request} Request
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -3674,7 +3693,7 @@ $root.GetGlobalState = (function() {
         /**
          * Verifies a Request message.
          * @function verify
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
@@ -3683,7 +3702,7 @@ $root.GetGlobalState = (function() {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             {
-                var error = $root.GetGlobalState.C2S.verify(message.c2s);
+                var error = $root.GetUserInfo.C2S.verify(message.c2s);
                 if (error)
                     return "c2s." + error;
             }
@@ -3693,19 +3712,19 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a Request message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {GetGlobalState.Request} Request
+         * @returns {GetUserInfo.Request} Request
          */
         Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetGlobalState.Request)
+            if (object instanceof $root.GetUserInfo.Request)
                 return object;
-            var message = new $root.GetGlobalState.Request();
+            var message = new $root.GetUserInfo.Request();
             if (object.c2s != null) {
                 if (typeof object.c2s !== "object")
-                    throw TypeError(".GetGlobalState.Request.c2s: object expected");
-                message.c2s = $root.GetGlobalState.C2S.fromObject(object.c2s);
+                    throw TypeError(".GetUserInfo.Request.c2s: object expected");
+                message.c2s = $root.GetUserInfo.C2S.fromObject(object.c2s);
             }
             return message;
         };
@@ -3713,9 +3732,9 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a plain object from a Request message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @static
-         * @param {GetGlobalState.Request} message Request
+         * @param {GetUserInfo.Request} message Request
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
@@ -3726,14 +3745,14 @@ $root.GetGlobalState = (function() {
             if (options.defaults)
                 object.c2s = null;
             if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.GetGlobalState.C2S.toObject(message.c2s, options);
+                object.c2s = $root.GetUserInfo.C2S.toObject(message.c2s, options);
             return object;
         };
 
         /**
          * Converts this Request to JSON.
          * @function toJSON
-         * @memberof GetGlobalState.Request
+         * @memberof GetUserInfo.Request
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
@@ -3744,25 +3763,25 @@ $root.GetGlobalState = (function() {
         return Request;
     })();
 
-    GetGlobalState.Response = (function() {
+    GetUserInfo.Response = (function() {
 
         /**
          * Properties of a Response.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @interface IResponse
          * @property {number} retType Response retType
          * @property {string|null} [retMsg] Response retMsg
          * @property {number|null} [errCode] Response errCode
-         * @property {GetGlobalState.IS2C|null} [s2c] Response s2c
+         * @property {GetUserInfo.IS2C|null} [s2c] Response s2c
          */
 
         /**
          * Constructs a new Response.
-         * @memberof GetGlobalState
+         * @memberof GetUserInfo
          * @classdesc Represents a Response.
          * @implements IResponse
          * @constructor
-         * @param {GetGlobalState.IResponse=} [properties] Properties to set
+         * @param {GetUserInfo.IResponse=} [properties] Properties to set
          */
         function Response(properties) {
             if (properties)
@@ -3774,7 +3793,7 @@ $root.GetGlobalState = (function() {
         /**
          * Response retType.
          * @member {number} retType
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @instance
          */
         Response.prototype.retType = -400;
@@ -3782,7 +3801,7 @@ $root.GetGlobalState = (function() {
         /**
          * Response retMsg.
          * @member {string} retMsg
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @instance
          */
         Response.prototype.retMsg = "";
@@ -3790,15 +3809,15 @@ $root.GetGlobalState = (function() {
         /**
          * Response errCode.
          * @member {number} errCode
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @instance
          */
         Response.prototype.errCode = 0;
 
         /**
          * Response s2c.
-         * @member {GetGlobalState.IS2C|null|undefined} s2c
-         * @memberof GetGlobalState.Response
+         * @member {GetUserInfo.IS2C|null|undefined} s2c
+         * @memberof GetUserInfo.Response
          * @instance
          */
         Response.prototype.s2c = null;
@@ -3806,21 +3825,21 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a new Response instance using the specified properties.
          * @function create
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
-         * @param {GetGlobalState.IResponse=} [properties] Properties to set
-         * @returns {GetGlobalState.Response} Response instance
+         * @param {GetUserInfo.IResponse=} [properties] Properties to set
+         * @returns {GetUserInfo.Response} Response instance
          */
         Response.create = function create(properties) {
             return new Response(properties);
         };
 
         /**
-         * Encodes the specified Response message. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
+         * Encodes the specified Response message. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
          * @function encode
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
-         * @param {GetGlobalState.IResponse} message Response message or plain object to encode
+         * @param {GetUserInfo.IResponse} message Response message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -3833,16 +3852,16 @@ $root.GetGlobalState = (function() {
             if (message.errCode != null && message.hasOwnProperty("errCode"))
                 writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
             if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.GetGlobalState.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                $root.GetUserInfo.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
         /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
-         * @param {GetGlobalState.IResponse} message Response message or plain object to encode
+         * @param {GetUserInfo.IResponse} message Response message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -3853,18 +3872,18 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a Response message from the specified reader or buffer.
          * @function decode
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {GetGlobalState.Response} Response
+         * @returns {GetUserInfo.Response} Response
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         Response.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.Response();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.Response();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -3878,7 +3897,7 @@ $root.GetGlobalState = (function() {
                     message.errCode = reader.int32();
                     break;
                 case 4:
-                    message.s2c = $root.GetGlobalState.S2C.decode(reader, reader.uint32());
+                    message.s2c = $root.GetUserInfo.S2C.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3893,10 +3912,10 @@ $root.GetGlobalState = (function() {
         /**
          * Decodes a Response message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetGlobalState.Response} Response
+         * @returns {GetUserInfo.Response} Response
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -3909,7 +3928,7 @@ $root.GetGlobalState = (function() {
         /**
          * Verifies a Response message.
          * @function verify
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
@@ -3926,7 +3945,7 @@ $root.GetGlobalState = (function() {
                 if (!$util.isInteger(message.errCode))
                     return "errCode: integer expected";
             if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.GetGlobalState.S2C.verify(message.s2c);
+                var error = $root.GetUserInfo.S2C.verify(message.s2c);
                 if (error)
                     return "s2c." + error;
             }
@@ -3936,15 +3955,15 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a Response message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {GetGlobalState.Response} Response
+         * @returns {GetUserInfo.Response} Response
          */
         Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetGlobalState.Response)
+            if (object instanceof $root.GetUserInfo.Response)
                 return object;
-            var message = new $root.GetGlobalState.Response();
+            var message = new $root.GetUserInfo.Response();
             if (object.retType != null)
                 message.retType = object.retType | 0;
             if (object.retMsg != null)
@@ -3953,8 +3972,8 @@ $root.GetGlobalState = (function() {
                 message.errCode = object.errCode | 0;
             if (object.s2c != null) {
                 if (typeof object.s2c !== "object")
-                    throw TypeError(".GetGlobalState.Response.s2c: object expected");
-                message.s2c = $root.GetGlobalState.S2C.fromObject(object.s2c);
+                    throw TypeError(".GetUserInfo.Response.s2c: object expected");
+                message.s2c = $root.GetUserInfo.S2C.fromObject(object.s2c);
             }
             return message;
         };
@@ -3962,9 +3981,9 @@ $root.GetGlobalState = (function() {
         /**
          * Creates a plain object from a Response message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @static
-         * @param {GetGlobalState.Response} message Response
+         * @param {GetUserInfo.Response} message Response
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
@@ -3985,14 +4004,14 @@ $root.GetGlobalState = (function() {
             if (message.errCode != null && message.hasOwnProperty("errCode"))
                 object.errCode = message.errCode;
             if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.GetGlobalState.S2C.toObject(message.s2c, options);
+                object.s2c = $root.GetUserInfo.S2C.toObject(message.s2c, options);
             return object;
         };
 
         /**
          * Converts this Response to JSON.
          * @function toJSON
-         * @memberof GetGlobalState.Response
+         * @memberof GetUserInfo.Response
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
@@ -4003,7 +4022,3956 @@ $root.GetGlobalState = (function() {
         return Response;
     })();
 
-    return GetGlobalState;
+    return GetUserInfo;
+})();
+
+$root.InitConnect = (function() {
+
+    /**
+     * Namespace InitConnect.
+     * @exports InitConnect
+     * @namespace
+     */
+    var InitConnect = {};
+
+    InitConnect.C2S = (function() {
+
+        /**
+         * Properties of a C2S.
+         * @memberof InitConnect
+         * @interface IC2S
+         * @property {number} clientVer C2S clientVer
+         * @property {string} clientID C2S clientID
+         * @property {boolean|null} [recvNotify] C2S recvNotify
+         * @property {number|null} [packetEncAlgo] C2S packetEncAlgo
+         * @property {number|null} [pushProtoFmt] C2S pushProtoFmt
+         * @property {string|null} [programmingLanguage] C2S programmingLanguage
+         */
+
+        /**
+         * Constructs a new C2S.
+         * @memberof InitConnect
+         * @classdesc Represents a C2S.
+         * @implements IC2S
+         * @constructor
+         * @param {InitConnect.IC2S=} [properties] Properties to set
+         */
+        function C2S(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2S clientVer.
+         * @member {number} clientVer
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.clientVer = 0;
+
+        /**
+         * C2S clientID.
+         * @member {string} clientID
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.clientID = "";
+
+        /**
+         * C2S recvNotify.
+         * @member {boolean} recvNotify
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.recvNotify = false;
+
+        /**
+         * C2S packetEncAlgo.
+         * @member {number} packetEncAlgo
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.packetEncAlgo = 0;
+
+        /**
+         * C2S pushProtoFmt.
+         * @member {number} pushProtoFmt
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.pushProtoFmt = 0;
+
+        /**
+         * C2S programmingLanguage.
+         * @member {string} programmingLanguage
+         * @memberof InitConnect.C2S
+         * @instance
+         */
+        C2S.prototype.programmingLanguage = "";
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @function create
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {InitConnect.IC2S=} [properties] Properties to set
+         * @returns {InitConnect.C2S} C2S instance
+         */
+        C2S.create = function create(properties) {
+            return new C2S(properties);
+        };
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * @function encode
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {InitConnect.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.clientVer);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.clientID);
+            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.recvNotify);
+            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.packetEncAlgo);
+            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.pushProtoFmt);
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.programmingLanguage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {InitConnect.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @function decode
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {InitConnect.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.C2S();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.clientVer = reader.int32();
+                    break;
+                case 2:
+                    message.clientID = reader.string();
+                    break;
+                case 3:
+                    message.recvNotify = reader.bool();
+                    break;
+                case 4:
+                    message.packetEncAlgo = reader.int32();
+                    break;
+                case 5:
+                    message.pushProtoFmt = reader.int32();
+                    break;
+                case 6:
+                    message.programmingLanguage = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("clientVer"))
+                throw $util.ProtocolError("missing required 'clientVer'", { instance: message });
+            if (!message.hasOwnProperty("clientID"))
+                throw $util.ProtocolError("missing required 'clientID'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {InitConnect.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2S message.
+         * @function verify
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2S.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.clientVer))
+                return "clientVer: integer expected";
+            if (!$util.isString(message.clientID))
+                return "clientID: string expected";
+            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
+                if (typeof message.recvNotify !== "boolean")
+                    return "recvNotify: boolean expected";
+            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
+                if (!$util.isInteger(message.packetEncAlgo))
+                    return "packetEncAlgo: integer expected";
+            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
+                if (!$util.isInteger(message.pushProtoFmt))
+                    return "pushProtoFmt: integer expected";
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                if (!$util.isString(message.programmingLanguage))
+                    return "programmingLanguage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {InitConnect.C2S} C2S
+         */
+        C2S.fromObject = function fromObject(object) {
+            if (object instanceof $root.InitConnect.C2S)
+                return object;
+            var message = new $root.InitConnect.C2S();
+            if (object.clientVer != null)
+                message.clientVer = object.clientVer | 0;
+            if (object.clientID != null)
+                message.clientID = String(object.clientID);
+            if (object.recvNotify != null)
+                message.recvNotify = Boolean(object.recvNotify);
+            if (object.packetEncAlgo != null)
+                message.packetEncAlgo = object.packetEncAlgo | 0;
+            if (object.pushProtoFmt != null)
+                message.pushProtoFmt = object.pushProtoFmt | 0;
+            if (object.programmingLanguage != null)
+                message.programmingLanguage = String(object.programmingLanguage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof InitConnect.C2S
+         * @static
+         * @param {InitConnect.C2S} message C2S
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2S.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.clientVer = 0;
+                object.clientID = "";
+                object.recvNotify = false;
+                object.packetEncAlgo = 0;
+                object.pushProtoFmt = 0;
+                object.programmingLanguage = "";
+            }
+            if (message.clientVer != null && message.hasOwnProperty("clientVer"))
+                object.clientVer = message.clientVer;
+            if (message.clientID != null && message.hasOwnProperty("clientID"))
+                object.clientID = message.clientID;
+            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
+                object.recvNotify = message.recvNotify;
+            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
+                object.packetEncAlgo = message.packetEncAlgo;
+            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
+                object.pushProtoFmt = message.pushProtoFmt;
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                object.programmingLanguage = message.programmingLanguage;
+            return object;
+        };
+
+        /**
+         * Converts this C2S to JSON.
+         * @function toJSON
+         * @memberof InitConnect.C2S
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2S.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2S;
+    })();
+
+    InitConnect.S2C = (function() {
+
+        /**
+         * Properties of a S2C.
+         * @memberof InitConnect
+         * @interface IS2C
+         * @property {number} serverVer S2C serverVer
+         * @property {number|Long} loginUserID S2C loginUserID
+         * @property {number|Long} connID S2C connID
+         * @property {string} connAESKey S2C connAESKey
+         * @property {number} keepAliveInterval S2C keepAliveInterval
+         * @property {string|null} [aesCBCiv] S2C aesCBCiv
+         */
+
+        /**
+         * Constructs a new S2C.
+         * @memberof InitConnect
+         * @classdesc Represents a S2C.
+         * @implements IS2C
+         * @constructor
+         * @param {InitConnect.IS2C=} [properties] Properties to set
+         */
+        function S2C(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * S2C serverVer.
+         * @member {number} serverVer
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.serverVer = 0;
+
+        /**
+         * S2C loginUserID.
+         * @member {number|Long} loginUserID
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.loginUserID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
+         * S2C connID.
+         * @member {number|Long} connID
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.connID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
+         * S2C connAESKey.
+         * @member {string} connAESKey
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.connAESKey = "";
+
+        /**
+         * S2C keepAliveInterval.
+         * @member {number} keepAliveInterval
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.keepAliveInterval = 0;
+
+        /**
+         * S2C aesCBCiv.
+         * @member {string} aesCBCiv
+         * @memberof InitConnect.S2C
+         * @instance
+         */
+        S2C.prototype.aesCBCiv = "";
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @function create
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {InitConnect.IS2C=} [properties] Properties to set
+         * @returns {InitConnect.S2C} S2C instance
+         */
+        S2C.create = function create(properties) {
+            return new S2C(properties);
+        };
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
+         * @function encode
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {InitConnect.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.serverVer);
+            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.loginUserID);
+            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.connID);
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.connAESKey);
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.keepAliveInterval);
+            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.aesCBCiv);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {InitConnect.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @function decode
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {InitConnect.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.S2C();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.serverVer = reader.int32();
+                    break;
+                case 2:
+                    message.loginUserID = reader.uint64();
+                    break;
+                case 3:
+                    message.connID = reader.uint64();
+                    break;
+                case 4:
+                    message.connAESKey = reader.string();
+                    break;
+                case 5:
+                    message.keepAliveInterval = reader.int32();
+                    break;
+                case 6:
+                    message.aesCBCiv = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("serverVer"))
+                throw $util.ProtocolError("missing required 'serverVer'", { instance: message });
+            if (!message.hasOwnProperty("loginUserID"))
+                throw $util.ProtocolError("missing required 'loginUserID'", { instance: message });
+            if (!message.hasOwnProperty("connID"))
+                throw $util.ProtocolError("missing required 'connID'", { instance: message });
+            if (!message.hasOwnProperty("connAESKey"))
+                throw $util.ProtocolError("missing required 'connAESKey'", { instance: message });
+            if (!message.hasOwnProperty("keepAliveInterval"))
+                throw $util.ProtocolError("missing required 'keepAliveInterval'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {InitConnect.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a S2C message.
+         * @function verify
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        S2C.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.serverVer))
+                return "serverVer: integer expected";
+            if (!$util.isInteger(message.loginUserID) && !(message.loginUserID && $util.isInteger(message.loginUserID.low) && $util.isInteger(message.loginUserID.high)))
+                return "loginUserID: integer|Long expected";
+            if (!$util.isInteger(message.connID) && !(message.connID && $util.isInteger(message.connID.low) && $util.isInteger(message.connID.high)))
+                return "connID: integer|Long expected";
+            if (!$util.isString(message.connAESKey))
+                return "connAESKey: string expected";
+            if (!$util.isInteger(message.keepAliveInterval))
+                return "keepAliveInterval: integer expected";
+            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
+                if (!$util.isString(message.aesCBCiv))
+                    return "aesCBCiv: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {InitConnect.S2C} S2C
+         */
+        S2C.fromObject = function fromObject(object) {
+            if (object instanceof $root.InitConnect.S2C)
+                return object;
+            var message = new $root.InitConnect.S2C();
+            if (object.serverVer != null)
+                message.serverVer = object.serverVer | 0;
+            if (object.loginUserID != null)
+                if ($util.Long)
+                    (message.loginUserID = $util.Long.fromValue(object.loginUserID)).unsigned = true;
+                else if (typeof object.loginUserID === "string")
+                    message.loginUserID = parseInt(object.loginUserID, 10);
+                else if (typeof object.loginUserID === "number")
+                    message.loginUserID = object.loginUserID;
+                else if (typeof object.loginUserID === "object")
+                    message.loginUserID = new $util.LongBits(object.loginUserID.low >>> 0, object.loginUserID.high >>> 0).toNumber(true);
+            if (object.connID != null)
+                if ($util.Long)
+                    (message.connID = $util.Long.fromValue(object.connID)).unsigned = true;
+                else if (typeof object.connID === "string")
+                    message.connID = parseInt(object.connID, 10);
+                else if (typeof object.connID === "number")
+                    message.connID = object.connID;
+                else if (typeof object.connID === "object")
+                    message.connID = new $util.LongBits(object.connID.low >>> 0, object.connID.high >>> 0).toNumber(true);
+            if (object.connAESKey != null)
+                message.connAESKey = String(object.connAESKey);
+            if (object.keepAliveInterval != null)
+                message.keepAliveInterval = object.keepAliveInterval | 0;
+            if (object.aesCBCiv != null)
+                message.aesCBCiv = String(object.aesCBCiv);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof InitConnect.S2C
+         * @static
+         * @param {InitConnect.S2C} message S2C
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        S2C.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.serverVer = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, true);
+                    object.loginUserID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.loginUserID = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, true);
+                    object.connID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.connID = options.longs === String ? "0" : 0;
+                object.connAESKey = "";
+                object.keepAliveInterval = 0;
+                object.aesCBCiv = "";
+            }
+            if (message.serverVer != null && message.hasOwnProperty("serverVer"))
+                object.serverVer = message.serverVer;
+            if (message.loginUserID != null && message.hasOwnProperty("loginUserID"))
+                if (typeof message.loginUserID === "number")
+                    object.loginUserID = options.longs === String ? String(message.loginUserID) : message.loginUserID;
+                else
+                    object.loginUserID = options.longs === String ? $util.Long.prototype.toString.call(message.loginUserID) : options.longs === Number ? new $util.LongBits(message.loginUserID.low >>> 0, message.loginUserID.high >>> 0).toNumber(true) : message.loginUserID;
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                if (typeof message.connID === "number")
+                    object.connID = options.longs === String ? String(message.connID) : message.connID;
+                else
+                    object.connID = options.longs === String ? $util.Long.prototype.toString.call(message.connID) : options.longs === Number ? new $util.LongBits(message.connID.low >>> 0, message.connID.high >>> 0).toNumber(true) : message.connID;
+            if (message.connAESKey != null && message.hasOwnProperty("connAESKey"))
+                object.connAESKey = message.connAESKey;
+            if (message.keepAliveInterval != null && message.hasOwnProperty("keepAliveInterval"))
+                object.keepAliveInterval = message.keepAliveInterval;
+            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
+                object.aesCBCiv = message.aesCBCiv;
+            return object;
+        };
+
+        /**
+         * Converts this S2C to JSON.
+         * @function toJSON
+         * @memberof InitConnect.S2C
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        S2C.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return S2C;
+    })();
+
+    InitConnect.Request = (function() {
+
+        /**
+         * Properties of a Request.
+         * @memberof InitConnect
+         * @interface IRequest
+         * @property {InitConnect.IC2S} c2s Request c2s
+         */
+
+        /**
+         * Constructs a new Request.
+         * @memberof InitConnect
+         * @classdesc Represents a Request.
+         * @implements IRequest
+         * @constructor
+         * @param {InitConnect.IRequest=} [properties] Properties to set
+         */
+        function Request(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Request c2s.
+         * @member {InitConnect.IC2S} c2s
+         * @memberof InitConnect.Request
+         * @instance
+         */
+        Request.prototype.c2s = null;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @function create
+         * @memberof InitConnect.Request
+         * @static
+         * @param {InitConnect.IRequest=} [properties] Properties to set
+         * @returns {InitConnect.Request} Request instance
+         */
+        Request.create = function create(properties) {
+            return new Request(properties);
+        };
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
+         * @function encode
+         * @memberof InitConnect.Request
+         * @static
+         * @param {InitConnect.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.InitConnect.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof InitConnect.Request
+         * @static
+         * @param {InitConnect.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @function decode
+         * @memberof InitConnect.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {InitConnect.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.Request();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.c2s = $root.InitConnect.C2S.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("c2s"))
+                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof InitConnect.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {InitConnect.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Request message.
+         * @function verify
+         * @memberof InitConnect.Request
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Request.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.InitConnect.C2S.verify(message.c2s);
+                if (error)
+                    return "c2s." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof InitConnect.Request
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {InitConnect.Request} Request
+         */
+        Request.fromObject = function fromObject(object) {
+            if (object instanceof $root.InitConnect.Request)
+                return object;
+            var message = new $root.InitConnect.Request();
+            if (object.c2s != null) {
+                if (typeof object.c2s !== "object")
+                    throw TypeError(".InitConnect.Request.c2s: object expected");
+                message.c2s = $root.InitConnect.C2S.fromObject(object.c2s);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof InitConnect.Request
+         * @static
+         * @param {InitConnect.Request} message Request
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Request.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.c2s = null;
+            if (message.c2s != null && message.hasOwnProperty("c2s"))
+                object.c2s = $root.InitConnect.C2S.toObject(message.c2s, options);
+            return object;
+        };
+
+        /**
+         * Converts this Request to JSON.
+         * @function toJSON
+         * @memberof InitConnect.Request
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Request.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Request;
+    })();
+
+    InitConnect.Response = (function() {
+
+        /**
+         * Properties of a Response.
+         * @memberof InitConnect
+         * @interface IResponse
+         * @property {number} retType Response retType
+         * @property {string|null} [retMsg] Response retMsg
+         * @property {number|null} [errCode] Response errCode
+         * @property {InitConnect.IS2C|null} [s2c] Response s2c
+         */
+
+        /**
+         * Constructs a new Response.
+         * @memberof InitConnect
+         * @classdesc Represents a Response.
+         * @implements IResponse
+         * @constructor
+         * @param {InitConnect.IResponse=} [properties] Properties to set
+         */
+        function Response(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Response retType.
+         * @member {number} retType
+         * @memberof InitConnect.Response
+         * @instance
+         */
+        Response.prototype.retType = -400;
+
+        /**
+         * Response retMsg.
+         * @member {string} retMsg
+         * @memberof InitConnect.Response
+         * @instance
+         */
+        Response.prototype.retMsg = "";
+
+        /**
+         * Response errCode.
+         * @member {number} errCode
+         * @memberof InitConnect.Response
+         * @instance
+         */
+        Response.prototype.errCode = 0;
+
+        /**
+         * Response s2c.
+         * @member {InitConnect.IS2C|null|undefined} s2c
+         * @memberof InitConnect.Response
+         * @instance
+         */
+        Response.prototype.s2c = null;
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @function create
+         * @memberof InitConnect.Response
+         * @static
+         * @param {InitConnect.IResponse=} [properties] Properties to set
+         * @returns {InitConnect.Response} Response instance
+         */
+        Response.create = function create(properties) {
+            return new Response(properties);
+        };
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
+         * @function encode
+         * @memberof InitConnect.Response
+         * @static
+         * @param {InitConnect.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                $root.InitConnect.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof InitConnect.Response
+         * @static
+         * @param {InitConnect.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @function decode
+         * @memberof InitConnect.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {InitConnect.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.Response();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.retType = reader.int32();
+                    break;
+                case 2:
+                    message.retMsg = reader.string();
+                    break;
+                case 3:
+                    message.errCode = reader.int32();
+                    break;
+                case 4:
+                    message.s2c = $root.InitConnect.S2C.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("retType"))
+                throw $util.ProtocolError("missing required 'retType'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof InitConnect.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {InitConnect.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Response message.
+         * @function verify
+         * @memberof InitConnect.Response
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Response.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.retType))
+                return "retType: integer expected";
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                if (!$util.isString(message.retMsg))
+                    return "retMsg: string expected";
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                if (!$util.isInteger(message.errCode))
+                    return "errCode: integer expected";
+            if (message.s2c != null && message.hasOwnProperty("s2c")) {
+                var error = $root.InitConnect.S2C.verify(message.s2c);
+                if (error)
+                    return "s2c." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof InitConnect.Response
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {InitConnect.Response} Response
+         */
+        Response.fromObject = function fromObject(object) {
+            if (object instanceof $root.InitConnect.Response)
+                return object;
+            var message = new $root.InitConnect.Response();
+            if (object.retType != null)
+                message.retType = object.retType | 0;
+            if (object.retMsg != null)
+                message.retMsg = String(object.retMsg);
+            if (object.errCode != null)
+                message.errCode = object.errCode | 0;
+            if (object.s2c != null) {
+                if (typeof object.s2c !== "object")
+                    throw TypeError(".InitConnect.Response.s2c: object expected");
+                message.s2c = $root.InitConnect.S2C.fromObject(object.s2c);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof InitConnect.Response
+         * @static
+         * @param {InitConnect.Response} message Response
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Response.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.retType = -400;
+                object.retMsg = "";
+                object.errCode = 0;
+                object.s2c = null;
+            }
+            if (message.retType != null && message.hasOwnProperty("retType"))
+                object.retType = message.retType;
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                object.retMsg = message.retMsg;
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                object.errCode = message.errCode;
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                object.s2c = $root.InitConnect.S2C.toObject(message.s2c, options);
+            return object;
+        };
+
+        /**
+         * Converts this Response to JSON.
+         * @function toJSON
+         * @memberof InitConnect.Response
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Response.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Response;
+    })();
+
+    return InitConnect;
+})();
+
+$root.KeepAlive = (function() {
+
+    /**
+     * Namespace KeepAlive.
+     * @exports KeepAlive
+     * @namespace
+     */
+    var KeepAlive = {};
+
+    KeepAlive.C2S = (function() {
+
+        /**
+         * Properties of a C2S.
+         * @memberof KeepAlive
+         * @interface IC2S
+         * @property {number|Long} time C2S time
+         */
+
+        /**
+         * Constructs a new C2S.
+         * @memberof KeepAlive
+         * @classdesc Represents a C2S.
+         * @implements IC2S
+         * @constructor
+         * @param {KeepAlive.IC2S=} [properties] Properties to set
+         */
+        function C2S(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2S time.
+         * @member {number|Long} time
+         * @memberof KeepAlive.C2S
+         * @instance
+         */
+        C2S.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @function create
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {KeepAlive.IC2S=} [properties] Properties to set
+         * @returns {KeepAlive.C2S} C2S instance
+         */
+        C2S.create = function create(properties) {
+            return new C2S(properties);
+        };
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
+         * @function encode
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {KeepAlive.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.time);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {KeepAlive.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @function decode
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {KeepAlive.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.C2S();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.time = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("time"))
+                throw $util.ProtocolError("missing required 'time'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {KeepAlive.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2S message.
+         * @function verify
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2S.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
+                return "time: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {KeepAlive.C2S} C2S
+         */
+        C2S.fromObject = function fromObject(object) {
+            if (object instanceof $root.KeepAlive.C2S)
+                return object;
+            var message = new $root.KeepAlive.C2S();
+            if (object.time != null)
+                if ($util.Long)
+                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
+                else if (typeof object.time === "string")
+                    message.time = parseInt(object.time, 10);
+                else if (typeof object.time === "number")
+                    message.time = object.time;
+                else if (typeof object.time === "object")
+                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof KeepAlive.C2S
+         * @static
+         * @param {KeepAlive.C2S} message C2S
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2S.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.time = options.longs === String ? "0" : 0;
+            if (message.time != null && message.hasOwnProperty("time"))
+                if (typeof message.time === "number")
+                    object.time = options.longs === String ? String(message.time) : message.time;
+                else
+                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
+            return object;
+        };
+
+        /**
+         * Converts this C2S to JSON.
+         * @function toJSON
+         * @memberof KeepAlive.C2S
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2S.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2S;
+    })();
+
+    KeepAlive.S2C = (function() {
+
+        /**
+         * Properties of a S2C.
+         * @memberof KeepAlive
+         * @interface IS2C
+         * @property {number|Long} time S2C time
+         */
+
+        /**
+         * Constructs a new S2C.
+         * @memberof KeepAlive
+         * @classdesc Represents a S2C.
+         * @implements IS2C
+         * @constructor
+         * @param {KeepAlive.IS2C=} [properties] Properties to set
+         */
+        function S2C(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * S2C time.
+         * @member {number|Long} time
+         * @memberof KeepAlive.S2C
+         * @instance
+         */
+        S2C.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @function create
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {KeepAlive.IS2C=} [properties] Properties to set
+         * @returns {KeepAlive.S2C} S2C instance
+         */
+        S2C.create = function create(properties) {
+            return new S2C(properties);
+        };
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * @function encode
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {KeepAlive.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.time);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {KeepAlive.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @function decode
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {KeepAlive.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.S2C();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.time = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("time"))
+                throw $util.ProtocolError("missing required 'time'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {KeepAlive.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a S2C message.
+         * @function verify
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        S2C.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
+                return "time: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {KeepAlive.S2C} S2C
+         */
+        S2C.fromObject = function fromObject(object) {
+            if (object instanceof $root.KeepAlive.S2C)
+                return object;
+            var message = new $root.KeepAlive.S2C();
+            if (object.time != null)
+                if ($util.Long)
+                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
+                else if (typeof object.time === "string")
+                    message.time = parseInt(object.time, 10);
+                else if (typeof object.time === "number")
+                    message.time = object.time;
+                else if (typeof object.time === "object")
+                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof KeepAlive.S2C
+         * @static
+         * @param {KeepAlive.S2C} message S2C
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        S2C.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.time = options.longs === String ? "0" : 0;
+            if (message.time != null && message.hasOwnProperty("time"))
+                if (typeof message.time === "number")
+                    object.time = options.longs === String ? String(message.time) : message.time;
+                else
+                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
+            return object;
+        };
+
+        /**
+         * Converts this S2C to JSON.
+         * @function toJSON
+         * @memberof KeepAlive.S2C
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        S2C.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return S2C;
+    })();
+
+    KeepAlive.Request = (function() {
+
+        /**
+         * Properties of a Request.
+         * @memberof KeepAlive
+         * @interface IRequest
+         * @property {KeepAlive.IC2S} c2s Request c2s
+         */
+
+        /**
+         * Constructs a new Request.
+         * @memberof KeepAlive
+         * @classdesc Represents a Request.
+         * @implements IRequest
+         * @constructor
+         * @param {KeepAlive.IRequest=} [properties] Properties to set
+         */
+        function Request(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Request c2s.
+         * @member {KeepAlive.IC2S} c2s
+         * @memberof KeepAlive.Request
+         * @instance
+         */
+        Request.prototype.c2s = null;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @function create
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {KeepAlive.IRequest=} [properties] Properties to set
+         * @returns {KeepAlive.Request} Request instance
+         */
+        Request.create = function create(properties) {
+            return new Request(properties);
+        };
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * @function encode
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {KeepAlive.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.KeepAlive.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {KeepAlive.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @function decode
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {KeepAlive.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.Request();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.c2s = $root.KeepAlive.C2S.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("c2s"))
+                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {KeepAlive.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Request message.
+         * @function verify
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Request.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.KeepAlive.C2S.verify(message.c2s);
+                if (error)
+                    return "c2s." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {KeepAlive.Request} Request
+         */
+        Request.fromObject = function fromObject(object) {
+            if (object instanceof $root.KeepAlive.Request)
+                return object;
+            var message = new $root.KeepAlive.Request();
+            if (object.c2s != null) {
+                if (typeof object.c2s !== "object")
+                    throw TypeError(".KeepAlive.Request.c2s: object expected");
+                message.c2s = $root.KeepAlive.C2S.fromObject(object.c2s);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof KeepAlive.Request
+         * @static
+         * @param {KeepAlive.Request} message Request
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Request.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.c2s = null;
+            if (message.c2s != null && message.hasOwnProperty("c2s"))
+                object.c2s = $root.KeepAlive.C2S.toObject(message.c2s, options);
+            return object;
+        };
+
+        /**
+         * Converts this Request to JSON.
+         * @function toJSON
+         * @memberof KeepAlive.Request
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Request.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Request;
+    })();
+
+    KeepAlive.Response = (function() {
+
+        /**
+         * Properties of a Response.
+         * @memberof KeepAlive
+         * @interface IResponse
+         * @property {number} retType Response retType
+         * @property {string|null} [retMsg] Response retMsg
+         * @property {number|null} [errCode] Response errCode
+         * @property {KeepAlive.IS2C|null} [s2c] Response s2c
+         */
+
+        /**
+         * Constructs a new Response.
+         * @memberof KeepAlive
+         * @classdesc Represents a Response.
+         * @implements IResponse
+         * @constructor
+         * @param {KeepAlive.IResponse=} [properties] Properties to set
+         */
+        function Response(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Response retType.
+         * @member {number} retType
+         * @memberof KeepAlive.Response
+         * @instance
+         */
+        Response.prototype.retType = -400;
+
+        /**
+         * Response retMsg.
+         * @member {string} retMsg
+         * @memberof KeepAlive.Response
+         * @instance
+         */
+        Response.prototype.retMsg = "";
+
+        /**
+         * Response errCode.
+         * @member {number} errCode
+         * @memberof KeepAlive.Response
+         * @instance
+         */
+        Response.prototype.errCode = 0;
+
+        /**
+         * Response s2c.
+         * @member {KeepAlive.IS2C|null|undefined} s2c
+         * @memberof KeepAlive.Response
+         * @instance
+         */
+        Response.prototype.s2c = null;
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @function create
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {KeepAlive.IResponse=} [properties] Properties to set
+         * @returns {KeepAlive.Response} Response instance
+         */
+        Response.create = function create(properties) {
+            return new Response(properties);
+        };
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * @function encode
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {KeepAlive.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                $root.KeepAlive.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {KeepAlive.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @function decode
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {KeepAlive.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.Response();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.retType = reader.int32();
+                    break;
+                case 2:
+                    message.retMsg = reader.string();
+                    break;
+                case 3:
+                    message.errCode = reader.int32();
+                    break;
+                case 4:
+                    message.s2c = $root.KeepAlive.S2C.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("retType"))
+                throw $util.ProtocolError("missing required 'retType'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {KeepAlive.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Response message.
+         * @function verify
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Response.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.retType))
+                return "retType: integer expected";
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                if (!$util.isString(message.retMsg))
+                    return "retMsg: string expected";
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                if (!$util.isInteger(message.errCode))
+                    return "errCode: integer expected";
+            if (message.s2c != null && message.hasOwnProperty("s2c")) {
+                var error = $root.KeepAlive.S2C.verify(message.s2c);
+                if (error)
+                    return "s2c." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {KeepAlive.Response} Response
+         */
+        Response.fromObject = function fromObject(object) {
+            if (object instanceof $root.KeepAlive.Response)
+                return object;
+            var message = new $root.KeepAlive.Response();
+            if (object.retType != null)
+                message.retType = object.retType | 0;
+            if (object.retMsg != null)
+                message.retMsg = String(object.retMsg);
+            if (object.errCode != null)
+                message.errCode = object.errCode | 0;
+            if (object.s2c != null) {
+                if (typeof object.s2c !== "object")
+                    throw TypeError(".KeepAlive.Response.s2c: object expected");
+                message.s2c = $root.KeepAlive.S2C.fromObject(object.s2c);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof KeepAlive.Response
+         * @static
+         * @param {KeepAlive.Response} message Response
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Response.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.retType = -400;
+                object.retMsg = "";
+                object.errCode = 0;
+                object.s2c = null;
+            }
+            if (message.retType != null && message.hasOwnProperty("retType"))
+                object.retType = message.retType;
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                object.retMsg = message.retMsg;
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                object.errCode = message.errCode;
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                object.s2c = $root.KeepAlive.S2C.toObject(message.s2c, options);
+            return object;
+        };
+
+        /**
+         * Converts this Response to JSON.
+         * @function toJSON
+         * @memberof KeepAlive.Response
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Response.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Response;
+    })();
+
+    return KeepAlive;
+})();
+
+$root.Notify = (function() {
+
+    /**
+     * Namespace Notify.
+     * @exports Notify
+     * @namespace
+     */
+    var Notify = {};
+
+    /**
+     * NotifyType enum.
+     * @name Notify.NotifyType
+     * @enum {string}
+     * @property {number} NotifyType_None=0 NotifyType_None value
+     * @property {number} NotifyType_GtwEvent=1 NotifyType_GtwEvent value
+     * @property {number} NotifyType_ProgramStatus=2 NotifyType_ProgramStatus value
+     * @property {number} NotifyType_ConnStatus=3 NotifyType_ConnStatus value
+     * @property {number} NotifyType_QotRight=4 NotifyType_QotRight value
+     * @property {number} NotifyType_APILevel=5 NotifyType_APILevel value
+     * @property {number} NotifyType_APIQuota=6 NotifyType_APIQuota value
+     */
+    Notify.NotifyType = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NotifyType_None"] = 0;
+        values[valuesById[1] = "NotifyType_GtwEvent"] = 1;
+        values[valuesById[2] = "NotifyType_ProgramStatus"] = 2;
+        values[valuesById[3] = "NotifyType_ConnStatus"] = 3;
+        values[valuesById[4] = "NotifyType_QotRight"] = 4;
+        values[valuesById[5] = "NotifyType_APILevel"] = 5;
+        values[valuesById[6] = "NotifyType_APIQuota"] = 6;
+        return values;
+    })();
+
+    /**
+     * GtwEventType enum.
+     * @name Notify.GtwEventType
+     * @enum {string}
+     * @property {number} GtwEventType_None=0 GtwEventType_None value
+     * @property {number} GtwEventType_LocalCfgLoadFailed=1 GtwEventType_LocalCfgLoadFailed value
+     * @property {number} GtwEventType_APISvrRunFailed=2 GtwEventType_APISvrRunFailed value
+     * @property {number} GtwEventType_ForceUpdate=3 GtwEventType_ForceUpdate value
+     * @property {number} GtwEventType_LoginFailed=4 GtwEventType_LoginFailed value
+     * @property {number} GtwEventType_UnAgreeDisclaimer=5 GtwEventType_UnAgreeDisclaimer value
+     * @property {number} GtwEventType_NetCfgMissing=6 GtwEventType_NetCfgMissing value
+     * @property {number} GtwEventType_KickedOut=7 GtwEventType_KickedOut value
+     * @property {number} GtwEventType_LoginPwdChanged=8 GtwEventType_LoginPwdChanged value
+     * @property {number} GtwEventType_BanLogin=9 GtwEventType_BanLogin value
+     * @property {number} GtwEventType_NeedPicVerifyCode=10 GtwEventType_NeedPicVerifyCode value
+     * @property {number} GtwEventType_NeedPhoneVerifyCode=11 GtwEventType_NeedPhoneVerifyCode value
+     * @property {number} GtwEventType_AppDataNotExist=12 GtwEventType_AppDataNotExist value
+     * @property {number} GtwEventType_NessaryDataMissing=13 GtwEventType_NessaryDataMissing value
+     * @property {number} GtwEventType_TradePwdChanged=14 GtwEventType_TradePwdChanged value
+     * @property {number} GtwEventType_EnableDeviceLock=15 GtwEventType_EnableDeviceLock value
+     */
+    Notify.GtwEventType = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "GtwEventType_None"] = 0;
+        values[valuesById[1] = "GtwEventType_LocalCfgLoadFailed"] = 1;
+        values[valuesById[2] = "GtwEventType_APISvrRunFailed"] = 2;
+        values[valuesById[3] = "GtwEventType_ForceUpdate"] = 3;
+        values[valuesById[4] = "GtwEventType_LoginFailed"] = 4;
+        values[valuesById[5] = "GtwEventType_UnAgreeDisclaimer"] = 5;
+        values[valuesById[6] = "GtwEventType_NetCfgMissing"] = 6;
+        values[valuesById[7] = "GtwEventType_KickedOut"] = 7;
+        values[valuesById[8] = "GtwEventType_LoginPwdChanged"] = 8;
+        values[valuesById[9] = "GtwEventType_BanLogin"] = 9;
+        values[valuesById[10] = "GtwEventType_NeedPicVerifyCode"] = 10;
+        values[valuesById[11] = "GtwEventType_NeedPhoneVerifyCode"] = 11;
+        values[valuesById[12] = "GtwEventType_AppDataNotExist"] = 12;
+        values[valuesById[13] = "GtwEventType_NessaryDataMissing"] = 13;
+        values[valuesById[14] = "GtwEventType_TradePwdChanged"] = 14;
+        values[valuesById[15] = "GtwEventType_EnableDeviceLock"] = 15;
+        return values;
+    })();
+
+    Notify.GtwEvent = (function() {
+
+        /**
+         * Properties of a GtwEvent.
+         * @memberof Notify
+         * @interface IGtwEvent
+         * @property {number} eventType GtwEvent eventType
+         * @property {string} desc GtwEvent desc
+         */
+
+        /**
+         * Constructs a new GtwEvent.
+         * @memberof Notify
+         * @classdesc Represents a GtwEvent.
+         * @implements IGtwEvent
+         * @constructor
+         * @param {Notify.IGtwEvent=} [properties] Properties to set
+         */
+        function GtwEvent(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GtwEvent eventType.
+         * @member {number} eventType
+         * @memberof Notify.GtwEvent
+         * @instance
+         */
+        GtwEvent.prototype.eventType = 0;
+
+        /**
+         * GtwEvent desc.
+         * @member {string} desc
+         * @memberof Notify.GtwEvent
+         * @instance
+         */
+        GtwEvent.prototype.desc = "";
+
+        /**
+         * Creates a new GtwEvent instance using the specified properties.
+         * @function create
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Notify.IGtwEvent=} [properties] Properties to set
+         * @returns {Notify.GtwEvent} GtwEvent instance
+         */
+        GtwEvent.create = function create(properties) {
+            return new GtwEvent(properties);
+        };
+
+        /**
+         * Encodes the specified GtwEvent message. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Notify.IGtwEvent} message GtwEvent message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GtwEvent.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.eventType);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.desc);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GtwEvent message, length delimited. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Notify.IGtwEvent} message GtwEvent message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GtwEvent.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GtwEvent message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.GtwEvent} GtwEvent
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GtwEvent.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.GtwEvent();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.eventType = reader.int32();
+                    break;
+                case 2:
+                    message.desc = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("eventType"))
+                throw $util.ProtocolError("missing required 'eventType'", { instance: message });
+            if (!message.hasOwnProperty("desc"))
+                throw $util.ProtocolError("missing required 'desc'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a GtwEvent message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.GtwEvent} GtwEvent
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GtwEvent.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GtwEvent message.
+         * @function verify
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GtwEvent.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.eventType))
+                return "eventType: integer expected";
+            if (!$util.isString(message.desc))
+                return "desc: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GtwEvent message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.GtwEvent} GtwEvent
+         */
+        GtwEvent.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.GtwEvent)
+                return object;
+            var message = new $root.Notify.GtwEvent();
+            if (object.eventType != null)
+                message.eventType = object.eventType | 0;
+            if (object.desc != null)
+                message.desc = String(object.desc);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GtwEvent message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.GtwEvent
+         * @static
+         * @param {Notify.GtwEvent} message GtwEvent
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GtwEvent.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.eventType = 0;
+                object.desc = "";
+            }
+            if (message.eventType != null && message.hasOwnProperty("eventType"))
+                object.eventType = message.eventType;
+            if (message.desc != null && message.hasOwnProperty("desc"))
+                object.desc = message.desc;
+            return object;
+        };
+
+        /**
+         * Converts this GtwEvent to JSON.
+         * @function toJSON
+         * @memberof Notify.GtwEvent
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GtwEvent.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GtwEvent;
+    })();
+
+    Notify.ProgramStatus = (function() {
+
+        /**
+         * Properties of a ProgramStatus.
+         * @memberof Notify
+         * @interface IProgramStatus
+         * @property {Common.IProgramStatus} programStatus ProgramStatus programStatus
+         */
+
+        /**
+         * Constructs a new ProgramStatus.
+         * @memberof Notify
+         * @classdesc Represents a ProgramStatus.
+         * @implements IProgramStatus
+         * @constructor
+         * @param {Notify.IProgramStatus=} [properties] Properties to set
+         */
+        function ProgramStatus(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ProgramStatus programStatus.
+         * @member {Common.IProgramStatus} programStatus
+         * @memberof Notify.ProgramStatus
+         * @instance
+         */
+        ProgramStatus.prototype.programStatus = null;
+
+        /**
+         * Creates a new ProgramStatus instance using the specified properties.
+         * @function create
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Notify.IProgramStatus=} [properties] Properties to set
+         * @returns {Notify.ProgramStatus} ProgramStatus instance
+         */
+        ProgramStatus.create = function create(properties) {
+            return new ProgramStatus(properties);
+        };
+
+        /**
+         * Encodes the specified ProgramStatus message. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Notify.IProgramStatus} message ProgramStatus message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProgramStatus.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.Common.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ProgramStatus message, length delimited. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Notify.IProgramStatus} message ProgramStatus message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProgramStatus.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ProgramStatus message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.ProgramStatus} ProgramStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProgramStatus.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.ProgramStatus();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.programStatus = $root.Common.ProgramStatus.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("programStatus"))
+                throw $util.ProtocolError("missing required 'programStatus'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a ProgramStatus message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.ProgramStatus} ProgramStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProgramStatus.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ProgramStatus message.
+         * @function verify
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ProgramStatus.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.Common.ProgramStatus.verify(message.programStatus);
+                if (error)
+                    return "programStatus." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ProgramStatus message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.ProgramStatus} ProgramStatus
+         */
+        ProgramStatus.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.ProgramStatus)
+                return object;
+            var message = new $root.Notify.ProgramStatus();
+            if (object.programStatus != null) {
+                if (typeof object.programStatus !== "object")
+                    throw TypeError(".Notify.ProgramStatus.programStatus: object expected");
+                message.programStatus = $root.Common.ProgramStatus.fromObject(object.programStatus);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ProgramStatus message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.ProgramStatus
+         * @static
+         * @param {Notify.ProgramStatus} message ProgramStatus
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ProgramStatus.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.programStatus = null;
+            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
+                object.programStatus = $root.Common.ProgramStatus.toObject(message.programStatus, options);
+            return object;
+        };
+
+        /**
+         * Converts this ProgramStatus to JSON.
+         * @function toJSON
+         * @memberof Notify.ProgramStatus
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ProgramStatus.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ProgramStatus;
+    })();
+
+    Notify.ConnectStatus = (function() {
+
+        /**
+         * Properties of a ConnectStatus.
+         * @memberof Notify
+         * @interface IConnectStatus
+         * @property {boolean} qotLogined ConnectStatus qotLogined
+         * @property {boolean} trdLogined ConnectStatus trdLogined
+         */
+
+        /**
+         * Constructs a new ConnectStatus.
+         * @memberof Notify
+         * @classdesc Represents a ConnectStatus.
+         * @implements IConnectStatus
+         * @constructor
+         * @param {Notify.IConnectStatus=} [properties] Properties to set
+         */
+        function ConnectStatus(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ConnectStatus qotLogined.
+         * @member {boolean} qotLogined
+         * @memberof Notify.ConnectStatus
+         * @instance
+         */
+        ConnectStatus.prototype.qotLogined = false;
+
+        /**
+         * ConnectStatus trdLogined.
+         * @member {boolean} trdLogined
+         * @memberof Notify.ConnectStatus
+         * @instance
+         */
+        ConnectStatus.prototype.trdLogined = false;
+
+        /**
+         * Creates a new ConnectStatus instance using the specified properties.
+         * @function create
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Notify.IConnectStatus=} [properties] Properties to set
+         * @returns {Notify.ConnectStatus} ConnectStatus instance
+         */
+        ConnectStatus.create = function create(properties) {
+            return new ConnectStatus(properties);
+        };
+
+        /**
+         * Encodes the specified ConnectStatus message. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Notify.IConnectStatus} message ConnectStatus message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectStatus.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.qotLogined);
+            writer.uint32(/* id 2, wireType 0 =*/16).bool(message.trdLogined);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ConnectStatus message, length delimited. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Notify.IConnectStatus} message ConnectStatus message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ConnectStatus.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ConnectStatus message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.ConnectStatus} ConnectStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectStatus.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.ConnectStatus();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.qotLogined = reader.bool();
+                    break;
+                case 2:
+                    message.trdLogined = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("qotLogined"))
+                throw $util.ProtocolError("missing required 'qotLogined'", { instance: message });
+            if (!message.hasOwnProperty("trdLogined"))
+                throw $util.ProtocolError("missing required 'trdLogined'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a ConnectStatus message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.ConnectStatus} ConnectStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ConnectStatus.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ConnectStatus message.
+         * @function verify
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ConnectStatus.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (typeof message.qotLogined !== "boolean")
+                return "qotLogined: boolean expected";
+            if (typeof message.trdLogined !== "boolean")
+                return "trdLogined: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates a ConnectStatus message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.ConnectStatus} ConnectStatus
+         */
+        ConnectStatus.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.ConnectStatus)
+                return object;
+            var message = new $root.Notify.ConnectStatus();
+            if (object.qotLogined != null)
+                message.qotLogined = Boolean(object.qotLogined);
+            if (object.trdLogined != null)
+                message.trdLogined = Boolean(object.trdLogined);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ConnectStatus message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.ConnectStatus
+         * @static
+         * @param {Notify.ConnectStatus} message ConnectStatus
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ConnectStatus.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.qotLogined = false;
+                object.trdLogined = false;
+            }
+            if (message.qotLogined != null && message.hasOwnProperty("qotLogined"))
+                object.qotLogined = message.qotLogined;
+            if (message.trdLogined != null && message.hasOwnProperty("trdLogined"))
+                object.trdLogined = message.trdLogined;
+            return object;
+        };
+
+        /**
+         * Converts this ConnectStatus to JSON.
+         * @function toJSON
+         * @memberof Notify.ConnectStatus
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ConnectStatus.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ConnectStatus;
+    })();
+
+    Notify.QotRight = (function() {
+
+        /**
+         * Properties of a QotRight.
+         * @memberof Notify
+         * @interface IQotRight
+         * @property {number} hkQotRight QotRight hkQotRight
+         * @property {number} usQotRight QotRight usQotRight
+         * @property {number} cnQotRight QotRight cnQotRight
+         * @property {number|null} [hkOptionQotRight] QotRight hkOptionQotRight
+         * @property {boolean|null} [hasUSOptionQotRight] QotRight hasUSOptionQotRight
+         * @property {number|null} [hkFutureQotRight] QotRight hkFutureQotRight
+         */
+
+        /**
+         * Constructs a new QotRight.
+         * @memberof Notify
+         * @classdesc Represents a QotRight.
+         * @implements IQotRight
+         * @constructor
+         * @param {Notify.IQotRight=} [properties] Properties to set
+         */
+        function QotRight(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * QotRight hkQotRight.
+         * @member {number} hkQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.hkQotRight = 0;
+
+        /**
+         * QotRight usQotRight.
+         * @member {number} usQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.usQotRight = 0;
+
+        /**
+         * QotRight cnQotRight.
+         * @member {number} cnQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.cnQotRight = 0;
+
+        /**
+         * QotRight hkOptionQotRight.
+         * @member {number} hkOptionQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.hkOptionQotRight = 0;
+
+        /**
+         * QotRight hasUSOptionQotRight.
+         * @member {boolean} hasUSOptionQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.hasUSOptionQotRight = false;
+
+        /**
+         * QotRight hkFutureQotRight.
+         * @member {number} hkFutureQotRight
+         * @memberof Notify.QotRight
+         * @instance
+         */
+        QotRight.prototype.hkFutureQotRight = 0;
+
+        /**
+         * Creates a new QotRight instance using the specified properties.
+         * @function create
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Notify.IQotRight=} [properties] Properties to set
+         * @returns {Notify.QotRight} QotRight instance
+         */
+        QotRight.create = function create(properties) {
+            return new QotRight(properties);
+        };
+
+        /**
+         * Encodes the specified QotRight message. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Notify.IQotRight} message QotRight message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        QotRight.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.hkQotRight);
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.usQotRight);
+            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.cnQotRight);
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.hkOptionQotRight);
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                writer.uint32(/* id 8, wireType 0 =*/64).bool(message.hasUSOptionQotRight);
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.hkFutureQotRight);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified QotRight message, length delimited. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Notify.IQotRight} message QotRight message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        QotRight.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a QotRight message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.QotRight
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.QotRight} QotRight
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        QotRight.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.QotRight();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 4:
+                    message.hkQotRight = reader.int32();
+                    break;
+                case 5:
+                    message.usQotRight = reader.int32();
+                    break;
+                case 6:
+                    message.cnQotRight = reader.int32();
+                    break;
+                case 7:
+                    message.hkOptionQotRight = reader.int32();
+                    break;
+                case 8:
+                    message.hasUSOptionQotRight = reader.bool();
+                    break;
+                case 9:
+                    message.hkFutureQotRight = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("hkQotRight"))
+                throw $util.ProtocolError("missing required 'hkQotRight'", { instance: message });
+            if (!message.hasOwnProperty("usQotRight"))
+                throw $util.ProtocolError("missing required 'usQotRight'", { instance: message });
+            if (!message.hasOwnProperty("cnQotRight"))
+                throw $util.ProtocolError("missing required 'cnQotRight'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a QotRight message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.QotRight
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.QotRight} QotRight
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        QotRight.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a QotRight message.
+         * @function verify
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        QotRight.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.hkQotRight))
+                return "hkQotRight: integer expected";
+            if (!$util.isInteger(message.usQotRight))
+                return "usQotRight: integer expected";
+            if (!$util.isInteger(message.cnQotRight))
+                return "cnQotRight: integer expected";
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                if (!$util.isInteger(message.hkOptionQotRight))
+                    return "hkOptionQotRight: integer expected";
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                if (typeof message.hasUSOptionQotRight !== "boolean")
+                    return "hasUSOptionQotRight: boolean expected";
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                if (!$util.isInteger(message.hkFutureQotRight))
+                    return "hkFutureQotRight: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a QotRight message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.QotRight} QotRight
+         */
+        QotRight.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.QotRight)
+                return object;
+            var message = new $root.Notify.QotRight();
+            if (object.hkQotRight != null)
+                message.hkQotRight = object.hkQotRight | 0;
+            if (object.usQotRight != null)
+                message.usQotRight = object.usQotRight | 0;
+            if (object.cnQotRight != null)
+                message.cnQotRight = object.cnQotRight | 0;
+            if (object.hkOptionQotRight != null)
+                message.hkOptionQotRight = object.hkOptionQotRight | 0;
+            if (object.hasUSOptionQotRight != null)
+                message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
+            if (object.hkFutureQotRight != null)
+                message.hkFutureQotRight = object.hkFutureQotRight | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a QotRight message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.QotRight
+         * @static
+         * @param {Notify.QotRight} message QotRight
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        QotRight.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.hkQotRight = 0;
+                object.usQotRight = 0;
+                object.cnQotRight = 0;
+                object.hkOptionQotRight = 0;
+                object.hasUSOptionQotRight = false;
+                object.hkFutureQotRight = 0;
+            }
+            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
+                object.hkQotRight = message.hkQotRight;
+            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
+                object.usQotRight = message.usQotRight;
+            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
+                object.cnQotRight = message.cnQotRight;
+            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
+                object.hkOptionQotRight = message.hkOptionQotRight;
+            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
+                object.hasUSOptionQotRight = message.hasUSOptionQotRight;
+            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
+                object.hkFutureQotRight = message.hkFutureQotRight;
+            return object;
+        };
+
+        /**
+         * Converts this QotRight to JSON.
+         * @function toJSON
+         * @memberof Notify.QotRight
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        QotRight.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return QotRight;
+    })();
+
+    Notify.APILevel = (function() {
+
+        /**
+         * Properties of a APILevel.
+         * @memberof Notify
+         * @interface IAPILevel
+         * @property {string} apiLevel APILevel apiLevel
+         */
+
+        /**
+         * Constructs a new APILevel.
+         * @memberof Notify
+         * @classdesc Represents a APILevel.
+         * @implements IAPILevel
+         * @constructor
+         * @param {Notify.IAPILevel=} [properties] Properties to set
+         */
+        function APILevel(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * APILevel apiLevel.
+         * @member {string} apiLevel
+         * @memberof Notify.APILevel
+         * @instance
+         */
+        APILevel.prototype.apiLevel = "";
+
+        /**
+         * Creates a new APILevel instance using the specified properties.
+         * @function create
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Notify.IAPILevel=} [properties] Properties to set
+         * @returns {Notify.APILevel} APILevel instance
+         */
+        APILevel.create = function create(properties) {
+            return new APILevel(properties);
+        };
+
+        /**
+         * Encodes the specified APILevel message. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Notify.IAPILevel} message APILevel message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        APILevel.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.apiLevel);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified APILevel message, length delimited. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Notify.IAPILevel} message APILevel message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        APILevel.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a APILevel message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.APILevel
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.APILevel} APILevel
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        APILevel.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.APILevel();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 3:
+                    message.apiLevel = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("apiLevel"))
+                throw $util.ProtocolError("missing required 'apiLevel'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a APILevel message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.APILevel
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.APILevel} APILevel
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        APILevel.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a APILevel message.
+         * @function verify
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        APILevel.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.apiLevel))
+                return "apiLevel: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a APILevel message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.APILevel} APILevel
+         */
+        APILevel.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.APILevel)
+                return object;
+            var message = new $root.Notify.APILevel();
+            if (object.apiLevel != null)
+                message.apiLevel = String(object.apiLevel);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a APILevel message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.APILevel
+         * @static
+         * @param {Notify.APILevel} message APILevel
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        APILevel.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.apiLevel = "";
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                object.apiLevel = message.apiLevel;
+            return object;
+        };
+
+        /**
+         * Converts this APILevel to JSON.
+         * @function toJSON
+         * @memberof Notify.APILevel
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        APILevel.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return APILevel;
+    })();
+
+    Notify.APIQuota = (function() {
+
+        /**
+         * Properties of a APIQuota.
+         * @memberof Notify
+         * @interface IAPIQuota
+         * @property {number} subQuota APIQuota subQuota
+         * @property {number} historyKLQuota APIQuota historyKLQuota
+         */
+
+        /**
+         * Constructs a new APIQuota.
+         * @memberof Notify
+         * @classdesc Represents a APIQuota.
+         * @implements IAPIQuota
+         * @constructor
+         * @param {Notify.IAPIQuota=} [properties] Properties to set
+         */
+        function APIQuota(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * APIQuota subQuota.
+         * @member {number} subQuota
+         * @memberof Notify.APIQuota
+         * @instance
+         */
+        APIQuota.prototype.subQuota = 0;
+
+        /**
+         * APIQuota historyKLQuota.
+         * @member {number} historyKLQuota
+         * @memberof Notify.APIQuota
+         * @instance
+         */
+        APIQuota.prototype.historyKLQuota = 0;
+
+        /**
+         * Creates a new APIQuota instance using the specified properties.
+         * @function create
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Notify.IAPIQuota=} [properties] Properties to set
+         * @returns {Notify.APIQuota} APIQuota instance
+         */
+        APIQuota.create = function create(properties) {
+            return new APIQuota(properties);
+        };
+
+        /**
+         * Encodes the specified APIQuota message. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        APIQuota.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.subQuota);
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.historyKLQuota);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified APIQuota message, length delimited. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        APIQuota.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a APIQuota message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.APIQuota} APIQuota
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        APIQuota.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.APIQuota();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.subQuota = reader.int32();
+                    break;
+                case 2:
+                    message.historyKLQuota = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("subQuota"))
+                throw $util.ProtocolError("missing required 'subQuota'", { instance: message });
+            if (!message.hasOwnProperty("historyKLQuota"))
+                throw $util.ProtocolError("missing required 'historyKLQuota'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a APIQuota message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.APIQuota} APIQuota
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        APIQuota.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a APIQuota message.
+         * @function verify
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        APIQuota.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.subQuota))
+                return "subQuota: integer expected";
+            if (!$util.isInteger(message.historyKLQuota))
+                return "historyKLQuota: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a APIQuota message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.APIQuota} APIQuota
+         */
+        APIQuota.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.APIQuota)
+                return object;
+            var message = new $root.Notify.APIQuota();
+            if (object.subQuota != null)
+                message.subQuota = object.subQuota | 0;
+            if (object.historyKLQuota != null)
+                message.historyKLQuota = object.historyKLQuota | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a APIQuota message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.APIQuota
+         * @static
+         * @param {Notify.APIQuota} message APIQuota
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        APIQuota.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.subQuota = 0;
+                object.historyKLQuota = 0;
+            }
+            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
+                object.subQuota = message.subQuota;
+            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
+                object.historyKLQuota = message.historyKLQuota;
+            return object;
+        };
+
+        /**
+         * Converts this APIQuota to JSON.
+         * @function toJSON
+         * @memberof Notify.APIQuota
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        APIQuota.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return APIQuota;
+    })();
+
+    Notify.S2C = (function() {
+
+        /**
+         * Properties of a S2C.
+         * @memberof Notify
+         * @interface IS2C
+         * @property {number} type S2C type
+         * @property {Notify.IGtwEvent|null} [event] S2C event
+         * @property {Notify.IProgramStatus|null} [programStatus] S2C programStatus
+         * @property {Notify.IConnectStatus|null} [connectStatus] S2C connectStatus
+         * @property {Notify.IQotRight|null} [qotRight] S2C qotRight
+         * @property {Notify.IAPILevel|null} [apiLevel] S2C apiLevel
+         * @property {Notify.IAPIQuota|null} [apiQuota] S2C apiQuota
+         */
+
+        /**
+         * Constructs a new S2C.
+         * @memberof Notify
+         * @classdesc Represents a S2C.
+         * @implements IS2C
+         * @constructor
+         * @param {Notify.IS2C=} [properties] Properties to set
+         */
+        function S2C(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * S2C type.
+         * @member {number} type
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.type = 0;
+
+        /**
+         * S2C event.
+         * @member {Notify.IGtwEvent|null|undefined} event
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.event = null;
+
+        /**
+         * S2C programStatus.
+         * @member {Notify.IProgramStatus|null|undefined} programStatus
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.programStatus = null;
+
+        /**
+         * S2C connectStatus.
+         * @member {Notify.IConnectStatus|null|undefined} connectStatus
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.connectStatus = null;
+
+        /**
+         * S2C qotRight.
+         * @member {Notify.IQotRight|null|undefined} qotRight
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.qotRight = null;
+
+        /**
+         * S2C apiLevel.
+         * @member {Notify.IAPILevel|null|undefined} apiLevel
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.apiLevel = null;
+
+        /**
+         * S2C apiQuota.
+         * @member {Notify.IAPIQuota|null|undefined} apiQuota
+         * @memberof Notify.S2C
+         * @instance
+         */
+        S2C.prototype.apiQuota = null;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @function create
+         * @memberof Notify.S2C
+         * @static
+         * @param {Notify.IS2C=} [properties] Properties to set
+         * @returns {Notify.S2C} S2C instance
+         */
+        S2C.create = function create(properties) {
+            return new S2C(properties);
+        };
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link Notify.S2C.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.S2C
+         * @static
+         * @param {Notify.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+            if (message.event != null && message.hasOwnProperty("event"))
+                $root.Notify.GtwEvent.encode(message.event, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
+                $root.Notify.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.connectStatus != null && message.hasOwnProperty("connectStatus"))
+                $root.Notify.ConnectStatus.encode(message.connectStatus, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.qotRight != null && message.hasOwnProperty("qotRight"))
+                $root.Notify.QotRight.encode(message.qotRight, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                $root.Notify.APILevel.encode(message.apiLevel, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
+                $root.Notify.APIQuota.encode(message.apiQuota, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Notify.S2C.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.S2C
+         * @static
+         * @param {Notify.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.S2C();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.type = reader.int32();
+                    break;
+                case 2:
+                    message.event = $root.Notify.GtwEvent.decode(reader, reader.uint32());
+                    break;
+                case 3:
+                    message.programStatus = $root.Notify.ProgramStatus.decode(reader, reader.uint32());
+                    break;
+                case 4:
+                    message.connectStatus = $root.Notify.ConnectStatus.decode(reader, reader.uint32());
+                    break;
+                case 5:
+                    message.qotRight = $root.Notify.QotRight.decode(reader, reader.uint32());
+                    break;
+                case 6:
+                    message.apiLevel = $root.Notify.APILevel.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.apiQuota = $root.Notify.APIQuota.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("type"))
+                throw $util.ProtocolError("missing required 'type'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a S2C message.
+         * @function verify
+         * @memberof Notify.S2C
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        S2C.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.type))
+                return "type: integer expected";
+            if (message.event != null && message.hasOwnProperty("event")) {
+                var error = $root.Notify.GtwEvent.verify(message.event);
+                if (error)
+                    return "event." + error;
+            }
+            if (message.programStatus != null && message.hasOwnProperty("programStatus")) {
+                var error = $root.Notify.ProgramStatus.verify(message.programStatus);
+                if (error)
+                    return "programStatus." + error;
+            }
+            if (message.connectStatus != null && message.hasOwnProperty("connectStatus")) {
+                var error = $root.Notify.ConnectStatus.verify(message.connectStatus);
+                if (error)
+                    return "connectStatus." + error;
+            }
+            if (message.qotRight != null && message.hasOwnProperty("qotRight")) {
+                var error = $root.Notify.QotRight.verify(message.qotRight);
+                if (error)
+                    return "qotRight." + error;
+            }
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel")) {
+                var error = $root.Notify.APILevel.verify(message.apiLevel);
+                if (error)
+                    return "apiLevel." + error;
+            }
+            if (message.apiQuota != null && message.hasOwnProperty("apiQuota")) {
+                var error = $root.Notify.APIQuota.verify(message.apiQuota);
+                if (error)
+                    return "apiQuota." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.S2C
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.S2C} S2C
+         */
+        S2C.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.S2C)
+                return object;
+            var message = new $root.Notify.S2C();
+            if (object.type != null)
+                message.type = object.type | 0;
+            if (object.event != null) {
+                if (typeof object.event !== "object")
+                    throw TypeError(".Notify.S2C.event: object expected");
+                message.event = $root.Notify.GtwEvent.fromObject(object.event);
+            }
+            if (object.programStatus != null) {
+                if (typeof object.programStatus !== "object")
+                    throw TypeError(".Notify.S2C.programStatus: object expected");
+                message.programStatus = $root.Notify.ProgramStatus.fromObject(object.programStatus);
+            }
+            if (object.connectStatus != null) {
+                if (typeof object.connectStatus !== "object")
+                    throw TypeError(".Notify.S2C.connectStatus: object expected");
+                message.connectStatus = $root.Notify.ConnectStatus.fromObject(object.connectStatus);
+            }
+            if (object.qotRight != null) {
+                if (typeof object.qotRight !== "object")
+                    throw TypeError(".Notify.S2C.qotRight: object expected");
+                message.qotRight = $root.Notify.QotRight.fromObject(object.qotRight);
+            }
+            if (object.apiLevel != null) {
+                if (typeof object.apiLevel !== "object")
+                    throw TypeError(".Notify.S2C.apiLevel: object expected");
+                message.apiLevel = $root.Notify.APILevel.fromObject(object.apiLevel);
+            }
+            if (object.apiQuota != null) {
+                if (typeof object.apiQuota !== "object")
+                    throw TypeError(".Notify.S2C.apiQuota: object expected");
+                message.apiQuota = $root.Notify.APIQuota.fromObject(object.apiQuota);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.S2C
+         * @static
+         * @param {Notify.S2C} message S2C
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        S2C.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.type = 0;
+                object.event = null;
+                object.programStatus = null;
+                object.connectStatus = null;
+                object.qotRight = null;
+                object.apiLevel = null;
+                object.apiQuota = null;
+            }
+            if (message.type != null && message.hasOwnProperty("type"))
+                object.type = message.type;
+            if (message.event != null && message.hasOwnProperty("event"))
+                object.event = $root.Notify.GtwEvent.toObject(message.event, options);
+            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
+                object.programStatus = $root.Notify.ProgramStatus.toObject(message.programStatus, options);
+            if (message.connectStatus != null && message.hasOwnProperty("connectStatus"))
+                object.connectStatus = $root.Notify.ConnectStatus.toObject(message.connectStatus, options);
+            if (message.qotRight != null && message.hasOwnProperty("qotRight"))
+                object.qotRight = $root.Notify.QotRight.toObject(message.qotRight, options);
+            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
+                object.apiLevel = $root.Notify.APILevel.toObject(message.apiLevel, options);
+            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
+                object.apiQuota = $root.Notify.APIQuota.toObject(message.apiQuota, options);
+            return object;
+        };
+
+        /**
+         * Converts this S2C to JSON.
+         * @function toJSON
+         * @memberof Notify.S2C
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        S2C.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return S2C;
+    })();
+
+    Notify.Response = (function() {
+
+        /**
+         * Properties of a Response.
+         * @memberof Notify
+         * @interface IResponse
+         * @property {number} retType Response retType
+         * @property {string|null} [retMsg] Response retMsg
+         * @property {number|null} [errCode] Response errCode
+         * @property {Notify.IS2C|null} [s2c] Response s2c
+         */
+
+        /**
+         * Constructs a new Response.
+         * @memberof Notify
+         * @classdesc Represents a Response.
+         * @implements IResponse
+         * @constructor
+         * @param {Notify.IResponse=} [properties] Properties to set
+         */
+        function Response(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Response retType.
+         * @member {number} retType
+         * @memberof Notify.Response
+         * @instance
+         */
+        Response.prototype.retType = -400;
+
+        /**
+         * Response retMsg.
+         * @member {string} retMsg
+         * @memberof Notify.Response
+         * @instance
+         */
+        Response.prototype.retMsg = "";
+
+        /**
+         * Response errCode.
+         * @member {number} errCode
+         * @memberof Notify.Response
+         * @instance
+         */
+        Response.prototype.errCode = 0;
+
+        /**
+         * Response s2c.
+         * @member {Notify.IS2C|null|undefined} s2c
+         * @memberof Notify.Response
+         * @instance
+         */
+        Response.prototype.s2c = null;
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @function create
+         * @memberof Notify.Response
+         * @static
+         * @param {Notify.IResponse=} [properties] Properties to set
+         * @returns {Notify.Response} Response instance
+         */
+        Response.create = function create(properties) {
+            return new Response(properties);
+        };
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link Notify.Response.verify|verify} messages.
+         * @function encode
+         * @memberof Notify.Response
+         * @static
+         * @param {Notify.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                $root.Notify.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link Notify.Response.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Notify.Response
+         * @static
+         * @param {Notify.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @function decode
+         * @memberof Notify.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Notify.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.Response();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.retType = reader.int32();
+                    break;
+                case 2:
+                    message.retMsg = reader.string();
+                    break;
+                case 3:
+                    message.errCode = reader.int32();
+                    break;
+                case 4:
+                    message.s2c = $root.Notify.S2C.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("retType"))
+                throw $util.ProtocolError("missing required 'retType'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Notify.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Notify.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Response message.
+         * @function verify
+         * @memberof Notify.Response
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Response.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.retType))
+                return "retType: integer expected";
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                if (!$util.isString(message.retMsg))
+                    return "retMsg: string expected";
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                if (!$util.isInteger(message.errCode))
+                    return "errCode: integer expected";
+            if (message.s2c != null && message.hasOwnProperty("s2c")) {
+                var error = $root.Notify.S2C.verify(message.s2c);
+                if (error)
+                    return "s2c." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Notify.Response
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Notify.Response} Response
+         */
+        Response.fromObject = function fromObject(object) {
+            if (object instanceof $root.Notify.Response)
+                return object;
+            var message = new $root.Notify.Response();
+            if (object.retType != null)
+                message.retType = object.retType | 0;
+            if (object.retMsg != null)
+                message.retMsg = String(object.retMsg);
+            if (object.errCode != null)
+                message.errCode = object.errCode | 0;
+            if (object.s2c != null) {
+                if (typeof object.s2c !== "object")
+                    throw TypeError(".Notify.Response.s2c: object expected");
+                message.s2c = $root.Notify.S2C.fromObject(object.s2c);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Notify.Response
+         * @static
+         * @param {Notify.Response} message Response
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Response.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.retType = -400;
+                object.retMsg = "";
+                object.errCode = 0;
+                object.s2c = null;
+            }
+            if (message.retType != null && message.hasOwnProperty("retType"))
+                object.retType = message.retType;
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                object.retMsg = message.retMsg;
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                object.errCode = message.errCode;
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                object.s2c = $root.Notify.S2C.toObject(message.s2c, options);
+            return object;
+        };
+
+        /**
+         * Converts this Response to JSON.
+         * @function toJSON
+         * @memberof Notify.Response
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Response.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Response;
+    })();
+
+    return Notify;
 })();
 
 $root.Qot_Common = (function() {
@@ -12465,5154 +16433,6 @@ $root.Qot_Common = (function() {
     })();
 
     return Qot_Common;
-})();
-
-$root.GetUserInfo = (function() {
-
-    /**
-     * Namespace GetUserInfo.
-     * @exports GetUserInfo
-     * @namespace
-     */
-    var GetUserInfo = {};
-
-    /**
-     * UpdateType enum.
-     * @name GetUserInfo.UpdateType
-     * @enum {string}
-     * @property {number} UpdateType_None=0 UpdateType_None value
-     * @property {number} UpdateType_Advice=1 UpdateType_Advice value
-     * @property {number} UpdateType_Force=2 UpdateType_Force value
-     */
-    GetUserInfo.UpdateType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "UpdateType_None"] = 0;
-        values[valuesById[1] = "UpdateType_Advice"] = 1;
-        values[valuesById[2] = "UpdateType_Force"] = 2;
-        return values;
-    })();
-
-    /**
-     * UserInfoField enum.
-     * @name GetUserInfo.UserInfoField
-     * @enum {string}
-     * @property {number} UserInfoField_Basic=1 UserInfoField_Basic value
-     * @property {number} UserInfoField_API=2 UserInfoField_API value
-     * @property {number} UserInfoField_QotRight=4 UserInfoField_QotRight value
-     * @property {number} UserInfoField_Disclaimer=8 UserInfoField_Disclaimer value
-     * @property {number} UserInfoField_Update=16 UserInfoField_Update value
-     * @property {number} UserInfoField_WebKey=2048 UserInfoField_WebKey value
-     */
-    GetUserInfo.UserInfoField = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[1] = "UserInfoField_Basic"] = 1;
-        values[valuesById[2] = "UserInfoField_API"] = 2;
-        values[valuesById[4] = "UserInfoField_QotRight"] = 4;
-        values[valuesById[8] = "UserInfoField_Disclaimer"] = 8;
-        values[valuesById[16] = "UserInfoField_Update"] = 16;
-        values[valuesById[2048] = "UserInfoField_WebKey"] = 2048;
-        return values;
-    })();
-
-    GetUserInfo.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof GetUserInfo
-         * @interface IC2S
-         * @property {number|null} [flag] C2S flag
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof GetUserInfo
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {GetUserInfo.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S flag.
-         * @member {number} flag
-         * @memberof GetUserInfo.C2S
-         * @instance
-         */
-        C2S.prototype.flag = 0;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {GetUserInfo.IC2S=} [properties] Properties to set
-         * @returns {GetUserInfo.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {GetUserInfo.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.flag != null && message.hasOwnProperty("flag"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.flag);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {GetUserInfo.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {GetUserInfo.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 2:
-                    message.flag = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetUserInfo.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.flag != null && message.hasOwnProperty("flag"))
-                if (!$util.isInteger(message.flag))
-                    return "flag: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {GetUserInfo.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetUserInfo.C2S)
-                return object;
-            var message = new $root.GetUserInfo.C2S();
-            if (object.flag != null)
-                message.flag = object.flag | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof GetUserInfo.C2S
-         * @static
-         * @param {GetUserInfo.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.flag = 0;
-            if (message.flag != null && message.hasOwnProperty("flag"))
-                object.flag = message.flag;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof GetUserInfo.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    GetUserInfo.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof GetUserInfo
-         * @interface IS2C
-         * @property {string|null} [nickName] S2C nickName
-         * @property {string|null} [avatarUrl] S2C avatarUrl
-         * @property {string|null} [apiLevel] S2C apiLevel
-         * @property {number|null} [hkQotRight] S2C hkQotRight
-         * @property {number|null} [usQotRight] S2C usQotRight
-         * @property {number|null} [cnQotRight] S2C cnQotRight
-         * @property {boolean|null} [isNeedAgreeDisclaimer] S2C isNeedAgreeDisclaimer
-         * @property {number|Long|null} [userID] S2C userID
-         * @property {number|null} [updateType] S2C updateType
-         * @property {string|null} [webKey] S2C webKey
-         * @property {number|null} [hkOptionQotRight] S2C hkOptionQotRight
-         * @property {boolean|null} [hasUSOptionQotRight] S2C hasUSOptionQotRight
-         * @property {number|null} [hkFutureQotRight] S2C hkFutureQotRight
-         * @property {number|null} [subQuota] S2C subQuota
-         * @property {number|null} [historyKLQuota] S2C historyKLQuota
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof GetUserInfo
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {GetUserInfo.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C nickName.
-         * @member {string} nickName
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.nickName = "";
-
-        /**
-         * S2C avatarUrl.
-         * @member {string} avatarUrl
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.avatarUrl = "";
-
-        /**
-         * S2C apiLevel.
-         * @member {string} apiLevel
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.apiLevel = "";
-
-        /**
-         * S2C hkQotRight.
-         * @member {number} hkQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.hkQotRight = 0;
-
-        /**
-         * S2C usQotRight.
-         * @member {number} usQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.usQotRight = 0;
-
-        /**
-         * S2C cnQotRight.
-         * @member {number} cnQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.cnQotRight = 0;
-
-        /**
-         * S2C isNeedAgreeDisclaimer.
-         * @member {boolean} isNeedAgreeDisclaimer
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.isNeedAgreeDisclaimer = false;
-
-        /**
-         * S2C userID.
-         * @member {number|Long} userID
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.userID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * S2C updateType.
-         * @member {number} updateType
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.updateType = 0;
-
-        /**
-         * S2C webKey.
-         * @member {string} webKey
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.webKey = "";
-
-        /**
-         * S2C hkOptionQotRight.
-         * @member {number} hkOptionQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.hkOptionQotRight = 0;
-
-        /**
-         * S2C hasUSOptionQotRight.
-         * @member {boolean} hasUSOptionQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.hasUSOptionQotRight = false;
-
-        /**
-         * S2C hkFutureQotRight.
-         * @member {number} hkFutureQotRight
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.hkFutureQotRight = 0;
-
-        /**
-         * S2C subQuota.
-         * @member {number} subQuota
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.subQuota = 0;
-
-        /**
-         * S2C historyKLQuota.
-         * @member {number} historyKLQuota
-         * @memberof GetUserInfo.S2C
-         * @instance
-         */
-        S2C.prototype.historyKLQuota = 0;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {GetUserInfo.IS2C=} [properties] Properties to set
-         * @returns {GetUserInfo.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {GetUserInfo.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.nickName != null && message.hasOwnProperty("nickName"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.nickName);
-            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.avatarUrl);
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.apiLevel);
-            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.hkQotRight);
-            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.usQotRight);
-            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.cnQotRight);
-            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
-                writer.uint32(/* id 7, wireType 0 =*/56).bool(message.isNeedAgreeDisclaimer);
-            if (message.userID != null && message.hasOwnProperty("userID"))
-                writer.uint32(/* id 8, wireType 0 =*/64).int64(message.userID);
-            if (message.updateType != null && message.hasOwnProperty("updateType"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.updateType);
-            if (message.webKey != null && message.hasOwnProperty("webKey"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.webKey);
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                writer.uint32(/* id 11, wireType 0 =*/88).int32(message.hkOptionQotRight);
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.hasUSOptionQotRight);
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.hkFutureQotRight);
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.subQuota);
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.historyKLQuota);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {GetUserInfo.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {GetUserInfo.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.nickName = reader.string();
-                    break;
-                case 2:
-                    message.avatarUrl = reader.string();
-                    break;
-                case 3:
-                    message.apiLevel = reader.string();
-                    break;
-                case 4:
-                    message.hkQotRight = reader.int32();
-                    break;
-                case 5:
-                    message.usQotRight = reader.int32();
-                    break;
-                case 6:
-                    message.cnQotRight = reader.int32();
-                    break;
-                case 7:
-                    message.isNeedAgreeDisclaimer = reader.bool();
-                    break;
-                case 8:
-                    message.userID = reader.int64();
-                    break;
-                case 9:
-                    message.updateType = reader.int32();
-                    break;
-                case 10:
-                    message.webKey = reader.string();
-                    break;
-                case 11:
-                    message.hkOptionQotRight = reader.int32();
-                    break;
-                case 12:
-                    message.hasUSOptionQotRight = reader.bool();
-                    break;
-                case 13:
-                    message.hkFutureQotRight = reader.int32();
-                    break;
-                case 14:
-                    message.subQuota = reader.int32();
-                    break;
-                case 15:
-                    message.historyKLQuota = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetUserInfo.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.nickName != null && message.hasOwnProperty("nickName"))
-                if (!$util.isString(message.nickName))
-                    return "nickName: string expected";
-            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
-                if (!$util.isString(message.avatarUrl))
-                    return "avatarUrl: string expected";
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                if (!$util.isString(message.apiLevel))
-                    return "apiLevel: string expected";
-            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
-                if (!$util.isInteger(message.hkQotRight))
-                    return "hkQotRight: integer expected";
-            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
-                if (!$util.isInteger(message.usQotRight))
-                    return "usQotRight: integer expected";
-            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
-                if (!$util.isInteger(message.cnQotRight))
-                    return "cnQotRight: integer expected";
-            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
-                if (typeof message.isNeedAgreeDisclaimer !== "boolean")
-                    return "isNeedAgreeDisclaimer: boolean expected";
-            if (message.userID != null && message.hasOwnProperty("userID"))
-                if (!$util.isInteger(message.userID) && !(message.userID && $util.isInteger(message.userID.low) && $util.isInteger(message.userID.high)))
-                    return "userID: integer|Long expected";
-            if (message.updateType != null && message.hasOwnProperty("updateType"))
-                if (!$util.isInteger(message.updateType))
-                    return "updateType: integer expected";
-            if (message.webKey != null && message.hasOwnProperty("webKey"))
-                if (!$util.isString(message.webKey))
-                    return "webKey: string expected";
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                if (!$util.isInteger(message.hkOptionQotRight))
-                    return "hkOptionQotRight: integer expected";
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                if (typeof message.hasUSOptionQotRight !== "boolean")
-                    return "hasUSOptionQotRight: boolean expected";
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                if (!$util.isInteger(message.hkFutureQotRight))
-                    return "hkFutureQotRight: integer expected";
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                if (!$util.isInteger(message.subQuota))
-                    return "subQuota: integer expected";
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                if (!$util.isInteger(message.historyKLQuota))
-                    return "historyKLQuota: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {GetUserInfo.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetUserInfo.S2C)
-                return object;
-            var message = new $root.GetUserInfo.S2C();
-            if (object.nickName != null)
-                message.nickName = String(object.nickName);
-            if (object.avatarUrl != null)
-                message.avatarUrl = String(object.avatarUrl);
-            if (object.apiLevel != null)
-                message.apiLevel = String(object.apiLevel);
-            if (object.hkQotRight != null)
-                message.hkQotRight = object.hkQotRight | 0;
-            if (object.usQotRight != null)
-                message.usQotRight = object.usQotRight | 0;
-            if (object.cnQotRight != null)
-                message.cnQotRight = object.cnQotRight | 0;
-            if (object.isNeedAgreeDisclaimer != null)
-                message.isNeedAgreeDisclaimer = Boolean(object.isNeedAgreeDisclaimer);
-            if (object.userID != null)
-                if ($util.Long)
-                    (message.userID = $util.Long.fromValue(object.userID)).unsigned = false;
-                else if (typeof object.userID === "string")
-                    message.userID = parseInt(object.userID, 10);
-                else if (typeof object.userID === "number")
-                    message.userID = object.userID;
-                else if (typeof object.userID === "object")
-                    message.userID = new $util.LongBits(object.userID.low >>> 0, object.userID.high >>> 0).toNumber();
-            if (object.updateType != null)
-                message.updateType = object.updateType | 0;
-            if (object.webKey != null)
-                message.webKey = String(object.webKey);
-            if (object.hkOptionQotRight != null)
-                message.hkOptionQotRight = object.hkOptionQotRight | 0;
-            if (object.hasUSOptionQotRight != null)
-                message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
-            if (object.hkFutureQotRight != null)
-                message.hkFutureQotRight = object.hkFutureQotRight | 0;
-            if (object.subQuota != null)
-                message.subQuota = object.subQuota | 0;
-            if (object.historyKLQuota != null)
-                message.historyKLQuota = object.historyKLQuota | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof GetUserInfo.S2C
-         * @static
-         * @param {GetUserInfo.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.nickName = "";
-                object.avatarUrl = "";
-                object.apiLevel = "";
-                object.hkQotRight = 0;
-                object.usQotRight = 0;
-                object.cnQotRight = 0;
-                object.isNeedAgreeDisclaimer = false;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.userID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.userID = options.longs === String ? "0" : 0;
-                object.updateType = 0;
-                object.webKey = "";
-                object.hkOptionQotRight = 0;
-                object.hasUSOptionQotRight = false;
-                object.hkFutureQotRight = 0;
-                object.subQuota = 0;
-                object.historyKLQuota = 0;
-            }
-            if (message.nickName != null && message.hasOwnProperty("nickName"))
-                object.nickName = message.nickName;
-            if (message.avatarUrl != null && message.hasOwnProperty("avatarUrl"))
-                object.avatarUrl = message.avatarUrl;
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                object.apiLevel = message.apiLevel;
-            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
-                object.hkQotRight = message.hkQotRight;
-            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
-                object.usQotRight = message.usQotRight;
-            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
-                object.cnQotRight = message.cnQotRight;
-            if (message.isNeedAgreeDisclaimer != null && message.hasOwnProperty("isNeedAgreeDisclaimer"))
-                object.isNeedAgreeDisclaimer = message.isNeedAgreeDisclaimer;
-            if (message.userID != null && message.hasOwnProperty("userID"))
-                if (typeof message.userID === "number")
-                    object.userID = options.longs === String ? String(message.userID) : message.userID;
-                else
-                    object.userID = options.longs === String ? $util.Long.prototype.toString.call(message.userID) : options.longs === Number ? new $util.LongBits(message.userID.low >>> 0, message.userID.high >>> 0).toNumber() : message.userID;
-            if (message.updateType != null && message.hasOwnProperty("updateType"))
-                object.updateType = message.updateType;
-            if (message.webKey != null && message.hasOwnProperty("webKey"))
-                object.webKey = message.webKey;
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                object.hkOptionQotRight = message.hkOptionQotRight;
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                object.hasUSOptionQotRight = message.hasUSOptionQotRight;
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                object.hkFutureQotRight = message.hkFutureQotRight;
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                object.subQuota = message.subQuota;
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                object.historyKLQuota = message.historyKLQuota;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof GetUserInfo.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    GetUserInfo.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof GetUserInfo
-         * @interface IRequest
-         * @property {GetUserInfo.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof GetUserInfo
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {GetUserInfo.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {GetUserInfo.IC2S} c2s
-         * @memberof GetUserInfo.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {GetUserInfo.IRequest=} [properties] Properties to set
-         * @returns {GetUserInfo.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
-         * @function encode
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {GetUserInfo.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.GetUserInfo.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {GetUserInfo.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {GetUserInfo.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.GetUserInfo.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetUserInfo.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.GetUserInfo.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {GetUserInfo.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetUserInfo.Request)
-                return object;
-            var message = new $root.GetUserInfo.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".GetUserInfo.Request.c2s: object expected");
-                message.c2s = $root.GetUserInfo.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof GetUserInfo.Request
-         * @static
-         * @param {GetUserInfo.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.GetUserInfo.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof GetUserInfo.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    GetUserInfo.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof GetUserInfo
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {GetUserInfo.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof GetUserInfo
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {GetUserInfo.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof GetUserInfo.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof GetUserInfo.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof GetUserInfo.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {GetUserInfo.IS2C|null|undefined} s2c
-         * @memberof GetUserInfo.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {GetUserInfo.IResponse=} [properties] Properties to set
-         * @returns {GetUserInfo.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
-         * @function encode
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {GetUserInfo.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.GetUserInfo.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {GetUserInfo.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {GetUserInfo.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetUserInfo.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.GetUserInfo.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {GetUserInfo.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.GetUserInfo.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {GetUserInfo.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.GetUserInfo.Response)
-                return object;
-            var message = new $root.GetUserInfo.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".GetUserInfo.Response.s2c: object expected");
-                message.s2c = $root.GetUserInfo.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof GetUserInfo.Response
-         * @static
-         * @param {GetUserInfo.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.GetUserInfo.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof GetUserInfo.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return GetUserInfo;
-})();
-
-$root.InitConnect = (function() {
-
-    /**
-     * Namespace InitConnect.
-     * @exports InitConnect
-     * @namespace
-     */
-    var InitConnect = {};
-
-    InitConnect.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof InitConnect
-         * @interface IC2S
-         * @property {number} clientVer C2S clientVer
-         * @property {string} clientID C2S clientID
-         * @property {boolean|null} [recvNotify] C2S recvNotify
-         * @property {number|null} [packetEncAlgo] C2S packetEncAlgo
-         * @property {number|null} [pushProtoFmt] C2S pushProtoFmt
-         * @property {string|null} [programmingLanguage] C2S programmingLanguage
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof InitConnect
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {InitConnect.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S clientVer.
-         * @member {number} clientVer
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.clientVer = 0;
-
-        /**
-         * C2S clientID.
-         * @member {string} clientID
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.clientID = "";
-
-        /**
-         * C2S recvNotify.
-         * @member {boolean} recvNotify
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.recvNotify = false;
-
-        /**
-         * C2S packetEncAlgo.
-         * @member {number} packetEncAlgo
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.packetEncAlgo = 0;
-
-        /**
-         * C2S pushProtoFmt.
-         * @member {number} pushProtoFmt
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.pushProtoFmt = 0;
-
-        /**
-         * C2S programmingLanguage.
-         * @member {string} programmingLanguage
-         * @memberof InitConnect.C2S
-         * @instance
-         */
-        C2S.prototype.programmingLanguage = "";
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {InitConnect.IC2S=} [properties] Properties to set
-         * @returns {InitConnect.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {InitConnect.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.clientVer);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.clientID);
-            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
-                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.recvNotify);
-            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.packetEncAlgo);
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.pushProtoFmt);
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.programmingLanguage);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {InitConnect.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {InitConnect.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.clientVer = reader.int32();
-                    break;
-                case 2:
-                    message.clientID = reader.string();
-                    break;
-                case 3:
-                    message.recvNotify = reader.bool();
-                    break;
-                case 4:
-                    message.packetEncAlgo = reader.int32();
-                    break;
-                case 5:
-                    message.pushProtoFmt = reader.int32();
-                    break;
-                case 6:
-                    message.programmingLanguage = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("clientVer"))
-                throw $util.ProtocolError("missing required 'clientVer'", { instance: message });
-            if (!message.hasOwnProperty("clientID"))
-                throw $util.ProtocolError("missing required 'clientID'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {InitConnect.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.clientVer))
-                return "clientVer: integer expected";
-            if (!$util.isString(message.clientID))
-                return "clientID: string expected";
-            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
-                if (typeof message.recvNotify !== "boolean")
-                    return "recvNotify: boolean expected";
-            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
-                if (!$util.isInteger(message.packetEncAlgo))
-                    return "packetEncAlgo: integer expected";
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                if (!$util.isInteger(message.pushProtoFmt))
-                    return "pushProtoFmt: integer expected";
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                if (!$util.isString(message.programmingLanguage))
-                    return "programmingLanguage: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {InitConnect.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.InitConnect.C2S)
-                return object;
-            var message = new $root.InitConnect.C2S();
-            if (object.clientVer != null)
-                message.clientVer = object.clientVer | 0;
-            if (object.clientID != null)
-                message.clientID = String(object.clientID);
-            if (object.recvNotify != null)
-                message.recvNotify = Boolean(object.recvNotify);
-            if (object.packetEncAlgo != null)
-                message.packetEncAlgo = object.packetEncAlgo | 0;
-            if (object.pushProtoFmt != null)
-                message.pushProtoFmt = object.pushProtoFmt | 0;
-            if (object.programmingLanguage != null)
-                message.programmingLanguage = String(object.programmingLanguage);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof InitConnect.C2S
-         * @static
-         * @param {InitConnect.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.clientVer = 0;
-                object.clientID = "";
-                object.recvNotify = false;
-                object.packetEncAlgo = 0;
-                object.pushProtoFmt = 0;
-                object.programmingLanguage = "";
-            }
-            if (message.clientVer != null && message.hasOwnProperty("clientVer"))
-                object.clientVer = message.clientVer;
-            if (message.clientID != null && message.hasOwnProperty("clientID"))
-                object.clientID = message.clientID;
-            if (message.recvNotify != null && message.hasOwnProperty("recvNotify"))
-                object.recvNotify = message.recvNotify;
-            if (message.packetEncAlgo != null && message.hasOwnProperty("packetEncAlgo"))
-                object.packetEncAlgo = message.packetEncAlgo;
-            if (message.pushProtoFmt != null && message.hasOwnProperty("pushProtoFmt"))
-                object.pushProtoFmt = message.pushProtoFmt;
-            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
-                object.programmingLanguage = message.programmingLanguage;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof InitConnect.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    InitConnect.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof InitConnect
-         * @interface IS2C
-         * @property {number} serverVer S2C serverVer
-         * @property {number|Long} loginUserID S2C loginUserID
-         * @property {number|Long} connID S2C connID
-         * @property {string} connAESKey S2C connAESKey
-         * @property {number} keepAliveInterval S2C keepAliveInterval
-         * @property {string|null} [aesCBCiv] S2C aesCBCiv
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof InitConnect
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {InitConnect.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C serverVer.
-         * @member {number} serverVer
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.serverVer = 0;
-
-        /**
-         * S2C loginUserID.
-         * @member {number|Long} loginUserID
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.loginUserID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-        /**
-         * S2C connID.
-         * @member {number|Long} connID
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.connID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
-
-        /**
-         * S2C connAESKey.
-         * @member {string} connAESKey
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.connAESKey = "";
-
-        /**
-         * S2C keepAliveInterval.
-         * @member {number} keepAliveInterval
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.keepAliveInterval = 0;
-
-        /**
-         * S2C aesCBCiv.
-         * @member {string} aesCBCiv
-         * @memberof InitConnect.S2C
-         * @instance
-         */
-        S2C.prototype.aesCBCiv = "";
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {InitConnect.IS2C=} [properties] Properties to set
-         * @returns {InitConnect.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {InitConnect.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.serverVer);
-            writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.loginUserID);
-            writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.connID);
-            writer.uint32(/* id 4, wireType 2 =*/34).string(message.connAESKey);
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.keepAliveInterval);
-            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.aesCBCiv);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {InitConnect.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {InitConnect.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.serverVer = reader.int32();
-                    break;
-                case 2:
-                    message.loginUserID = reader.uint64();
-                    break;
-                case 3:
-                    message.connID = reader.uint64();
-                    break;
-                case 4:
-                    message.connAESKey = reader.string();
-                    break;
-                case 5:
-                    message.keepAliveInterval = reader.int32();
-                    break;
-                case 6:
-                    message.aesCBCiv = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("serverVer"))
-                throw $util.ProtocolError("missing required 'serverVer'", { instance: message });
-            if (!message.hasOwnProperty("loginUserID"))
-                throw $util.ProtocolError("missing required 'loginUserID'", { instance: message });
-            if (!message.hasOwnProperty("connID"))
-                throw $util.ProtocolError("missing required 'connID'", { instance: message });
-            if (!message.hasOwnProperty("connAESKey"))
-                throw $util.ProtocolError("missing required 'connAESKey'", { instance: message });
-            if (!message.hasOwnProperty("keepAliveInterval"))
-                throw $util.ProtocolError("missing required 'keepAliveInterval'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {InitConnect.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.serverVer))
-                return "serverVer: integer expected";
-            if (!$util.isInteger(message.loginUserID) && !(message.loginUserID && $util.isInteger(message.loginUserID.low) && $util.isInteger(message.loginUserID.high)))
-                return "loginUserID: integer|Long expected";
-            if (!$util.isInteger(message.connID) && !(message.connID && $util.isInteger(message.connID.low) && $util.isInteger(message.connID.high)))
-                return "connID: integer|Long expected";
-            if (!$util.isString(message.connAESKey))
-                return "connAESKey: string expected";
-            if (!$util.isInteger(message.keepAliveInterval))
-                return "keepAliveInterval: integer expected";
-            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
-                if (!$util.isString(message.aesCBCiv))
-                    return "aesCBCiv: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {InitConnect.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.InitConnect.S2C)
-                return object;
-            var message = new $root.InitConnect.S2C();
-            if (object.serverVer != null)
-                message.serverVer = object.serverVer | 0;
-            if (object.loginUserID != null)
-                if ($util.Long)
-                    (message.loginUserID = $util.Long.fromValue(object.loginUserID)).unsigned = true;
-                else if (typeof object.loginUserID === "string")
-                    message.loginUserID = parseInt(object.loginUserID, 10);
-                else if (typeof object.loginUserID === "number")
-                    message.loginUserID = object.loginUserID;
-                else if (typeof object.loginUserID === "object")
-                    message.loginUserID = new $util.LongBits(object.loginUserID.low >>> 0, object.loginUserID.high >>> 0).toNumber(true);
-            if (object.connID != null)
-                if ($util.Long)
-                    (message.connID = $util.Long.fromValue(object.connID)).unsigned = true;
-                else if (typeof object.connID === "string")
-                    message.connID = parseInt(object.connID, 10);
-                else if (typeof object.connID === "number")
-                    message.connID = object.connID;
-                else if (typeof object.connID === "object")
-                    message.connID = new $util.LongBits(object.connID.low >>> 0, object.connID.high >>> 0).toNumber(true);
-            if (object.connAESKey != null)
-                message.connAESKey = String(object.connAESKey);
-            if (object.keepAliveInterval != null)
-                message.keepAliveInterval = object.keepAliveInterval | 0;
-            if (object.aesCBCiv != null)
-                message.aesCBCiv = String(object.aesCBCiv);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof InitConnect.S2C
-         * @static
-         * @param {InitConnect.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.serverVer = 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, true);
-                    object.loginUserID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.loginUserID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, true);
-                    object.connID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.connID = options.longs === String ? "0" : 0;
-                object.connAESKey = "";
-                object.keepAliveInterval = 0;
-                object.aesCBCiv = "";
-            }
-            if (message.serverVer != null && message.hasOwnProperty("serverVer"))
-                object.serverVer = message.serverVer;
-            if (message.loginUserID != null && message.hasOwnProperty("loginUserID"))
-                if (typeof message.loginUserID === "number")
-                    object.loginUserID = options.longs === String ? String(message.loginUserID) : message.loginUserID;
-                else
-                    object.loginUserID = options.longs === String ? $util.Long.prototype.toString.call(message.loginUserID) : options.longs === Number ? new $util.LongBits(message.loginUserID.low >>> 0, message.loginUserID.high >>> 0).toNumber(true) : message.loginUserID;
-            if (message.connID != null && message.hasOwnProperty("connID"))
-                if (typeof message.connID === "number")
-                    object.connID = options.longs === String ? String(message.connID) : message.connID;
-                else
-                    object.connID = options.longs === String ? $util.Long.prototype.toString.call(message.connID) : options.longs === Number ? new $util.LongBits(message.connID.low >>> 0, message.connID.high >>> 0).toNumber(true) : message.connID;
-            if (message.connAESKey != null && message.hasOwnProperty("connAESKey"))
-                object.connAESKey = message.connAESKey;
-            if (message.keepAliveInterval != null && message.hasOwnProperty("keepAliveInterval"))
-                object.keepAliveInterval = message.keepAliveInterval;
-            if (message.aesCBCiv != null && message.hasOwnProperty("aesCBCiv"))
-                object.aesCBCiv = message.aesCBCiv;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof InitConnect.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    InitConnect.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof InitConnect
-         * @interface IRequest
-         * @property {InitConnect.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof InitConnect
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {InitConnect.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {InitConnect.IC2S} c2s
-         * @memberof InitConnect.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof InitConnect.Request
-         * @static
-         * @param {InitConnect.IRequest=} [properties] Properties to set
-         * @returns {InitConnect.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
-         * @function encode
-         * @memberof InitConnect.Request
-         * @static
-         * @param {InitConnect.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.InitConnect.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof InitConnect.Request
-         * @static
-         * @param {InitConnect.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof InitConnect.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {InitConnect.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.InitConnect.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof InitConnect.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {InitConnect.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof InitConnect.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.InitConnect.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof InitConnect.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {InitConnect.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.InitConnect.Request)
-                return object;
-            var message = new $root.InitConnect.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".InitConnect.Request.c2s: object expected");
-                message.c2s = $root.InitConnect.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof InitConnect.Request
-         * @static
-         * @param {InitConnect.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.InitConnect.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof InitConnect.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    InitConnect.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof InitConnect
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {InitConnect.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof InitConnect
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {InitConnect.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof InitConnect.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof InitConnect.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof InitConnect.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {InitConnect.IS2C|null|undefined} s2c
-         * @memberof InitConnect.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof InitConnect.Response
-         * @static
-         * @param {InitConnect.IResponse=} [properties] Properties to set
-         * @returns {InitConnect.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
-         * @function encode
-         * @memberof InitConnect.Response
-         * @static
-         * @param {InitConnect.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.InitConnect.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof InitConnect.Response
-         * @static
-         * @param {InitConnect.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof InitConnect.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {InitConnect.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.InitConnect.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.InitConnect.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof InitConnect.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {InitConnect.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof InitConnect.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.InitConnect.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof InitConnect.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {InitConnect.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.InitConnect.Response)
-                return object;
-            var message = new $root.InitConnect.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".InitConnect.Response.s2c: object expected");
-                message.s2c = $root.InitConnect.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof InitConnect.Response
-         * @static
-         * @param {InitConnect.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.InitConnect.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof InitConnect.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return InitConnect;
-})();
-
-$root.KeepAlive = (function() {
-
-    /**
-     * Namespace KeepAlive.
-     * @exports KeepAlive
-     * @namespace
-     */
-    var KeepAlive = {};
-
-    KeepAlive.C2S = (function() {
-
-        /**
-         * Properties of a C2S.
-         * @memberof KeepAlive
-         * @interface IC2S
-         * @property {number|Long} time C2S time
-         */
-
-        /**
-         * Constructs a new C2S.
-         * @memberof KeepAlive
-         * @classdesc Represents a C2S.
-         * @implements IC2S
-         * @constructor
-         * @param {KeepAlive.IC2S=} [properties] Properties to set
-         */
-        function C2S(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * C2S time.
-         * @member {number|Long} time
-         * @memberof KeepAlive.C2S
-         * @instance
-         */
-        C2S.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @function create
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {KeepAlive.IC2S=} [properties] Properties to set
-         * @returns {KeepAlive.C2S} C2S instance
-         */
-        C2S.create = function create(properties) {
-            return new C2S(properties);
-        };
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
-         * @function encode
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {KeepAlive.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.time);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {KeepAlive.IC2S} message C2S message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        C2S.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @function decode
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {KeepAlive.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.C2S();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.time = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("time"))
-                throw $util.ProtocolError("missing required 'time'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {KeepAlive.C2S} C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        C2S.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a C2S message.
-         * @function verify
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        C2S.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
-                return "time: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {KeepAlive.C2S} C2S
-         */
-        C2S.fromObject = function fromObject(object) {
-            if (object instanceof $root.KeepAlive.C2S)
-                return object;
-            var message = new $root.KeepAlive.C2S();
-            if (object.time != null)
-                if ($util.Long)
-                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
-                else if (typeof object.time === "string")
-                    message.time = parseInt(object.time, 10);
-                else if (typeof object.time === "number")
-                    message.time = object.time;
-                else if (typeof object.time === "object")
-                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof KeepAlive.C2S
-         * @static
-         * @param {KeepAlive.C2S} message C2S
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        C2S.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.time = options.longs === String ? "0" : 0;
-            if (message.time != null && message.hasOwnProperty("time"))
-                if (typeof message.time === "number")
-                    object.time = options.longs === String ? String(message.time) : message.time;
-                else
-                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
-            return object;
-        };
-
-        /**
-         * Converts this C2S to JSON.
-         * @function toJSON
-         * @memberof KeepAlive.C2S
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        C2S.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return C2S;
-    })();
-
-    KeepAlive.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof KeepAlive
-         * @interface IS2C
-         * @property {number|Long} time S2C time
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof KeepAlive
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {KeepAlive.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C time.
-         * @member {number|Long} time
-         * @memberof KeepAlive.S2C
-         * @instance
-         */
-        S2C.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {KeepAlive.IS2C=} [properties] Properties to set
-         * @returns {KeepAlive.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {KeepAlive.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.time);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {KeepAlive.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {KeepAlive.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.time = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("time"))
-                throw $util.ProtocolError("missing required 'time'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {KeepAlive.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
-                return "time: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {KeepAlive.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.KeepAlive.S2C)
-                return object;
-            var message = new $root.KeepAlive.S2C();
-            if (object.time != null)
-                if ($util.Long)
-                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
-                else if (typeof object.time === "string")
-                    message.time = parseInt(object.time, 10);
-                else if (typeof object.time === "number")
-                    message.time = object.time;
-                else if (typeof object.time === "object")
-                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof KeepAlive.S2C
-         * @static
-         * @param {KeepAlive.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.time = options.longs === String ? "0" : 0;
-            if (message.time != null && message.hasOwnProperty("time"))
-                if (typeof message.time === "number")
-                    object.time = options.longs === String ? String(message.time) : message.time;
-                else
-                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof KeepAlive.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    KeepAlive.Request = (function() {
-
-        /**
-         * Properties of a Request.
-         * @memberof KeepAlive
-         * @interface IRequest
-         * @property {KeepAlive.IC2S} c2s Request c2s
-         */
-
-        /**
-         * Constructs a new Request.
-         * @memberof KeepAlive
-         * @classdesc Represents a Request.
-         * @implements IRequest
-         * @constructor
-         * @param {KeepAlive.IRequest=} [properties] Properties to set
-         */
-        function Request(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Request c2s.
-         * @member {KeepAlive.IC2S} c2s
-         * @memberof KeepAlive.Request
-         * @instance
-         */
-        Request.prototype.c2s = null;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @function create
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {KeepAlive.IRequest=} [properties] Properties to set
-         * @returns {KeepAlive.Request} Request instance
-         */
-        Request.create = function create(properties) {
-            return new Request(properties);
-        };
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
-         * @function encode
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {KeepAlive.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.KeepAlive.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {KeepAlive.IRequest} message Request message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Request.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @function decode
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {KeepAlive.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.Request();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.c2s = $root.KeepAlive.C2S.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {KeepAlive.Request} Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Request.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Request message.
-         * @function verify
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Request.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.KeepAlive.C2S.verify(message.c2s);
-                if (error)
-                    return "c2s." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {KeepAlive.Request} Request
-         */
-        Request.fromObject = function fromObject(object) {
-            if (object instanceof $root.KeepAlive.Request)
-                return object;
-            var message = new $root.KeepAlive.Request();
-            if (object.c2s != null) {
-                if (typeof object.c2s !== "object")
-                    throw TypeError(".KeepAlive.Request.c2s: object expected");
-                message.c2s = $root.KeepAlive.C2S.fromObject(object.c2s);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof KeepAlive.Request
-         * @static
-         * @param {KeepAlive.Request} message Request
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Request.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.c2s = null;
-            if (message.c2s != null && message.hasOwnProperty("c2s"))
-                object.c2s = $root.KeepAlive.C2S.toObject(message.c2s, options);
-            return object;
-        };
-
-        /**
-         * Converts this Request to JSON.
-         * @function toJSON
-         * @memberof KeepAlive.Request
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Request.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Request;
-    })();
-
-    KeepAlive.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof KeepAlive
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {KeepAlive.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof KeepAlive
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {KeepAlive.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof KeepAlive.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof KeepAlive.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof KeepAlive.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {KeepAlive.IS2C|null|undefined} s2c
-         * @memberof KeepAlive.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {KeepAlive.IResponse=} [properties] Properties to set
-         * @returns {KeepAlive.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
-         * @function encode
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {KeepAlive.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.KeepAlive.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {KeepAlive.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {KeepAlive.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.KeepAlive.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.KeepAlive.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {KeepAlive.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.KeepAlive.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {KeepAlive.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.KeepAlive.Response)
-                return object;
-            var message = new $root.KeepAlive.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".KeepAlive.Response.s2c: object expected");
-                message.s2c = $root.KeepAlive.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof KeepAlive.Response
-         * @static
-         * @param {KeepAlive.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.KeepAlive.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof KeepAlive.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return KeepAlive;
-})();
-
-$root.Notify = (function() {
-
-    /**
-     * Namespace Notify.
-     * @exports Notify
-     * @namespace
-     */
-    var Notify = {};
-
-    /**
-     * NotifyType enum.
-     * @name Notify.NotifyType
-     * @enum {string}
-     * @property {number} NotifyType_None=0 NotifyType_None value
-     * @property {number} NotifyType_GtwEvent=1 NotifyType_GtwEvent value
-     * @property {number} NotifyType_ProgramStatus=2 NotifyType_ProgramStatus value
-     * @property {number} NotifyType_ConnStatus=3 NotifyType_ConnStatus value
-     * @property {number} NotifyType_QotRight=4 NotifyType_QotRight value
-     * @property {number} NotifyType_APILevel=5 NotifyType_APILevel value
-     * @property {number} NotifyType_APIQuota=6 NotifyType_APIQuota value
-     */
-    Notify.NotifyType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "NotifyType_None"] = 0;
-        values[valuesById[1] = "NotifyType_GtwEvent"] = 1;
-        values[valuesById[2] = "NotifyType_ProgramStatus"] = 2;
-        values[valuesById[3] = "NotifyType_ConnStatus"] = 3;
-        values[valuesById[4] = "NotifyType_QotRight"] = 4;
-        values[valuesById[5] = "NotifyType_APILevel"] = 5;
-        values[valuesById[6] = "NotifyType_APIQuota"] = 6;
-        return values;
-    })();
-
-    /**
-     * GtwEventType enum.
-     * @name Notify.GtwEventType
-     * @enum {string}
-     * @property {number} GtwEventType_None=0 GtwEventType_None value
-     * @property {number} GtwEventType_LocalCfgLoadFailed=1 GtwEventType_LocalCfgLoadFailed value
-     * @property {number} GtwEventType_APISvrRunFailed=2 GtwEventType_APISvrRunFailed value
-     * @property {number} GtwEventType_ForceUpdate=3 GtwEventType_ForceUpdate value
-     * @property {number} GtwEventType_LoginFailed=4 GtwEventType_LoginFailed value
-     * @property {number} GtwEventType_UnAgreeDisclaimer=5 GtwEventType_UnAgreeDisclaimer value
-     * @property {number} GtwEventType_NetCfgMissing=6 GtwEventType_NetCfgMissing value
-     * @property {number} GtwEventType_KickedOut=7 GtwEventType_KickedOut value
-     * @property {number} GtwEventType_LoginPwdChanged=8 GtwEventType_LoginPwdChanged value
-     * @property {number} GtwEventType_BanLogin=9 GtwEventType_BanLogin value
-     * @property {number} GtwEventType_NeedPicVerifyCode=10 GtwEventType_NeedPicVerifyCode value
-     * @property {number} GtwEventType_NeedPhoneVerifyCode=11 GtwEventType_NeedPhoneVerifyCode value
-     * @property {number} GtwEventType_AppDataNotExist=12 GtwEventType_AppDataNotExist value
-     * @property {number} GtwEventType_NessaryDataMissing=13 GtwEventType_NessaryDataMissing value
-     * @property {number} GtwEventType_TradePwdChanged=14 GtwEventType_TradePwdChanged value
-     * @property {number} GtwEventType_EnableDeviceLock=15 GtwEventType_EnableDeviceLock value
-     */
-    Notify.GtwEventType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "GtwEventType_None"] = 0;
-        values[valuesById[1] = "GtwEventType_LocalCfgLoadFailed"] = 1;
-        values[valuesById[2] = "GtwEventType_APISvrRunFailed"] = 2;
-        values[valuesById[3] = "GtwEventType_ForceUpdate"] = 3;
-        values[valuesById[4] = "GtwEventType_LoginFailed"] = 4;
-        values[valuesById[5] = "GtwEventType_UnAgreeDisclaimer"] = 5;
-        values[valuesById[6] = "GtwEventType_NetCfgMissing"] = 6;
-        values[valuesById[7] = "GtwEventType_KickedOut"] = 7;
-        values[valuesById[8] = "GtwEventType_LoginPwdChanged"] = 8;
-        values[valuesById[9] = "GtwEventType_BanLogin"] = 9;
-        values[valuesById[10] = "GtwEventType_NeedPicVerifyCode"] = 10;
-        values[valuesById[11] = "GtwEventType_NeedPhoneVerifyCode"] = 11;
-        values[valuesById[12] = "GtwEventType_AppDataNotExist"] = 12;
-        values[valuesById[13] = "GtwEventType_NessaryDataMissing"] = 13;
-        values[valuesById[14] = "GtwEventType_TradePwdChanged"] = 14;
-        values[valuesById[15] = "GtwEventType_EnableDeviceLock"] = 15;
-        return values;
-    })();
-
-    Notify.GtwEvent = (function() {
-
-        /**
-         * Properties of a GtwEvent.
-         * @memberof Notify
-         * @interface IGtwEvent
-         * @property {number} eventType GtwEvent eventType
-         * @property {string} desc GtwEvent desc
-         */
-
-        /**
-         * Constructs a new GtwEvent.
-         * @memberof Notify
-         * @classdesc Represents a GtwEvent.
-         * @implements IGtwEvent
-         * @constructor
-         * @param {Notify.IGtwEvent=} [properties] Properties to set
-         */
-        function GtwEvent(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * GtwEvent eventType.
-         * @member {number} eventType
-         * @memberof Notify.GtwEvent
-         * @instance
-         */
-        GtwEvent.prototype.eventType = 0;
-
-        /**
-         * GtwEvent desc.
-         * @member {string} desc
-         * @memberof Notify.GtwEvent
-         * @instance
-         */
-        GtwEvent.prototype.desc = "";
-
-        /**
-         * Creates a new GtwEvent instance using the specified properties.
-         * @function create
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Notify.IGtwEvent=} [properties] Properties to set
-         * @returns {Notify.GtwEvent} GtwEvent instance
-         */
-        GtwEvent.create = function create(properties) {
-            return new GtwEvent(properties);
-        };
-
-        /**
-         * Encodes the specified GtwEvent message. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Notify.IGtwEvent} message GtwEvent message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        GtwEvent.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.eventType);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.desc);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified GtwEvent message, length delimited. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Notify.IGtwEvent} message GtwEvent message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        GtwEvent.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a GtwEvent message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.GtwEvent} GtwEvent
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        GtwEvent.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.GtwEvent();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.eventType = reader.int32();
-                    break;
-                case 2:
-                    message.desc = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("eventType"))
-                throw $util.ProtocolError("missing required 'eventType'", { instance: message });
-            if (!message.hasOwnProperty("desc"))
-                throw $util.ProtocolError("missing required 'desc'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a GtwEvent message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.GtwEvent} GtwEvent
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        GtwEvent.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a GtwEvent message.
-         * @function verify
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        GtwEvent.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.eventType))
-                return "eventType: integer expected";
-            if (!$util.isString(message.desc))
-                return "desc: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a GtwEvent message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.GtwEvent} GtwEvent
-         */
-        GtwEvent.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.GtwEvent)
-                return object;
-            var message = new $root.Notify.GtwEvent();
-            if (object.eventType != null)
-                message.eventType = object.eventType | 0;
-            if (object.desc != null)
-                message.desc = String(object.desc);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a GtwEvent message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.GtwEvent
-         * @static
-         * @param {Notify.GtwEvent} message GtwEvent
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        GtwEvent.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.eventType = 0;
-                object.desc = "";
-            }
-            if (message.eventType != null && message.hasOwnProperty("eventType"))
-                object.eventType = message.eventType;
-            if (message.desc != null && message.hasOwnProperty("desc"))
-                object.desc = message.desc;
-            return object;
-        };
-
-        /**
-         * Converts this GtwEvent to JSON.
-         * @function toJSON
-         * @memberof Notify.GtwEvent
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        GtwEvent.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return GtwEvent;
-    })();
-
-    Notify.ProgramStatus = (function() {
-
-        /**
-         * Properties of a ProgramStatus.
-         * @memberof Notify
-         * @interface IProgramStatus
-         * @property {Common.IProgramStatus} programStatus ProgramStatus programStatus
-         */
-
-        /**
-         * Constructs a new ProgramStatus.
-         * @memberof Notify
-         * @classdesc Represents a ProgramStatus.
-         * @implements IProgramStatus
-         * @constructor
-         * @param {Notify.IProgramStatus=} [properties] Properties to set
-         */
-        function ProgramStatus(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ProgramStatus programStatus.
-         * @member {Common.IProgramStatus} programStatus
-         * @memberof Notify.ProgramStatus
-         * @instance
-         */
-        ProgramStatus.prototype.programStatus = null;
-
-        /**
-         * Creates a new ProgramStatus instance using the specified properties.
-         * @function create
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Notify.IProgramStatus=} [properties] Properties to set
-         * @returns {Notify.ProgramStatus} ProgramStatus instance
-         */
-        ProgramStatus.create = function create(properties) {
-            return new ProgramStatus(properties);
-        };
-
-        /**
-         * Encodes the specified ProgramStatus message. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Notify.IProgramStatus} message ProgramStatus message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProgramStatus.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            $root.Common.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ProgramStatus message, length delimited. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Notify.IProgramStatus} message ProgramStatus message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProgramStatus.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ProgramStatus message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.ProgramStatus} ProgramStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProgramStatus.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.ProgramStatus();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.programStatus = $root.Common.ProgramStatus.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("programStatus"))
-                throw $util.ProtocolError("missing required 'programStatus'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a ProgramStatus message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.ProgramStatus} ProgramStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProgramStatus.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ProgramStatus message.
-         * @function verify
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ProgramStatus.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            {
-                var error = $root.Common.ProgramStatus.verify(message.programStatus);
-                if (error)
-                    return "programStatus." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ProgramStatus message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.ProgramStatus} ProgramStatus
-         */
-        ProgramStatus.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.ProgramStatus)
-                return object;
-            var message = new $root.Notify.ProgramStatus();
-            if (object.programStatus != null) {
-                if (typeof object.programStatus !== "object")
-                    throw TypeError(".Notify.ProgramStatus.programStatus: object expected");
-                message.programStatus = $root.Common.ProgramStatus.fromObject(object.programStatus);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ProgramStatus message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.ProgramStatus
-         * @static
-         * @param {Notify.ProgramStatus} message ProgramStatus
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ProgramStatus.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.programStatus = null;
-            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
-                object.programStatus = $root.Common.ProgramStatus.toObject(message.programStatus, options);
-            return object;
-        };
-
-        /**
-         * Converts this ProgramStatus to JSON.
-         * @function toJSON
-         * @memberof Notify.ProgramStatus
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ProgramStatus.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ProgramStatus;
-    })();
-
-    Notify.ConnectStatus = (function() {
-
-        /**
-         * Properties of a ConnectStatus.
-         * @memberof Notify
-         * @interface IConnectStatus
-         * @property {boolean} qotLogined ConnectStatus qotLogined
-         * @property {boolean} trdLogined ConnectStatus trdLogined
-         */
-
-        /**
-         * Constructs a new ConnectStatus.
-         * @memberof Notify
-         * @classdesc Represents a ConnectStatus.
-         * @implements IConnectStatus
-         * @constructor
-         * @param {Notify.IConnectStatus=} [properties] Properties to set
-         */
-        function ConnectStatus(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ConnectStatus qotLogined.
-         * @member {boolean} qotLogined
-         * @memberof Notify.ConnectStatus
-         * @instance
-         */
-        ConnectStatus.prototype.qotLogined = false;
-
-        /**
-         * ConnectStatus trdLogined.
-         * @member {boolean} trdLogined
-         * @memberof Notify.ConnectStatus
-         * @instance
-         */
-        ConnectStatus.prototype.trdLogined = false;
-
-        /**
-         * Creates a new ConnectStatus instance using the specified properties.
-         * @function create
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Notify.IConnectStatus=} [properties] Properties to set
-         * @returns {Notify.ConnectStatus} ConnectStatus instance
-         */
-        ConnectStatus.create = function create(properties) {
-            return new ConnectStatus(properties);
-        };
-
-        /**
-         * Encodes the specified ConnectStatus message. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Notify.IConnectStatus} message ConnectStatus message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ConnectStatus.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.qotLogined);
-            writer.uint32(/* id 2, wireType 0 =*/16).bool(message.trdLogined);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ConnectStatus message, length delimited. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Notify.IConnectStatus} message ConnectStatus message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ConnectStatus.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ConnectStatus message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.ConnectStatus} ConnectStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ConnectStatus.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.ConnectStatus();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.qotLogined = reader.bool();
-                    break;
-                case 2:
-                    message.trdLogined = reader.bool();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("qotLogined"))
-                throw $util.ProtocolError("missing required 'qotLogined'", { instance: message });
-            if (!message.hasOwnProperty("trdLogined"))
-                throw $util.ProtocolError("missing required 'trdLogined'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a ConnectStatus message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.ConnectStatus} ConnectStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ConnectStatus.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ConnectStatus message.
-         * @function verify
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ConnectStatus.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (typeof message.qotLogined !== "boolean")
-                return "qotLogined: boolean expected";
-            if (typeof message.trdLogined !== "boolean")
-                return "trdLogined: boolean expected";
-            return null;
-        };
-
-        /**
-         * Creates a ConnectStatus message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.ConnectStatus} ConnectStatus
-         */
-        ConnectStatus.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.ConnectStatus)
-                return object;
-            var message = new $root.Notify.ConnectStatus();
-            if (object.qotLogined != null)
-                message.qotLogined = Boolean(object.qotLogined);
-            if (object.trdLogined != null)
-                message.trdLogined = Boolean(object.trdLogined);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ConnectStatus message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.ConnectStatus
-         * @static
-         * @param {Notify.ConnectStatus} message ConnectStatus
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ConnectStatus.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.qotLogined = false;
-                object.trdLogined = false;
-            }
-            if (message.qotLogined != null && message.hasOwnProperty("qotLogined"))
-                object.qotLogined = message.qotLogined;
-            if (message.trdLogined != null && message.hasOwnProperty("trdLogined"))
-                object.trdLogined = message.trdLogined;
-            return object;
-        };
-
-        /**
-         * Converts this ConnectStatus to JSON.
-         * @function toJSON
-         * @memberof Notify.ConnectStatus
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ConnectStatus.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ConnectStatus;
-    })();
-
-    Notify.QotRight = (function() {
-
-        /**
-         * Properties of a QotRight.
-         * @memberof Notify
-         * @interface IQotRight
-         * @property {number} hkQotRight QotRight hkQotRight
-         * @property {number} usQotRight QotRight usQotRight
-         * @property {number} cnQotRight QotRight cnQotRight
-         * @property {number|null} [hkOptionQotRight] QotRight hkOptionQotRight
-         * @property {boolean|null} [hasUSOptionQotRight] QotRight hasUSOptionQotRight
-         * @property {number|null} [hkFutureQotRight] QotRight hkFutureQotRight
-         */
-
-        /**
-         * Constructs a new QotRight.
-         * @memberof Notify
-         * @classdesc Represents a QotRight.
-         * @implements IQotRight
-         * @constructor
-         * @param {Notify.IQotRight=} [properties] Properties to set
-         */
-        function QotRight(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * QotRight hkQotRight.
-         * @member {number} hkQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.hkQotRight = 0;
-
-        /**
-         * QotRight usQotRight.
-         * @member {number} usQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.usQotRight = 0;
-
-        /**
-         * QotRight cnQotRight.
-         * @member {number} cnQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.cnQotRight = 0;
-
-        /**
-         * QotRight hkOptionQotRight.
-         * @member {number} hkOptionQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.hkOptionQotRight = 0;
-
-        /**
-         * QotRight hasUSOptionQotRight.
-         * @member {boolean} hasUSOptionQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.hasUSOptionQotRight = false;
-
-        /**
-         * QotRight hkFutureQotRight.
-         * @member {number} hkFutureQotRight
-         * @memberof Notify.QotRight
-         * @instance
-         */
-        QotRight.prototype.hkFutureQotRight = 0;
-
-        /**
-         * Creates a new QotRight instance using the specified properties.
-         * @function create
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Notify.IQotRight=} [properties] Properties to set
-         * @returns {Notify.QotRight} QotRight instance
-         */
-        QotRight.create = function create(properties) {
-            return new QotRight(properties);
-        };
-
-        /**
-         * Encodes the specified QotRight message. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Notify.IQotRight} message QotRight message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        QotRight.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.hkQotRight);
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.usQotRight);
-            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.cnQotRight);
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.hkOptionQotRight);
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                writer.uint32(/* id 8, wireType 0 =*/64).bool(message.hasUSOptionQotRight);
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.hkFutureQotRight);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified QotRight message, length delimited. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Notify.IQotRight} message QotRight message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        QotRight.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a QotRight message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.QotRight
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.QotRight} QotRight
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        QotRight.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.QotRight();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 4:
-                    message.hkQotRight = reader.int32();
-                    break;
-                case 5:
-                    message.usQotRight = reader.int32();
-                    break;
-                case 6:
-                    message.cnQotRight = reader.int32();
-                    break;
-                case 7:
-                    message.hkOptionQotRight = reader.int32();
-                    break;
-                case 8:
-                    message.hasUSOptionQotRight = reader.bool();
-                    break;
-                case 9:
-                    message.hkFutureQotRight = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("hkQotRight"))
-                throw $util.ProtocolError("missing required 'hkQotRight'", { instance: message });
-            if (!message.hasOwnProperty("usQotRight"))
-                throw $util.ProtocolError("missing required 'usQotRight'", { instance: message });
-            if (!message.hasOwnProperty("cnQotRight"))
-                throw $util.ProtocolError("missing required 'cnQotRight'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a QotRight message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.QotRight
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.QotRight} QotRight
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        QotRight.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a QotRight message.
-         * @function verify
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        QotRight.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.hkQotRight))
-                return "hkQotRight: integer expected";
-            if (!$util.isInteger(message.usQotRight))
-                return "usQotRight: integer expected";
-            if (!$util.isInteger(message.cnQotRight))
-                return "cnQotRight: integer expected";
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                if (!$util.isInteger(message.hkOptionQotRight))
-                    return "hkOptionQotRight: integer expected";
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                if (typeof message.hasUSOptionQotRight !== "boolean")
-                    return "hasUSOptionQotRight: boolean expected";
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                if (!$util.isInteger(message.hkFutureQotRight))
-                    return "hkFutureQotRight: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a QotRight message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.QotRight} QotRight
-         */
-        QotRight.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.QotRight)
-                return object;
-            var message = new $root.Notify.QotRight();
-            if (object.hkQotRight != null)
-                message.hkQotRight = object.hkQotRight | 0;
-            if (object.usQotRight != null)
-                message.usQotRight = object.usQotRight | 0;
-            if (object.cnQotRight != null)
-                message.cnQotRight = object.cnQotRight | 0;
-            if (object.hkOptionQotRight != null)
-                message.hkOptionQotRight = object.hkOptionQotRight | 0;
-            if (object.hasUSOptionQotRight != null)
-                message.hasUSOptionQotRight = Boolean(object.hasUSOptionQotRight);
-            if (object.hkFutureQotRight != null)
-                message.hkFutureQotRight = object.hkFutureQotRight | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a QotRight message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.QotRight
-         * @static
-         * @param {Notify.QotRight} message QotRight
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        QotRight.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.hkQotRight = 0;
-                object.usQotRight = 0;
-                object.cnQotRight = 0;
-                object.hkOptionQotRight = 0;
-                object.hasUSOptionQotRight = false;
-                object.hkFutureQotRight = 0;
-            }
-            if (message.hkQotRight != null && message.hasOwnProperty("hkQotRight"))
-                object.hkQotRight = message.hkQotRight;
-            if (message.usQotRight != null && message.hasOwnProperty("usQotRight"))
-                object.usQotRight = message.usQotRight;
-            if (message.cnQotRight != null && message.hasOwnProperty("cnQotRight"))
-                object.cnQotRight = message.cnQotRight;
-            if (message.hkOptionQotRight != null && message.hasOwnProperty("hkOptionQotRight"))
-                object.hkOptionQotRight = message.hkOptionQotRight;
-            if (message.hasUSOptionQotRight != null && message.hasOwnProperty("hasUSOptionQotRight"))
-                object.hasUSOptionQotRight = message.hasUSOptionQotRight;
-            if (message.hkFutureQotRight != null && message.hasOwnProperty("hkFutureQotRight"))
-                object.hkFutureQotRight = message.hkFutureQotRight;
-            return object;
-        };
-
-        /**
-         * Converts this QotRight to JSON.
-         * @function toJSON
-         * @memberof Notify.QotRight
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        QotRight.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return QotRight;
-    })();
-
-    Notify.APILevel = (function() {
-
-        /**
-         * Properties of a APILevel.
-         * @memberof Notify
-         * @interface IAPILevel
-         * @property {string} apiLevel APILevel apiLevel
-         */
-
-        /**
-         * Constructs a new APILevel.
-         * @memberof Notify
-         * @classdesc Represents a APILevel.
-         * @implements IAPILevel
-         * @constructor
-         * @param {Notify.IAPILevel=} [properties] Properties to set
-         */
-        function APILevel(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * APILevel apiLevel.
-         * @member {string} apiLevel
-         * @memberof Notify.APILevel
-         * @instance
-         */
-        APILevel.prototype.apiLevel = "";
-
-        /**
-         * Creates a new APILevel instance using the specified properties.
-         * @function create
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Notify.IAPILevel=} [properties] Properties to set
-         * @returns {Notify.APILevel} APILevel instance
-         */
-        APILevel.create = function create(properties) {
-            return new APILevel(properties);
-        };
-
-        /**
-         * Encodes the specified APILevel message. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Notify.IAPILevel} message APILevel message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APILevel.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.apiLevel);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified APILevel message, length delimited. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Notify.IAPILevel} message APILevel message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APILevel.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a APILevel message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.APILevel
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.APILevel} APILevel
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APILevel.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.APILevel();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 3:
-                    message.apiLevel = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("apiLevel"))
-                throw $util.ProtocolError("missing required 'apiLevel'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a APILevel message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.APILevel
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.APILevel} APILevel
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APILevel.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a APILevel message.
-         * @function verify
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        APILevel.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isString(message.apiLevel))
-                return "apiLevel: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a APILevel message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.APILevel} APILevel
-         */
-        APILevel.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.APILevel)
-                return object;
-            var message = new $root.Notify.APILevel();
-            if (object.apiLevel != null)
-                message.apiLevel = String(object.apiLevel);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a APILevel message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.APILevel
-         * @static
-         * @param {Notify.APILevel} message APILevel
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        APILevel.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults)
-                object.apiLevel = "";
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                object.apiLevel = message.apiLevel;
-            return object;
-        };
-
-        /**
-         * Converts this APILevel to JSON.
-         * @function toJSON
-         * @memberof Notify.APILevel
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        APILevel.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return APILevel;
-    })();
-
-    Notify.APIQuota = (function() {
-
-        /**
-         * Properties of a APIQuota.
-         * @memberof Notify
-         * @interface IAPIQuota
-         * @property {number} subQuota APIQuota subQuota
-         * @property {number} historyKLQuota APIQuota historyKLQuota
-         */
-
-        /**
-         * Constructs a new APIQuota.
-         * @memberof Notify
-         * @classdesc Represents a APIQuota.
-         * @implements IAPIQuota
-         * @constructor
-         * @param {Notify.IAPIQuota=} [properties] Properties to set
-         */
-        function APIQuota(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * APIQuota subQuota.
-         * @member {number} subQuota
-         * @memberof Notify.APIQuota
-         * @instance
-         */
-        APIQuota.prototype.subQuota = 0;
-
-        /**
-         * APIQuota historyKLQuota.
-         * @member {number} historyKLQuota
-         * @memberof Notify.APIQuota
-         * @instance
-         */
-        APIQuota.prototype.historyKLQuota = 0;
-
-        /**
-         * Creates a new APIQuota instance using the specified properties.
-         * @function create
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota=} [properties] Properties to set
-         * @returns {Notify.APIQuota} APIQuota instance
-         */
-        APIQuota.create = function create(properties) {
-            return new APIQuota(properties);
-        };
-
-        /**
-         * Encodes the specified APIQuota message. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APIQuota.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.subQuota);
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.historyKLQuota);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified APIQuota message, length delimited. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.IAPIQuota} message APIQuota message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        APIQuota.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.APIQuota} APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APIQuota.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.APIQuota();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.subQuota = reader.int32();
-                    break;
-                case 2:
-                    message.historyKLQuota = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("subQuota"))
-                throw $util.ProtocolError("missing required 'subQuota'", { instance: message });
-            if (!message.hasOwnProperty("historyKLQuota"))
-                throw $util.ProtocolError("missing required 'historyKLQuota'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.APIQuota} APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        APIQuota.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a APIQuota message.
-         * @function verify
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        APIQuota.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.subQuota))
-                return "subQuota: integer expected";
-            if (!$util.isInteger(message.historyKLQuota))
-                return "historyKLQuota: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates a APIQuota message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.APIQuota} APIQuota
-         */
-        APIQuota.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.APIQuota)
-                return object;
-            var message = new $root.Notify.APIQuota();
-            if (object.subQuota != null)
-                message.subQuota = object.subQuota | 0;
-            if (object.historyKLQuota != null)
-                message.historyKLQuota = object.historyKLQuota | 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a APIQuota message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.APIQuota
-         * @static
-         * @param {Notify.APIQuota} message APIQuota
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        APIQuota.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.subQuota = 0;
-                object.historyKLQuota = 0;
-            }
-            if (message.subQuota != null && message.hasOwnProperty("subQuota"))
-                object.subQuota = message.subQuota;
-            if (message.historyKLQuota != null && message.hasOwnProperty("historyKLQuota"))
-                object.historyKLQuota = message.historyKLQuota;
-            return object;
-        };
-
-        /**
-         * Converts this APIQuota to JSON.
-         * @function toJSON
-         * @memberof Notify.APIQuota
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        APIQuota.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return APIQuota;
-    })();
-
-    Notify.S2C = (function() {
-
-        /**
-         * Properties of a S2C.
-         * @memberof Notify
-         * @interface IS2C
-         * @property {number} type S2C type
-         * @property {Notify.IGtwEvent|null} [event] S2C event
-         * @property {Notify.IProgramStatus|null} [programStatus] S2C programStatus
-         * @property {Notify.IConnectStatus|null} [connectStatus] S2C connectStatus
-         * @property {Notify.IQotRight|null} [qotRight] S2C qotRight
-         * @property {Notify.IAPILevel|null} [apiLevel] S2C apiLevel
-         * @property {Notify.IAPIQuota|null} [apiQuota] S2C apiQuota
-         */
-
-        /**
-         * Constructs a new S2C.
-         * @memberof Notify
-         * @classdesc Represents a S2C.
-         * @implements IS2C
-         * @constructor
-         * @param {Notify.IS2C=} [properties] Properties to set
-         */
-        function S2C(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * S2C type.
-         * @member {number} type
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.type = 0;
-
-        /**
-         * S2C event.
-         * @member {Notify.IGtwEvent|null|undefined} event
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.event = null;
-
-        /**
-         * S2C programStatus.
-         * @member {Notify.IProgramStatus|null|undefined} programStatus
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.programStatus = null;
-
-        /**
-         * S2C connectStatus.
-         * @member {Notify.IConnectStatus|null|undefined} connectStatus
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.connectStatus = null;
-
-        /**
-         * S2C qotRight.
-         * @member {Notify.IQotRight|null|undefined} qotRight
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.qotRight = null;
-
-        /**
-         * S2C apiLevel.
-         * @member {Notify.IAPILevel|null|undefined} apiLevel
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.apiLevel = null;
-
-        /**
-         * S2C apiQuota.
-         * @member {Notify.IAPIQuota|null|undefined} apiQuota
-         * @memberof Notify.S2C
-         * @instance
-         */
-        S2C.prototype.apiQuota = null;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @function create
-         * @memberof Notify.S2C
-         * @static
-         * @param {Notify.IS2C=} [properties] Properties to set
-         * @returns {Notify.S2C} S2C instance
-         */
-        S2C.create = function create(properties) {
-            return new S2C(properties);
-        };
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Notify.S2C.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.S2C
-         * @static
-         * @param {Notify.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
-            if (message.event != null && message.hasOwnProperty("event"))
-                $root.Notify.GtwEvent.encode(message.event, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
-                $root.Notify.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.connectStatus != null && message.hasOwnProperty("connectStatus"))
-                $root.Notify.ConnectStatus.encode(message.connectStatus, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            if (message.qotRight != null && message.hasOwnProperty("qotRight"))
-                $root.Notify.QotRight.encode(message.qotRight, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                $root.Notify.APILevel.encode(message.apiLevel, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
-                $root.Notify.APIQuota.encode(message.apiQuota, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Notify.S2C.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.S2C
-         * @static
-         * @param {Notify.IS2C} message S2C message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        S2C.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.S2C();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.type = reader.int32();
-                    break;
-                case 2:
-                    message.event = $root.Notify.GtwEvent.decode(reader, reader.uint32());
-                    break;
-                case 3:
-                    message.programStatus = $root.Notify.ProgramStatus.decode(reader, reader.uint32());
-                    break;
-                case 4:
-                    message.connectStatus = $root.Notify.ConnectStatus.decode(reader, reader.uint32());
-                    break;
-                case 5:
-                    message.qotRight = $root.Notify.QotRight.decode(reader, reader.uint32());
-                    break;
-                case 6:
-                    message.apiLevel = $root.Notify.APILevel.decode(reader, reader.uint32());
-                    break;
-                case 7:
-                    message.apiQuota = $root.Notify.APIQuota.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("type"))
-                throw $util.ProtocolError("missing required 'type'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.S2C
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.S2C} S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        S2C.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a S2C message.
-         * @function verify
-         * @memberof Notify.S2C
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        S2C.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.type))
-                return "type: integer expected";
-            if (message.event != null && message.hasOwnProperty("event")) {
-                var error = $root.Notify.GtwEvent.verify(message.event);
-                if (error)
-                    return "event." + error;
-            }
-            if (message.programStatus != null && message.hasOwnProperty("programStatus")) {
-                var error = $root.Notify.ProgramStatus.verify(message.programStatus);
-                if (error)
-                    return "programStatus." + error;
-            }
-            if (message.connectStatus != null && message.hasOwnProperty("connectStatus")) {
-                var error = $root.Notify.ConnectStatus.verify(message.connectStatus);
-                if (error)
-                    return "connectStatus." + error;
-            }
-            if (message.qotRight != null && message.hasOwnProperty("qotRight")) {
-                var error = $root.Notify.QotRight.verify(message.qotRight);
-                if (error)
-                    return "qotRight." + error;
-            }
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel")) {
-                var error = $root.Notify.APILevel.verify(message.apiLevel);
-                if (error)
-                    return "apiLevel." + error;
-            }
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota")) {
-                var error = $root.Notify.APIQuota.verify(message.apiQuota);
-                if (error)
-                    return "apiQuota." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.S2C
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.S2C} S2C
-         */
-        S2C.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.S2C)
-                return object;
-            var message = new $root.Notify.S2C();
-            if (object.type != null)
-                message.type = object.type | 0;
-            if (object.event != null) {
-                if (typeof object.event !== "object")
-                    throw TypeError(".Notify.S2C.event: object expected");
-                message.event = $root.Notify.GtwEvent.fromObject(object.event);
-            }
-            if (object.programStatus != null) {
-                if (typeof object.programStatus !== "object")
-                    throw TypeError(".Notify.S2C.programStatus: object expected");
-                message.programStatus = $root.Notify.ProgramStatus.fromObject(object.programStatus);
-            }
-            if (object.connectStatus != null) {
-                if (typeof object.connectStatus !== "object")
-                    throw TypeError(".Notify.S2C.connectStatus: object expected");
-                message.connectStatus = $root.Notify.ConnectStatus.fromObject(object.connectStatus);
-            }
-            if (object.qotRight != null) {
-                if (typeof object.qotRight !== "object")
-                    throw TypeError(".Notify.S2C.qotRight: object expected");
-                message.qotRight = $root.Notify.QotRight.fromObject(object.qotRight);
-            }
-            if (object.apiLevel != null) {
-                if (typeof object.apiLevel !== "object")
-                    throw TypeError(".Notify.S2C.apiLevel: object expected");
-                message.apiLevel = $root.Notify.APILevel.fromObject(object.apiLevel);
-            }
-            if (object.apiQuota != null) {
-                if (typeof object.apiQuota !== "object")
-                    throw TypeError(".Notify.S2C.apiQuota: object expected");
-                message.apiQuota = $root.Notify.APIQuota.fromObject(object.apiQuota);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.S2C
-         * @static
-         * @param {Notify.S2C} message S2C
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        S2C.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.type = 0;
-                object.event = null;
-                object.programStatus = null;
-                object.connectStatus = null;
-                object.qotRight = null;
-                object.apiLevel = null;
-                object.apiQuota = null;
-            }
-            if (message.type != null && message.hasOwnProperty("type"))
-                object.type = message.type;
-            if (message.event != null && message.hasOwnProperty("event"))
-                object.event = $root.Notify.GtwEvent.toObject(message.event, options);
-            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
-                object.programStatus = $root.Notify.ProgramStatus.toObject(message.programStatus, options);
-            if (message.connectStatus != null && message.hasOwnProperty("connectStatus"))
-                object.connectStatus = $root.Notify.ConnectStatus.toObject(message.connectStatus, options);
-            if (message.qotRight != null && message.hasOwnProperty("qotRight"))
-                object.qotRight = $root.Notify.QotRight.toObject(message.qotRight, options);
-            if (message.apiLevel != null && message.hasOwnProperty("apiLevel"))
-                object.apiLevel = $root.Notify.APILevel.toObject(message.apiLevel, options);
-            if (message.apiQuota != null && message.hasOwnProperty("apiQuota"))
-                object.apiQuota = $root.Notify.APIQuota.toObject(message.apiQuota, options);
-            return object;
-        };
-
-        /**
-         * Converts this S2C to JSON.
-         * @function toJSON
-         * @memberof Notify.S2C
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        S2C.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return S2C;
-    })();
-
-    Notify.Response = (function() {
-
-        /**
-         * Properties of a Response.
-         * @memberof Notify
-         * @interface IResponse
-         * @property {number} retType Response retType
-         * @property {string|null} [retMsg] Response retMsg
-         * @property {number|null} [errCode] Response errCode
-         * @property {Notify.IS2C|null} [s2c] Response s2c
-         */
-
-        /**
-         * Constructs a new Response.
-         * @memberof Notify
-         * @classdesc Represents a Response.
-         * @implements IResponse
-         * @constructor
-         * @param {Notify.IResponse=} [properties] Properties to set
-         */
-        function Response(properties) {
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Response retType.
-         * @member {number} retType
-         * @memberof Notify.Response
-         * @instance
-         */
-        Response.prototype.retType = -400;
-
-        /**
-         * Response retMsg.
-         * @member {string} retMsg
-         * @memberof Notify.Response
-         * @instance
-         */
-        Response.prototype.retMsg = "";
-
-        /**
-         * Response errCode.
-         * @member {number} errCode
-         * @memberof Notify.Response
-         * @instance
-         */
-        Response.prototype.errCode = 0;
-
-        /**
-         * Response s2c.
-         * @member {Notify.IS2C|null|undefined} s2c
-         * @memberof Notify.Response
-         * @instance
-         */
-        Response.prototype.s2c = null;
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @function create
-         * @memberof Notify.Response
-         * @static
-         * @param {Notify.IResponse=} [properties] Properties to set
-         * @returns {Notify.Response} Response instance
-         */
-        Response.create = function create(properties) {
-            return new Response(properties);
-        };
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Notify.Response.verify|verify} messages.
-         * @function encode
-         * @memberof Notify.Response
-         * @static
-         * @param {Notify.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                $root.Notify.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Notify.Response.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof Notify.Response
-         * @static
-         * @param {Notify.IResponse} message Response message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Response.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @function decode
-         * @memberof Notify.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {Notify.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Notify.Response();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.retType = reader.int32();
-                    break;
-                case 2:
-                    message.retMsg = reader.string();
-                    break;
-                case 3:
-                    message.errCode = reader.int32();
-                    break;
-                case 4:
-                    message.s2c = $root.Notify.S2C.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            if (!message.hasOwnProperty("retType"))
-                throw $util.ProtocolError("missing required 'retType'", { instance: message });
-            return message;
-        };
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof Notify.Response
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {Notify.Response} Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Response.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Response message.
-         * @function verify
-         * @memberof Notify.Response
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Response.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (!$util.isInteger(message.retType))
-                return "retType: integer expected";
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                if (!$util.isString(message.retMsg))
-                    return "retMsg: string expected";
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                if (!$util.isInteger(message.errCode))
-                    return "errCode: integer expected";
-            if (message.s2c != null && message.hasOwnProperty("s2c")) {
-                var error = $root.Notify.S2C.verify(message.s2c);
-                if (error)
-                    return "s2c." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof Notify.Response
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {Notify.Response} Response
-         */
-        Response.fromObject = function fromObject(object) {
-            if (object instanceof $root.Notify.Response)
-                return object;
-            var message = new $root.Notify.Response();
-            if (object.retType != null)
-                message.retType = object.retType | 0;
-            if (object.retMsg != null)
-                message.retMsg = String(object.retMsg);
-            if (object.errCode != null)
-                message.errCode = object.errCode | 0;
-            if (object.s2c != null) {
-                if (typeof object.s2c !== "object")
-                    throw TypeError(".Notify.Response.s2c: object expected");
-                message.s2c = $root.Notify.S2C.fromObject(object.s2c);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof Notify.Response
-         * @static
-         * @param {Notify.Response} message Response
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Response.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.defaults) {
-                object.retType = -400;
-                object.retMsg = "";
-                object.errCode = 0;
-                object.s2c = null;
-            }
-            if (message.retType != null && message.hasOwnProperty("retType"))
-                object.retType = message.retType;
-            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
-                object.retMsg = message.retMsg;
-            if (message.errCode != null && message.hasOwnProperty("errCode"))
-                object.errCode = message.errCode;
-            if (message.s2c != null && message.hasOwnProperty("s2c"))
-                object.s2c = $root.Notify.S2C.toObject(message.s2c, options);
-            return object;
-        };
-
-        /**
-         * Converts this Response to JSON.
-         * @function toJSON
-         * @memberof Notify.Response
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Response.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Response;
-    })();
-
-    return Notify;
 })();
 
 $root.Qot_GetBasicQot = (function() {
@@ -94157,6 +92977,1222 @@ $root.Verification = (function() {
     })();
 
     return Verification;
+})();
+
+$root.GetGlobalState = (function() {
+
+    /**
+     * Namespace GetGlobalState.
+     * @exports GetGlobalState
+     * @namespace
+     */
+    var GetGlobalState = {};
+
+    GetGlobalState.C2S = (function() {
+
+        /**
+         * Properties of a C2S.
+         * @memberof GetGlobalState
+         * @interface IC2S
+         * @property {number|Long} userID C2S userID
+         */
+
+        /**
+         * Constructs a new C2S.
+         * @memberof GetGlobalState
+         * @classdesc Represents a C2S.
+         * @implements IC2S
+         * @constructor
+         * @param {GetGlobalState.IC2S=} [properties] Properties to set
+         */
+        function C2S(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2S userID.
+         * @member {number|Long} userID
+         * @memberof GetGlobalState.C2S
+         * @instance
+         */
+        C2S.prototype.userID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @function create
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {GetGlobalState.IC2S=} [properties] Properties to set
+         * @returns {GetGlobalState.C2S} C2S instance
+         */
+        C2S.create = function create(properties) {
+            return new C2S(properties);
+        };
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
+         * @function encode
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {GetGlobalState.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.userID);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {GetGlobalState.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @function decode
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {GetGlobalState.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.C2S();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.userID = reader.uint64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("userID"))
+                throw $util.ProtocolError("missing required 'userID'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {GetGlobalState.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2S message.
+         * @function verify
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2S.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.userID) && !(message.userID && $util.isInteger(message.userID.low) && $util.isInteger(message.userID.high)))
+                return "userID: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {GetGlobalState.C2S} C2S
+         */
+        C2S.fromObject = function fromObject(object) {
+            if (object instanceof $root.GetGlobalState.C2S)
+                return object;
+            var message = new $root.GetGlobalState.C2S();
+            if (object.userID != null)
+                if ($util.Long)
+                    (message.userID = $util.Long.fromValue(object.userID)).unsigned = true;
+                else if (typeof object.userID === "string")
+                    message.userID = parseInt(object.userID, 10);
+                else if (typeof object.userID === "number")
+                    message.userID = object.userID;
+                else if (typeof object.userID === "object")
+                    message.userID = new $util.LongBits(object.userID.low >>> 0, object.userID.high >>> 0).toNumber(true);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof GetGlobalState.C2S
+         * @static
+         * @param {GetGlobalState.C2S} message C2S
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2S.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, true);
+                    object.userID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.userID = options.longs === String ? "0" : 0;
+            if (message.userID != null && message.hasOwnProperty("userID"))
+                if (typeof message.userID === "number")
+                    object.userID = options.longs === String ? String(message.userID) : message.userID;
+                else
+                    object.userID = options.longs === String ? $util.Long.prototype.toString.call(message.userID) : options.longs === Number ? new $util.LongBits(message.userID.low >>> 0, message.userID.high >>> 0).toNumber(true) : message.userID;
+            return object;
+        };
+
+        /**
+         * Converts this C2S to JSON.
+         * @function toJSON
+         * @memberof GetGlobalState.C2S
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2S.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2S;
+    })();
+
+    GetGlobalState.S2C = (function() {
+
+        /**
+         * Properties of a S2C.
+         * @memberof GetGlobalState
+         * @interface IS2C
+         * @property {number} marketHK S2C marketHK
+         * @property {number} marketUS S2C marketUS
+         * @property {number} marketSH S2C marketSH
+         * @property {number} marketSZ S2C marketSZ
+         * @property {number} marketHKFuture S2C marketHKFuture
+         * @property {number|null} [marketUSFuture] S2C marketUSFuture
+         * @property {boolean} qotLogined S2C qotLogined
+         * @property {boolean} trdLogined S2C trdLogined
+         * @property {number} serverVer S2C serverVer
+         * @property {number} serverBuildNo S2C serverBuildNo
+         * @property {number|Long} time S2C time
+         * @property {number|null} [localTime] S2C localTime
+         * @property {Common.IProgramStatus|null} [programStatus] S2C programStatus
+         * @property {string|null} [qotSvrIpAddr] S2C qotSvrIpAddr
+         * @property {string|null} [trdSvrIpAddr] S2C trdSvrIpAddr
+         * @property {number|Long|null} [connID] S2C connID
+         */
+
+        /**
+         * Constructs a new S2C.
+         * @memberof GetGlobalState
+         * @classdesc Represents a S2C.
+         * @implements IS2C
+         * @constructor
+         * @param {GetGlobalState.IS2C=} [properties] Properties to set
+         */
+        function S2C(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * S2C marketHK.
+         * @member {number} marketHK
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketHK = 0;
+
+        /**
+         * S2C marketUS.
+         * @member {number} marketUS
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketUS = 0;
+
+        /**
+         * S2C marketSH.
+         * @member {number} marketSH
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketSH = 0;
+
+        /**
+         * S2C marketSZ.
+         * @member {number} marketSZ
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketSZ = 0;
+
+        /**
+         * S2C marketHKFuture.
+         * @member {number} marketHKFuture
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketHKFuture = 0;
+
+        /**
+         * S2C marketUSFuture.
+         * @member {number} marketUSFuture
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.marketUSFuture = 0;
+
+        /**
+         * S2C qotLogined.
+         * @member {boolean} qotLogined
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.qotLogined = false;
+
+        /**
+         * S2C trdLogined.
+         * @member {boolean} trdLogined
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.trdLogined = false;
+
+        /**
+         * S2C serverVer.
+         * @member {number} serverVer
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.serverVer = 0;
+
+        /**
+         * S2C serverBuildNo.
+         * @member {number} serverBuildNo
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.serverBuildNo = 0;
+
+        /**
+         * S2C time.
+         * @member {number|Long} time
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.time = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * S2C localTime.
+         * @member {number} localTime
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.localTime = 0;
+
+        /**
+         * S2C programStatus.
+         * @member {Common.IProgramStatus|null|undefined} programStatus
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.programStatus = null;
+
+        /**
+         * S2C qotSvrIpAddr.
+         * @member {string} qotSvrIpAddr
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.qotSvrIpAddr = "";
+
+        /**
+         * S2C trdSvrIpAddr.
+         * @member {string} trdSvrIpAddr
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.trdSvrIpAddr = "";
+
+        /**
+         * S2C connID.
+         * @member {number|Long} connID
+         * @memberof GetGlobalState.S2C
+         * @instance
+         */
+        S2C.prototype.connID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @function create
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {GetGlobalState.IS2C=} [properties] Properties to set
+         * @returns {GetGlobalState.S2C} S2C instance
+         */
+        S2C.create = function create(properties) {
+            return new S2C(properties);
+        };
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
+         * @function encode
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {GetGlobalState.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.marketHK);
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.marketUS);
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.marketSH);
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.marketSZ);
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.marketHKFuture);
+            writer.uint32(/* id 6, wireType 0 =*/48).bool(message.qotLogined);
+            writer.uint32(/* id 7, wireType 0 =*/56).bool(message.trdLogined);
+            writer.uint32(/* id 8, wireType 0 =*/64).int32(message.serverVer);
+            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.serverBuildNo);
+            writer.uint32(/* id 10, wireType 0 =*/80).int64(message.time);
+            if (message.localTime != null && message.hasOwnProperty("localTime"))
+                writer.uint32(/* id 11, wireType 1 =*/89).double(message.localTime);
+            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
+                $root.Common.ProgramStatus.encode(message.programStatus, writer.uint32(/* id 12, wireType 2 =*/98).fork()).ldelim();
+            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
+                writer.uint32(/* id 13, wireType 2 =*/106).string(message.qotSvrIpAddr);
+            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
+                writer.uint32(/* id 14, wireType 2 =*/114).string(message.trdSvrIpAddr);
+            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
+                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.marketUSFuture);
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                writer.uint32(/* id 16, wireType 0 =*/128).uint64(message.connID);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {GetGlobalState.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @function decode
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {GetGlobalState.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.S2C();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.marketHK = reader.int32();
+                    break;
+                case 2:
+                    message.marketUS = reader.int32();
+                    break;
+                case 3:
+                    message.marketSH = reader.int32();
+                    break;
+                case 4:
+                    message.marketSZ = reader.int32();
+                    break;
+                case 5:
+                    message.marketHKFuture = reader.int32();
+                    break;
+                case 15:
+                    message.marketUSFuture = reader.int32();
+                    break;
+                case 6:
+                    message.qotLogined = reader.bool();
+                    break;
+                case 7:
+                    message.trdLogined = reader.bool();
+                    break;
+                case 8:
+                    message.serverVer = reader.int32();
+                    break;
+                case 9:
+                    message.serverBuildNo = reader.int32();
+                    break;
+                case 10:
+                    message.time = reader.int64();
+                    break;
+                case 11:
+                    message.localTime = reader.double();
+                    break;
+                case 12:
+                    message.programStatus = $root.Common.ProgramStatus.decode(reader, reader.uint32());
+                    break;
+                case 13:
+                    message.qotSvrIpAddr = reader.string();
+                    break;
+                case 14:
+                    message.trdSvrIpAddr = reader.string();
+                    break;
+                case 16:
+                    message.connID = reader.uint64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("marketHK"))
+                throw $util.ProtocolError("missing required 'marketHK'", { instance: message });
+            if (!message.hasOwnProperty("marketUS"))
+                throw $util.ProtocolError("missing required 'marketUS'", { instance: message });
+            if (!message.hasOwnProperty("marketSH"))
+                throw $util.ProtocolError("missing required 'marketSH'", { instance: message });
+            if (!message.hasOwnProperty("marketSZ"))
+                throw $util.ProtocolError("missing required 'marketSZ'", { instance: message });
+            if (!message.hasOwnProperty("marketHKFuture"))
+                throw $util.ProtocolError("missing required 'marketHKFuture'", { instance: message });
+            if (!message.hasOwnProperty("qotLogined"))
+                throw $util.ProtocolError("missing required 'qotLogined'", { instance: message });
+            if (!message.hasOwnProperty("trdLogined"))
+                throw $util.ProtocolError("missing required 'trdLogined'", { instance: message });
+            if (!message.hasOwnProperty("serverVer"))
+                throw $util.ProtocolError("missing required 'serverVer'", { instance: message });
+            if (!message.hasOwnProperty("serverBuildNo"))
+                throw $util.ProtocolError("missing required 'serverBuildNo'", { instance: message });
+            if (!message.hasOwnProperty("time"))
+                throw $util.ProtocolError("missing required 'time'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {GetGlobalState.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a S2C message.
+         * @function verify
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        S2C.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.marketHK))
+                return "marketHK: integer expected";
+            if (!$util.isInteger(message.marketUS))
+                return "marketUS: integer expected";
+            if (!$util.isInteger(message.marketSH))
+                return "marketSH: integer expected";
+            if (!$util.isInteger(message.marketSZ))
+                return "marketSZ: integer expected";
+            if (!$util.isInteger(message.marketHKFuture))
+                return "marketHKFuture: integer expected";
+            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
+                if (!$util.isInteger(message.marketUSFuture))
+                    return "marketUSFuture: integer expected";
+            if (typeof message.qotLogined !== "boolean")
+                return "qotLogined: boolean expected";
+            if (typeof message.trdLogined !== "boolean")
+                return "trdLogined: boolean expected";
+            if (!$util.isInteger(message.serverVer))
+                return "serverVer: integer expected";
+            if (!$util.isInteger(message.serverBuildNo))
+                return "serverBuildNo: integer expected";
+            if (!$util.isInteger(message.time) && !(message.time && $util.isInteger(message.time.low) && $util.isInteger(message.time.high)))
+                return "time: integer|Long expected";
+            if (message.localTime != null && message.hasOwnProperty("localTime"))
+                if (typeof message.localTime !== "number")
+                    return "localTime: number expected";
+            if (message.programStatus != null && message.hasOwnProperty("programStatus")) {
+                var error = $root.Common.ProgramStatus.verify(message.programStatus);
+                if (error)
+                    return "programStatus." + error;
+            }
+            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
+                if (!$util.isString(message.qotSvrIpAddr))
+                    return "qotSvrIpAddr: string expected";
+            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
+                if (!$util.isString(message.trdSvrIpAddr))
+                    return "trdSvrIpAddr: string expected";
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                if (!$util.isInteger(message.connID) && !(message.connID && $util.isInteger(message.connID.low) && $util.isInteger(message.connID.high)))
+                    return "connID: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {GetGlobalState.S2C} S2C
+         */
+        S2C.fromObject = function fromObject(object) {
+            if (object instanceof $root.GetGlobalState.S2C)
+                return object;
+            var message = new $root.GetGlobalState.S2C();
+            if (object.marketHK != null)
+                message.marketHK = object.marketHK | 0;
+            if (object.marketUS != null)
+                message.marketUS = object.marketUS | 0;
+            if (object.marketSH != null)
+                message.marketSH = object.marketSH | 0;
+            if (object.marketSZ != null)
+                message.marketSZ = object.marketSZ | 0;
+            if (object.marketHKFuture != null)
+                message.marketHKFuture = object.marketHKFuture | 0;
+            if (object.marketUSFuture != null)
+                message.marketUSFuture = object.marketUSFuture | 0;
+            if (object.qotLogined != null)
+                message.qotLogined = Boolean(object.qotLogined);
+            if (object.trdLogined != null)
+                message.trdLogined = Boolean(object.trdLogined);
+            if (object.serverVer != null)
+                message.serverVer = object.serverVer | 0;
+            if (object.serverBuildNo != null)
+                message.serverBuildNo = object.serverBuildNo | 0;
+            if (object.time != null)
+                if ($util.Long)
+                    (message.time = $util.Long.fromValue(object.time)).unsigned = false;
+                else if (typeof object.time === "string")
+                    message.time = parseInt(object.time, 10);
+                else if (typeof object.time === "number")
+                    message.time = object.time;
+                else if (typeof object.time === "object")
+                    message.time = new $util.LongBits(object.time.low >>> 0, object.time.high >>> 0).toNumber();
+            if (object.localTime != null)
+                message.localTime = Number(object.localTime);
+            if (object.programStatus != null) {
+                if (typeof object.programStatus !== "object")
+                    throw TypeError(".GetGlobalState.S2C.programStatus: object expected");
+                message.programStatus = $root.Common.ProgramStatus.fromObject(object.programStatus);
+            }
+            if (object.qotSvrIpAddr != null)
+                message.qotSvrIpAddr = String(object.qotSvrIpAddr);
+            if (object.trdSvrIpAddr != null)
+                message.trdSvrIpAddr = String(object.trdSvrIpAddr);
+            if (object.connID != null)
+                if ($util.Long)
+                    (message.connID = $util.Long.fromValue(object.connID)).unsigned = true;
+                else if (typeof object.connID === "string")
+                    message.connID = parseInt(object.connID, 10);
+                else if (typeof object.connID === "number")
+                    message.connID = object.connID;
+                else if (typeof object.connID === "object")
+                    message.connID = new $util.LongBits(object.connID.low >>> 0, object.connID.high >>> 0).toNumber(true);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof GetGlobalState.S2C
+         * @static
+         * @param {GetGlobalState.S2C} message S2C
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        S2C.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.marketHK = 0;
+                object.marketUS = 0;
+                object.marketSH = 0;
+                object.marketSZ = 0;
+                object.marketHKFuture = 0;
+                object.qotLogined = false;
+                object.trdLogined = false;
+                object.serverVer = 0;
+                object.serverBuildNo = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.time = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.time = options.longs === String ? "0" : 0;
+                object.localTime = 0;
+                object.programStatus = null;
+                object.qotSvrIpAddr = "";
+                object.trdSvrIpAddr = "";
+                object.marketUSFuture = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, true);
+                    object.connID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.connID = options.longs === String ? "0" : 0;
+            }
+            if (message.marketHK != null && message.hasOwnProperty("marketHK"))
+                object.marketHK = message.marketHK;
+            if (message.marketUS != null && message.hasOwnProperty("marketUS"))
+                object.marketUS = message.marketUS;
+            if (message.marketSH != null && message.hasOwnProperty("marketSH"))
+                object.marketSH = message.marketSH;
+            if (message.marketSZ != null && message.hasOwnProperty("marketSZ"))
+                object.marketSZ = message.marketSZ;
+            if (message.marketHKFuture != null && message.hasOwnProperty("marketHKFuture"))
+                object.marketHKFuture = message.marketHKFuture;
+            if (message.qotLogined != null && message.hasOwnProperty("qotLogined"))
+                object.qotLogined = message.qotLogined;
+            if (message.trdLogined != null && message.hasOwnProperty("trdLogined"))
+                object.trdLogined = message.trdLogined;
+            if (message.serverVer != null && message.hasOwnProperty("serverVer"))
+                object.serverVer = message.serverVer;
+            if (message.serverBuildNo != null && message.hasOwnProperty("serverBuildNo"))
+                object.serverBuildNo = message.serverBuildNo;
+            if (message.time != null && message.hasOwnProperty("time"))
+                if (typeof message.time === "number")
+                    object.time = options.longs === String ? String(message.time) : message.time;
+                else
+                    object.time = options.longs === String ? $util.Long.prototype.toString.call(message.time) : options.longs === Number ? new $util.LongBits(message.time.low >>> 0, message.time.high >>> 0).toNumber() : message.time;
+            if (message.localTime != null && message.hasOwnProperty("localTime"))
+                object.localTime = options.json && !isFinite(message.localTime) ? String(message.localTime) : message.localTime;
+            if (message.programStatus != null && message.hasOwnProperty("programStatus"))
+                object.programStatus = $root.Common.ProgramStatus.toObject(message.programStatus, options);
+            if (message.qotSvrIpAddr != null && message.hasOwnProperty("qotSvrIpAddr"))
+                object.qotSvrIpAddr = message.qotSvrIpAddr;
+            if (message.trdSvrIpAddr != null && message.hasOwnProperty("trdSvrIpAddr"))
+                object.trdSvrIpAddr = message.trdSvrIpAddr;
+            if (message.marketUSFuture != null && message.hasOwnProperty("marketUSFuture"))
+                object.marketUSFuture = message.marketUSFuture;
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                if (typeof message.connID === "number")
+                    object.connID = options.longs === String ? String(message.connID) : message.connID;
+                else
+                    object.connID = options.longs === String ? $util.Long.prototype.toString.call(message.connID) : options.longs === Number ? new $util.LongBits(message.connID.low >>> 0, message.connID.high >>> 0).toNumber(true) : message.connID;
+            return object;
+        };
+
+        /**
+         * Converts this S2C to JSON.
+         * @function toJSON
+         * @memberof GetGlobalState.S2C
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        S2C.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return S2C;
+    })();
+
+    GetGlobalState.Request = (function() {
+
+        /**
+         * Properties of a Request.
+         * @memberof GetGlobalState
+         * @interface IRequest
+         * @property {GetGlobalState.IC2S} c2s Request c2s
+         */
+
+        /**
+         * Constructs a new Request.
+         * @memberof GetGlobalState
+         * @classdesc Represents a Request.
+         * @implements IRequest
+         * @constructor
+         * @param {GetGlobalState.IRequest=} [properties] Properties to set
+         */
+        function Request(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Request c2s.
+         * @member {GetGlobalState.IC2S} c2s
+         * @memberof GetGlobalState.Request
+         * @instance
+         */
+        Request.prototype.c2s = null;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @function create
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {GetGlobalState.IRequest=} [properties] Properties to set
+         * @returns {GetGlobalState.Request} Request instance
+         */
+        Request.create = function create(properties) {
+            return new Request(properties);
+        };
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
+         * @function encode
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {GetGlobalState.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.GetGlobalState.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {GetGlobalState.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @function decode
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {GetGlobalState.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.Request();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.c2s = $root.GetGlobalState.C2S.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("c2s"))
+                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {GetGlobalState.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Request message.
+         * @function verify
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Request.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.GetGlobalState.C2S.verify(message.c2s);
+                if (error)
+                    return "c2s." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {GetGlobalState.Request} Request
+         */
+        Request.fromObject = function fromObject(object) {
+            if (object instanceof $root.GetGlobalState.Request)
+                return object;
+            var message = new $root.GetGlobalState.Request();
+            if (object.c2s != null) {
+                if (typeof object.c2s !== "object")
+                    throw TypeError(".GetGlobalState.Request.c2s: object expected");
+                message.c2s = $root.GetGlobalState.C2S.fromObject(object.c2s);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof GetGlobalState.Request
+         * @static
+         * @param {GetGlobalState.Request} message Request
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Request.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.c2s = null;
+            if (message.c2s != null && message.hasOwnProperty("c2s"))
+                object.c2s = $root.GetGlobalState.C2S.toObject(message.c2s, options);
+            return object;
+        };
+
+        /**
+         * Converts this Request to JSON.
+         * @function toJSON
+         * @memberof GetGlobalState.Request
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Request.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Request;
+    })();
+
+    GetGlobalState.Response = (function() {
+
+        /**
+         * Properties of a Response.
+         * @memberof GetGlobalState
+         * @interface IResponse
+         * @property {number} retType Response retType
+         * @property {string|null} [retMsg] Response retMsg
+         * @property {number|null} [errCode] Response errCode
+         * @property {GetGlobalState.IS2C|null} [s2c] Response s2c
+         */
+
+        /**
+         * Constructs a new Response.
+         * @memberof GetGlobalState
+         * @classdesc Represents a Response.
+         * @implements IResponse
+         * @constructor
+         * @param {GetGlobalState.IResponse=} [properties] Properties to set
+         */
+        function Response(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Response retType.
+         * @member {number} retType
+         * @memberof GetGlobalState.Response
+         * @instance
+         */
+        Response.prototype.retType = -400;
+
+        /**
+         * Response retMsg.
+         * @member {string} retMsg
+         * @memberof GetGlobalState.Response
+         * @instance
+         */
+        Response.prototype.retMsg = "";
+
+        /**
+         * Response errCode.
+         * @member {number} errCode
+         * @memberof GetGlobalState.Response
+         * @instance
+         */
+        Response.prototype.errCode = 0;
+
+        /**
+         * Response s2c.
+         * @member {GetGlobalState.IS2C|null|undefined} s2c
+         * @memberof GetGlobalState.Response
+         * @instance
+         */
+        Response.prototype.s2c = null;
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @function create
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {GetGlobalState.IResponse=} [properties] Properties to set
+         * @returns {GetGlobalState.Response} Response instance
+         */
+        Response.create = function create(properties) {
+            return new Response(properties);
+        };
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
+         * @function encode
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {GetGlobalState.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                $root.GetGlobalState.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {GetGlobalState.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @function decode
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {GetGlobalState.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GetGlobalState.Response();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.retType = reader.int32();
+                    break;
+                case 2:
+                    message.retMsg = reader.string();
+                    break;
+                case 3:
+                    message.errCode = reader.int32();
+                    break;
+                case 4:
+                    message.s2c = $root.GetGlobalState.S2C.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("retType"))
+                throw $util.ProtocolError("missing required 'retType'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {GetGlobalState.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Response message.
+         * @function verify
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Response.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.retType))
+                return "retType: integer expected";
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                if (!$util.isString(message.retMsg))
+                    return "retMsg: string expected";
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                if (!$util.isInteger(message.errCode))
+                    return "errCode: integer expected";
+            if (message.s2c != null && message.hasOwnProperty("s2c")) {
+                var error = $root.GetGlobalState.S2C.verify(message.s2c);
+                if (error)
+                    return "s2c." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {GetGlobalState.Response} Response
+         */
+        Response.fromObject = function fromObject(object) {
+            if (object instanceof $root.GetGlobalState.Response)
+                return object;
+            var message = new $root.GetGlobalState.Response();
+            if (object.retType != null)
+                message.retType = object.retType | 0;
+            if (object.retMsg != null)
+                message.retMsg = String(object.retMsg);
+            if (object.errCode != null)
+                message.errCode = object.errCode | 0;
+            if (object.s2c != null) {
+                if (typeof object.s2c !== "object")
+                    throw TypeError(".GetGlobalState.Response.s2c: object expected");
+                message.s2c = $root.GetGlobalState.S2C.fromObject(object.s2c);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof GetGlobalState.Response
+         * @static
+         * @param {GetGlobalState.Response} message Response
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Response.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.retType = -400;
+                object.retMsg = "";
+                object.errCode = 0;
+                object.s2c = null;
+            }
+            if (message.retType != null && message.hasOwnProperty("retType"))
+                object.retType = message.retType;
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                object.retMsg = message.retMsg;
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                object.errCode = message.errCode;
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                object.s2c = $root.GetGlobalState.S2C.toObject(message.s2c, options);
+            return object;
+        };
+
+        /**
+         * Converts this Response to JSON.
+         * @function toJSON
+         * @memberof GetGlobalState.Response
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Response.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Response;
+    })();
+
+    return GetGlobalState;
 })();
 
 $root.InitWebSocket = (function() {

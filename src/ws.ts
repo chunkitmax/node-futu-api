@@ -178,17 +178,6 @@ export default class WebSocket {
         await this._request('InitWebSocket', {
           websocketKey: keyMD5
         } as Proto.InitWebSocket.IC2S)
-        // TODO: useless (InitConnect on websocket causes api call failure afterwards)
-        // get connID
-        const { connID, keepAliveInterval } = (await this._request('InitConnect', {
-          clientVer: 101,
-          clientID: `client-${Date.now()%1000}`,
-          recvNotify: this.config.recvNotify,
-          pushProtoFmt: Proto.Common.ProtoFmt.ProtoFmt_Protobuf,
-          packetEncAlgo: Proto.Common.PacketEncAlgo.PacketEncAlgo_None
-        } as Proto.InitConnect.IC2S)) as Proto.InitConnect.IS2C
-        this.connID = connID
-        await new Promise(resolve => setTimeout(resolve, 2000))
         // unlock trade features
         await this._request('Trd_UnlockTrade', {
           pwdMD5: this.config.pwdMd5,
@@ -211,10 +200,19 @@ export default class WebSocket {
           accID: matchedAcc.accID,
           trdMarket: this.config.account.market!
         }
-        this.isLoggedIn = true
+        const { connID, qotLogined, trdLogined } = (await this._request('GetGlobalState', {
+          userID: this.config.userID
+        } as Proto.GetGlobalState.IC2S)) as Proto.GetGlobalState.IS2C
+        if (!connID) throw new Error('Cannot get connID')
+        this.connID = connID
+        this.isLoggedIn = qotLogined && trdLogined
+        if (!this.isLoggedIn) throw new Error('Either API for Quote and Trade is not permitted')
         L.info('Finish initialization')
       } catch (err) {
         L.error(err)
+        this.exitFlag = true
+        this.clean()
+        // won't reconnect
       }
     }
   }
@@ -259,7 +257,7 @@ export default class WebSocket {
           }
         }
       } else {
-        console.log(inspect(ret, { depth: 3 }))
+        L.warn(inspect(ret, { depth: 3 }))
       }
     }
   }
