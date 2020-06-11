@@ -18,6 +18,7 @@ import { valueof } from './types/ts';
 import { FutuProto, FutuResponse, FutuRet, OnPushListener, WsApiCmd } from './types/types';
 import { FutuError, ParameterError, SystemError, TimeoutError } from './utils/error';
 import { ProtoName } from './utils/proto';
+import InitPromise from './utils/init_promise';
 
 // follow official code but doc does not mention this
 const HeadSign = "ft-v1.0\0"
@@ -49,6 +50,8 @@ export default class WebSocket extends PushEmitter {
 
   private reqId = 1
 
+  private initPromise: InitPromise
+
   // TODO: handle push subscription
 
   constructor(private config: FutuConfig) {
@@ -57,10 +60,11 @@ export default class WebSocket extends PushEmitter {
     process.on('exit', () => { this.exitFlag = true; this.clean() })
     process.on('SIGINT', () => { this.exitFlag = true; this.clean() })
     process.on('SIGTERM', () => { this.exitFlag = true; this.clean() })
+    this.initPromise = new InitPromise()
   }
 
   protected get ready() {
-    return this.isLoggedIn
+    return this.initPromise.isReady
   }
 
   protected addOnPushListener<T>(
@@ -106,6 +110,11 @@ export default class WebSocket extends PushEmitter {
     this.ws.onclose = this.onClose.bind(this)
     this.reconnectTimer = undefined
     return this.ws
+  }
+
+  public close() {
+    this.exitFlag = true
+    this.clean()
   }
 
   private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
@@ -220,6 +229,7 @@ export default class WebSocket extends PushEmitter {
         this.connID = connID
         this.isLoggedIn = qotLogined && trdLogined
         if (!this.isLoggedIn) throw new SystemError('Either API for Quote and Trade is not permitted')
+        await this.initPromise.resolve()
         L.info('Finish initialization')
       } catch (err) {
         L.error(err)
@@ -284,7 +294,6 @@ export default class WebSocket extends PushEmitter {
           }
         }
       } else { // Push
-
         this._onPush(ret)
       }
     }
@@ -329,6 +338,7 @@ export default class WebSocket extends PushEmitter {
       super.emitter.removeAllListeners()
     }
     if (close) {
+      this.initPromise.reset()
       try {
         this.ws.close()
       } catch (e) {}
