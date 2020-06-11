@@ -136,12 +136,12 @@ describe('Futu', () => {
       market: Qot_Common.QotMarket.QotMarket_US_Security
     }
     // listeners
-    ft.on<Proto.Qot_UpdateTicker.IS2C>(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
+    ft.on(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
       Assert.deepEqual(data.security.code, targetSecurity.code)
       Assert.deepEqual(data.security.market, targetSecurity.market)
       ++tickerCount
     })
-    ft.on<Proto.Qot_UpdateRT.IS2C>(Qot_Common.SubType.SubType_RT, targetSecurity, data => {
+    ft.on(Qot_Common.SubType.SubType_RT, targetSecurity, data => {
       Assert.deepEqual(data.security.code, targetSecurity.code)
       Assert.deepEqual(data.security.market, targetSecurity.market)
       ++rtCount
