@@ -324,21 +324,3 @@ export default class Futu extends WebSocket {
   }
 
 }
-
-if (require.main === module) {
-  const ft = new Futu(require('../../futu_config.json'))
-  setTimeout(async () => {
-    console.log(await ft.trdGetFunds({
-      currency: Proto.Trd_Common.Currency.Currency_HKD
-    }))
-    const order = await ft.trdPlaceOrder({
-      code: '00700',
-      orderType: Proto.Trd_Common.OrderType.OrderType_Normal,
-      qty: 100,
-      trdSide: Proto.Trd_Common.TrdSide.TrdSide_Buy,
-      price: 1.0,
-      secMarket: Proto.Trd_Common.TrdSecMarket.TrdSecMarket_HK
-    })
-    console.log(order)
-  }, 5000)
-}
