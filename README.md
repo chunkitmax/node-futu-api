@@ -13,7 +13,7 @@ npm run build
 ```
 
 ## Usage
-⚠️ Sometimes types on interface may be misleading because of poor definition in official protobuf files. Please refer to those files if you have trouble about types.
+⚠️ Sometimes types on interface may be misleading due to backward compatibility. Please refer to those files if you have trouble about types. Those enums are most likely to be found in Qot_Common or Trd_Common
 For example (Qot_GetStaticInfo.proto):
 ```protobuf
 message C2S
@@ -44,9 +44,7 @@ interface IC2S {
   securityList?: (Qot_Common.ISecurity[]|null);
 }
 ```
-However, this module generates files from those proto files even there are mistakes.
-
-⚠️ Protocol Name to Id table is from [Futu-Api-Doc](https://futunnopen.github.io/futu-api-doc/protocol/intro.html) . Some protocols have some protobuf files on official [py-futu-api](https://github.com/FutunnOpen/py-futu-api/tree/v4.x/futu/common/pb) repo but hidden on the table. You may extend the lookup table by yourselves (See the example 5 below).
+<br/>
 
 ### Usage example:
 ```typescript
@@ -71,9 +69,9 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
 (async function main() {
   // extend the lookup table
   // add back protocol 'Qot_RequestHistoryKLQuota' with its protocol id
-  let ft = new Futu(UserConfig, { 'Qot_RequestHistoryKLQuota': 3104 })
+  const ft = new Futu(UserConfig)
   // wait for initialization to finish
-  await ft.waitForInit()
+  await ft.ready
 
 
   // Example 1: get static info
@@ -95,84 +93,56 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
   console.log(snapshot)
 
 
-  /**
-   * userID, connID in packetID and header are public member variables in class Futu
-   */
   // Example 3: place order
   // place order stock: HK.00700, price: 1.0, qty: 100
   let resp = await ft.trdPlaceOrder({
-    packetID: {
-      connID: ft.connID!, // <------------------------------ connID
-      serialNo: Date.now()
-    },
     trdSide: Trd_Common.TrdSide.TrdSide_Buy,
     code: '00700',
     price: 1.0,
-    orderType: Trd_Common.OrderType.OrderType_Normal,
+    orderType: Trd_Common.OrderType.OrderType_AbsoluteLimit,
     qty: 100,
-    header: ft.header!, // <-------------------------------- header
     secMarket: Trd_Common.TrdSecMarket.TrdSecMarket_HK
   })
   console.log(resp)
 
 
   // Example 4: get account list
-  let accList = await ft.trdGetAccList({
-    userID: ft.userID // <---------------------------------- userID
-  })
+  let accList = await ft.trdGetAccList()
   console.log(accList)
 
 
-  // Example 5: protocol passed to constructor
-  // get protocol "Qot_RequestHistoryKL" quota
-  let quota = await ft.unknownProto(3104, {
-    bGetDetail: true
-  } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
-  console.log(quota)
-  // or you can pass name or id
-  quota = await ft.unknownProto('Qot_RequestHistoryKLQuota', {
-    bGetDetail: true
-  } as Proto.Qot_RequestHistoryKLQuota.IC2S) as Proto.Qot_RequestHistoryKLQuota.IS2C
-  console.log(quota)
-
-
-  // Example 6: subscription
+  // Example 5: subscription
   // subscribe to DJI futures (Ticker & Realtime data)
+  ft.on(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
+    console.log('ticker: ', data.tickerList!.map(ticker => ticker.price))
+  })
+  ft.on(Qot_Common.SubType.SubType_RT, targetSecurity, data => {
+    console.log('rt: ', data.rtList!.map(rt => rt.price))
+  })
   await ft.qotSub({
-      isSubOrUnSub: true,
-      isFirstPush: true,
-      isRegOrUnRegPush: true,
-      subTypeList: [
-        Qot_Common.SubType.SubType_Ticker, // <------------- 1
-        Qot_Common.SubType.SubType_RT      // <------------- 2
-      ],
-      securityList: [{
-        code: 'YMmain',
-        market: Qot_Common.QotMarket.QotMarket_US_Security
-      }]
-    },
-    // callback for ticker
-    function (data: Proto.Qot_UpdateTicker.IS2C) { // <----- 1
-      console.log(
-        'ticker: ',
-        data.tickerList!.map(ticker => ticker.price)
-      )
-    },
-    // callback for rt
-    function (data: Proto.Qot_UpdateRT.IS2C) { // <--------- 2
-      console.log(
-        'rt: ',
-        data.rtList!.map(rt => rt.price)
-      )
-    }
-  )
+    isSubOrUnSub: true,
+    isRegOrUnRegPush: true,
+    subTypeList: [
+      Qot_Common.SubType.SubType_Ticker,
+      Qot_Common.SubType.SubType_RT
+    ],
+    regPushRehabTypeList: [
+      Qot_Common.RehabType.RehabType_Forward
+    ],
+    securityList: [{
+      code: 'YMmain',
+      market: Qot_Common.QotMarket.QotMarket_US_Security
+    }]
+  })
   // unsubscribe after 1min according to documentation
   await new Promise(resolve => setTimeout(resolve, 60500))
   // only unsubscribe to ticker
   await ft.qotSub({
     isSubOrUnSub: false,
     isRegOrUnRegPush: false,
-    subTypeList: [Qot_Common.SubType.SubType_Ticker],
+    subTypeList: [
+      Qot_Common.SubType.SubType_Ticker
+    ],
     securityList: [{
       code: 'YMmain',
       market: Qot_Common.QotMarket.QotMarket_US_Security
@@ -185,12 +155,13 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
     isUnsubAll: true // <----------------------------------- all
   })
 
-  await ft.close()
+  ft.close()
 })()
 ```
 
 ## Test
 ```bash
 # Require FutuOpenD software running
+#   Make sure websocket_port is set
 npm test
 ```
