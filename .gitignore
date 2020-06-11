@@ -6,3 +6,5 @@ package-lock.json
 src/proto
 src/ProtoMethods.ts
 .vscode
+FutuApi
+futu_config.json
