@@ -1,16 +1,18 @@
-import Proto from './proto/proto';
+import * as Proto from './proto/proto';
 import WebSocket from './ws';
+
+export { Proto }
 
 export type FutuConfig = {
   // server
   ip?: string
   port?: number
-  recvNotify: boolean
+  recvNotify?: boolean
   // user
   userID: number
   pwdMd5: string
   // account
-  account: {
+  account?: {
     market?: Proto.Trd_Common.TrdMarket
     env?: Proto.Trd_Common.TrdEnv
     accType?: Proto.Trd_Common.TrdAccType
