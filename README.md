@@ -15,44 +15,12 @@ npm run build
 ```
 
 ## Usage
-⚠️ Sometimes types on interface may be misleading due to backward compatibility. Please refer to those files if you have trouble about types. Those enums are most likely to be found in Qot_Common or Trd_Common
-For example (Qot_GetStaticInfo.proto):
-```protobuf
-message C2S
-{
-  optional int32 market = 1; //Qot_Common.QotMarket,股票市場
-  optional int32 secType = 2; //Qot_Common.SecurityType,股票類型
-  repeated Qot_Common.Security securityList = 3; //股票，若該字段存在，忽略其他字段，只返回該字段股票的靜態信息
-}
-```
-According to this declaration file, the output will be
-```typescript
-interface IC2S {
-  /** C2S market */
-  market?: (number|null);
-  /** C2S secType */
-  secType?: (number|null);
-  /** C2S securityList */
-  securityList?: (Qot_Common.ISecurity[]|null);
-}
 
-/** correction */
-interface IC2S {
-  /** C2S market */
-  market?: (Qot_Common.QotMarket|null);
-  /** C2S secType */
-  secType?: (Qot_Common.SecurityType|null);
-  /** C2S securityList */
-  securityList?: (Qot_Common.ISecurity[]|null);
-}
-```
-<br/>
-
-### Usage example:
+### Example:
 ```typescript
 // TODO: Run FutuOpenD software first
 
-import Futu, { Proto } from 'futu-api';
+import Futu, { Proto, Subscribe } from 'futu-api';
 import UserConfig from '../user_config.json';
 import { Qot_Common, Trd_Common } from '../proto/proto';
 
@@ -157,6 +125,83 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
 
   ft.close()
 })()
+
+// You can use "Subscibe" decorator instead of ft.on()
+class Example {
+
+  @Subscribe(Qot_Common.SubType.SubType_Ticker, {
+    code: 'YMmain',
+    market: Qot_Common.QotMarket.QotMarket_US_Security
+  })
+  subscription(data: Proto.Qot_UpdateTicker.IS2C) {
+    console.log('ticker: ', data.tickerList!.map(ticker => ticker.price))
+  }
+
+}
+
+```
+<br/><br/>
+⚠️ Sometimes types on interface may be misleading due to backward compatibility. Please refer to those files if you have trouble about types. Those enums are most likely to be found in Qot_Common or Trd_Common
+For example (Qot_GetStaticInfo.proto):
+```protobuf
+message C2S
+{
+  optional int32 market = 1; //Qot_Common.QotMarket,股票市場
+  optional int32 secType = 2; //Qot_Common.SecurityType,股票類型
+  repeated Qot_Common.Security securityList = 3; //股票，若該字段存在，忽略其他字段，只返回該字段股票的靜態信息
+}
+```
+According to this declaration file, the output will be
+```typescript
+interface IC2S {
+  /** C2S market */
+  market?: (number|null);
+  /** C2S secType */
+  secType?: (number|null);
+  /** C2S securityList */
+  securityList?: (Qot_Common.ISecurity[]|null);
+}
+
+/** correction */
+interface IC2S {
+  /** C2S market */
+  market?: (Qot_Common.QotMarket|null);
+  /** C2S secType */
+  secType?: (Qot_Common.SecurityType|null);
+  /** C2S securityList */
+  securityList?: (Qot_Common.ISecurity[]|null);
+}
+```
+⚠️ Sometimes types on interface may be misleading due to backward compatibility. Please refer to those files if you have trouble about types. Those enums are most likely to be found in Qot_Common or Trd_Common
+For example (Qot_GetStaticInfo.proto):
+```protobuf
+message C2S
+{
+  optional int32 market = 1; //Qot_Common.QotMarket,股票市場
+  optional int32 secType = 2; //Qot_Common.SecurityType,股票類型
+  repeated Qot_Common.Security securityList = 3; //股票，若該字段存在，忽略其他字段，只返回該字段股票的靜態信息
+}
+```
+According to this declaration file, the output will be
+```typescript
+interface IC2S {
+  /** C2S market */
+  market?: (number|null);
+  /** C2S secType */
+  secType?: (number|null);
+  /** C2S securityList */
+  securityList?: (Qot_Common.ISecurity[]|null);
+}
+
+/** correction */
+interface IC2S {
+  /** C2S market */
+  market?: (Qot_Common.QotMarket|null);
+  /** C2S secType */
+  secType?: (Qot_Common.SecurityType|null);
+  /** C2S securityList */
+  securityList?: (Qot_Common.ISecurity[]|null);
+}
 ```
 
 ## Test
