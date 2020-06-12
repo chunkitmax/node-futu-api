@@ -30,9 +30,7 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
       ip: string,
       port: number,
       userID: number,
-      pwdMd5: string,
-      market?: Trd_Common.TrdMarket, // default: first market option: HK
-      env?: Trd_Common.TrdEnv  // default: real trading env
+      pwdMd5: string
     }
   */
 
