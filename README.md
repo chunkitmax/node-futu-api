@@ -1,4 +1,4 @@
-# Futu_Node_Api
+# node-futu-api
 <a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
 This module automatically generates interfaces and class according to official release files.
 
