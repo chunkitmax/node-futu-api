@@ -119,9 +119,10 @@ describe('Futu', () => {
       Assert.ok(res.orderID)
       orderID = res.orderID!
     }
+    await new Promise(resolve => setTimeout(resolve, 100))
     {
       let res = await AssertShouldResolve(ft.trdModifyOrder({
-        modifyOrderOp: Trd_Common.ModifyOrderOp.ModifyOrderOp_Cancel,
+        modifyOrderOp: Trd_Common.ModifyOrderOp.ModifyOrderOp_Delete,
         orderID
       }), 'trdModifyOrder Failed')
       Assert.ok(res.orderID)
