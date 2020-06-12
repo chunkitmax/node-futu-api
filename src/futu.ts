@@ -1,7 +1,8 @@
+import Subscribe from './decorators/subscribe';
 import * as Proto from './proto/proto';
 import WebSocket from './ws';
 
-export { Proto }
+export { Proto, Subscribe }
 
 export type FutuConfig = {
   // server
@@ -329,4 +330,58 @@ export default class Futu extends WebSocket {
     return super.request('Trd_GetHistoryOrderFillList', req)
   }
 
+}
+
+class A {
+  private static readonly targetSec = {
+    code: 'YMmain',
+    market: Proto.Qot_Common.QotMarket.QotMarket_US_Security
+  }
+
+  constructor() {
+    this.setup()
+  }
+  async setup() {
+    const ft = new Futu(require('../../futu_config.json'))
+
+    await ft.ready
+    // ft.on(Proto.Qot_Common.SubType.SubType_Ticker, targetSec, data => {
+    //   console.log('push', data)
+    // })
+
+    console.log(await ft.trdGetFunds({
+      currency: Proto.Trd_Common.Currency.Currency_HKD
+    }))
+    console.log(await ft.trdGetAccList())
+    // const order = await ft.trdPlaceOrder({
+    //   code: '00700',
+    //   orderType: Proto.Trd_Common.OrderType.OrderType_AbsoluteLimit,
+    //   qty: 100,
+    //   trdSide: Proto.Trd_Common.TrdSide.TrdSide_Buy,
+    //   price: 1.0,
+    //   secMarket: Proto.Trd_Common.TrdSecMarket.TrdSecMarket_HK
+    // })
+    // console.log(order)
+    await ft.qotSub({
+      isSubOrUnSub: true,
+      isRegOrUnRegPush: true,
+      subTypeList: [Proto.Qot_Common.SubType.SubType_Ticker],
+      regPushRehabTypeList: [Proto.Qot_Common.RehabType.RehabType_Forward],
+      securityList: [A.targetSec]
+    })
+    await new Promise(resolve => setTimeout(resolve, 60000))
+    await ft.qotSub({
+      isSubOrUnSub: false,
+      isUnsubAll: true
+    })
+  }
+
+  @Subscribe(Proto.Qot_Common.SubType.SubType_Ticker, A.targetSec)
+  sub(data: Proto.Qot_UpdateTicker.IS2C) {
+    console.log(data)
+  }
+}
+
+if (require.main === module) {
+  const a = new A()
 }
