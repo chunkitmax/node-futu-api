@@ -165,7 +165,7 @@ function Subscribe(
   ...[subType, identity]: any[]
 ): FuncDecorator<any> {
   return function (_: any, __: string, descriptor: PropertyDecorator<any>) {
-    PushEmitter.instance!.on(
+    PushEmitter._instance!.on(
       subType, identity,
       descriptor.value as OnPushListener<any>
     )
