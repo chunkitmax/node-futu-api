@@ -17,8 +17,8 @@ import PushEmitter from './push_emitter';
 import { valueof } from './types/ts';
 import { FutuProto, FutuResponse, FutuRet, OnPushListener, WsApiCmd } from './types/types';
 import { FutuError, ParameterError, SystemError, TimeoutError } from './utils/error';
-import { ProtoName } from './utils/proto';
 import InitPromise from './utils/init_promise';
+import { ProtoName } from './utils/proto';
 
 // follow official code but doc does not mention this
 const HeadSign = "ft-v1.0\0"
@@ -37,7 +37,7 @@ export default class WebSocket extends PushEmitter {
 
   private onPushListeners: {
     [cmd: number]: undefined|{
-      [stock: string]: OnPushListener<valueof<typeof Proto>[valueof<valueof<typeof Proto>>]>[]
+      [stock: string]: OnPushListener<any>[]
     }
   } = {}
 
@@ -51,8 +51,6 @@ export default class WebSocket extends PushEmitter {
   private reqId = 1
 
   private initPromise: InitPromise
-
-  // TODO: handle push subscription
 
   constructor(private config: FutuConfig) {
     super()
@@ -102,7 +100,9 @@ export default class WebSocket extends PushEmitter {
       // @ts-ignore
       this.ws.onopen = this.ws.onmessage = this.ws.onerror = this.ws.onclose = null
     }
-    this.ws = (new Ws(`${this.config.isSSL? 'wss' : 'ws'}://${this.config.ip}:${this.config.port}`)) as any
+    this.ws = <any>new Ws(
+      `${this.config.isSSL? 'wss' : 'ws'}://${this.config.ip}:${this.config.port}`
+    )
     this.ws.sendCmd = this.sendCmd.bind(this)
     this.ws.onopen = this.onOpen.bind(this)
     this.ws.onmessage = this.releaseLock.bind(this)
@@ -120,7 +120,7 @@ export default class WebSocket extends PushEmitter {
   private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
       const reqId = ++this.reqId
-      // TODO: can setting many timeout cause performance issues?
+      // will it cause performance issues?
       let timeoutTimer = setTimeout(() => {
         delete this.locks[reqId]
         return reject(new TimeoutError('Timeout'))
@@ -177,7 +177,7 @@ export default class WebSocket extends PushEmitter {
               c2s: req
             }).finish(),
             response = await this.ws.sendCmd(ProtoId[name], buffer),
-            retObj = proto.Response!.decode(new Uint8Array(response)) as any as FutuResponse
+            retObj = <any>proto.Response!.decode(new Uint8Array(response)) as FutuResponse
       if (retObj.errCode === 0 && retObj.retType !== -1) {
         return retObj.s2c
       } else {
@@ -190,10 +190,8 @@ export default class WebSocket extends PushEmitter {
   private async onOpen(e: Ws.OpenEvent) {
     if (this.ws) {
       this.clean(false)
-      // TODO: setup (e.g. InitConnect)
       let keyMD5 = undefined
       if (this.config.wsKey) {
-        // keyMD5 = Crypto.createHash('md5').update(this.config.wsKey).digest('hex')
         keyMD5 = this.config.wsKey
       }
       try {
@@ -267,7 +265,7 @@ export default class WebSocket extends PushEmitter {
   private _onPush(res: FutuRet) {
     const proto = Proto[ProtoName[res.cmd]] as unknown as FutuProto
     if (proto.Response) {
-      const retObj = proto.Response!.decode(new Uint8Array(res.data)) as any as FutuResponse
+      const retObj = <any>proto.Response!.decode(new Uint8Array(res.data)) as FutuResponse
       if (retObj.errCode === 0 && retObj.retType !== -1) {
         return super.onPush(res.cmd, retObj.s2c)
       } else {

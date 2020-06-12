@@ -3,20 +3,35 @@ import Long from 'long';
 
 import { Proto } from './futu';
 import ProtoId from './proto/protoid.json';
-import { valueof } from './types/ts';
+import { ElementOf, MemberOf, valueof } from './types/ts';
 import { FutuRet, OnPushListener } from './types/types';
 import { ParameterError } from './utils/error';
 import { ProtoName } from './utils/proto';
 
-type ElementOf<A extends Array<any>> = A[0]
-type MemberOf<T, V extends keyof T> = T[V]
+// extend SubType
+declare module './futu' {
+  export namespace Proto {
+    export namespace Qot_Common {
+      export enum SubType {
+        SubType_Order = -1,
+        SubType_OrderFill = -2
+      }
+    }
+  }
+}
 
 export default class PushEmitter {
+
+  public static instance: PushEmitter|undefined = new PushEmitter()
 
   protected emitter: EventEmitter
 
   constructor() {
-    this.emitter = new EventEmitter()
+    if (PushEmitter.instance) {
+      this.emitter = PushEmitter.instance!.emitter
+    } else {
+      this.emitter = new EventEmitter()
+    }
   }
 
 
@@ -101,6 +116,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public on(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public on(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public on(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -179,6 +204,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public on(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public on(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public on(
     ...args: any[]
@@ -276,6 +311,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public addListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public addListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public addListener(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -354,6 +399,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public addListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public addListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public addListener(
     ...args: any[]
@@ -451,6 +506,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public once(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public once(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public once(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -529,6 +594,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public once(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public once(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public once(
     ...args: any[]
@@ -626,6 +701,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public prependListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public prependListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public prependListener(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -704,6 +789,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public prependListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public prependListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public prependListener(
     ...args: any[]
@@ -801,6 +896,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public prependOnceListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public prependOnceListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public prependOnceListener(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -879,6 +984,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public prependOnceListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public prependOnceListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public prependOnceListener(
     ...args: any[]
@@ -976,6 +1091,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public removeListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public removeListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public removeListener(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -1054,6 +1179,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public removeListener(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public removeListener(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public removeListener(
     ...args: any[]
@@ -1151,6 +1286,16 @@ export default class PushEmitter {
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
   ): void
   public off(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public off(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public off(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
@@ -1229,6 +1374,16 @@ export default class PushEmitter {
     subType: Proto.Qot_Common.SubType.SubType_KL_Year,
     security: Proto.Qot_Common.ISecurity,
     listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
+  ): void
+  public off(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public off(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public off(
     ...args: any[]
@@ -1310,6 +1465,16 @@ export default class PushEmitter {
     accID: number|Long,
   ): void
   public removeAllListeners(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public removeAllListeners(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    accID: number|Long,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public removeAllListeners(
     subType: Proto.Qot_Common.SubType.SubType_Ticker,
     security: Proto.Qot_Common.ISecurity,
   ): void
@@ -1374,6 +1539,16 @@ export default class PushEmitter {
     security: Proto.Qot_Common.ISecurity,
   ): void
   public removeAllListeners(
+    subType: Proto.Qot_Common.SubType.SubType_Order,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.Order>
+  ): void
+  public removeAllListeners(
+    subType: Proto.Qot_Common.SubType.SubType_OrderFill,
+    security: Proto.Qot_Common.ISecurity,
+    listener: OnPushListener<Proto.Trd_Common.OrderFill>
+  ): void
+  public removeAllListeners(
     ...args: any[]
   ): void {
     if (args.length !== 2) throw new ParameterError('Should pass 2 arguments')
@@ -1387,7 +1562,7 @@ export default class PushEmitter {
     )
   }
 
-  public onPush(cmd: number, res: any) {
+  protected onPush(cmd: number, res: any) {
     try {
       if (res.security) {
         this.emitter.emit(PushEmitter.translateSecurity(cmd, res.security), res)
@@ -1471,6 +1646,10 @@ export default class PushEmitter {
       case Proto.Qot_Common.SubType.SubType_KL_Qurater:
       case Proto.Qot_Common.SubType.SubType_KL_Year:
         return ProtoId['Qot_UpdateKL']
+      case Proto.Qot_Common.SubType.SubType_Order:
+        return ProtoId['Trd_UpdateOrder']
+      case Proto.Qot_Common.SubType.SubType_OrderFill:
+        return ProtoId['Trd_UpdateOrderFill']
       case Proto.Qot_Common.SubType.SubType_None:
       case Proto.Qot_Common.SubType.SubType_OrderDetail:
         return undefined
