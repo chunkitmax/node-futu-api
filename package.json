@@ -5,7 +5,7 @@
   "main": "dist/src/futu.js",
   "scripts": {
     "test": "npm run update; mocha dist/src/test/test.js",
-    "prebuild": "mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh",
+    "prebuild": "rm dist -rf; mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh",
     "build": "npm install && npm run update",
     "update": "./tools/build.sh"
   },
