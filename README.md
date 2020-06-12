@@ -2,6 +2,8 @@
 <a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
 This module automatically generates interfaces and class according to official release files.
 
+Tested on FutuOpenD Ver.2.13.950(Beta) [Future version]
+
 ## Install
 ```bash
 npm install --save futu-api
@@ -23,7 +25,7 @@ message C2S
   repeated Qot_Common.Security securityList = 3; //股票，若該字段存在，忽略其他字段，只返回該字段股票的靜態信息
 }
 ```
-According to this definition file, the output will be
+According to this declaration file, the output will be
 ```typescript
 interface IC2S {
   /** C2S market */
@@ -113,6 +115,10 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
 
   // Example 5: subscription
   // subscribe to DJI futures (Ticker & Realtime data)
+  let targetSecurity = {
+    code: 'YMmain',
+    market: Qot_Common.QotMarket.QotMarket_US_Security
+  }
   ft.on(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
     console.log('ticker: ', data.tickerList!.map(ticker => ticker.price))
   })
@@ -129,10 +135,7 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
     regPushRehabTypeList: [
       Qot_Common.RehabType.RehabType_Forward
     ],
-    securityList: [{
-      code: 'YMmain',
-      market: Qot_Common.QotMarket.QotMarket_US_Security
-    }]
+    securityList: [targetSecurity]
   })
   // unsubscribe after 1min according to documentation
   await new Promise(resolve => setTimeout(resolve, 60500))
@@ -143,10 +146,7 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
     subTypeList: [
       Qot_Common.SubType.SubType_Ticker
     ],
-    securityList: [{
-      code: 'YMmain',
-      market: Qot_Common.QotMarket.QotMarket_US_Security
-    }]
+    securityList: [targetSecurity]
   })
   // unsubscribe all
   await ft.qotSub({
