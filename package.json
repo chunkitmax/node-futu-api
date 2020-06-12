@@ -1,8 +1,8 @@
 {
   "name": "futu-api",
-  "version": "1.2.1",
-  "description": "Basic tool for algorithmic trading on Futu which automatically generates interfaces and methods according to official release files",
-  "main": "dist/src/Futu.js",
+  "version": "1.2.2",
+  "description": "Open-source unofficial Futu API",
+  "main": "dist/src/futu.js",
   "scripts": {
     "test": "npm run update; mocha dist/src/test/test.js",
     "prebuild": "mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh",
