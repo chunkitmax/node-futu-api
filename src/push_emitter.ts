@@ -4,7 +4,7 @@ import Long from 'long';
 import { Proto } from './futu';
 import ProtoId from './proto/protoid.json';
 import { ElementOf, MemberOf, valueof } from './types/ts';
-import { FutuRet, OnPushListener } from './types/types';
+import { OnPushListener } from './types/types';
 import { ParameterError } from './utils/error';
 import { ProtoName } from './utils/proto';
 

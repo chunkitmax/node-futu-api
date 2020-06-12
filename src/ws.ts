@@ -2,15 +2,10 @@ import './utils/object';
 
 import Assert from 'assert';
 import ByteBuffer from 'bytebuffer';
-import Crypto from 'crypto';
-import Fs from 'fs';
 import L from 'loglevel';
-import Path from 'path';
-import ProtoBuf, { Message, Type, Writer } from 'protobufjs';
-import { inspect } from 'util';
 import Ws from 'ws';
 
-import Futu, { FutuConfig } from './futu';
+import { FutuConfig } from './futu';
 import Proto from './proto/proto';
 import ProtoId from './proto/protoid.json';
 import PushEmitter from './push_emitter';
@@ -187,7 +182,7 @@ export default class WebSocket extends PushEmitter {
     throw new ParameterError('Cannot get request class by this name')
   }
 
-  private async onOpen(e: Ws.OpenEvent) {
+  private async onOpen(_: Ws.OpenEvent) {
     if (this.ws) {
       this.clean(false)
       let keyMD5 = undefined

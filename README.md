@@ -126,6 +126,7 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
   ft.close()
 })()
 
+
 // You can use "Subscibe" decorator instead of ft.on()
 class Example {
 

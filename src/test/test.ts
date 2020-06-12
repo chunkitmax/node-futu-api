@@ -1,7 +1,6 @@
 import 'mocha';
 
 import Assert, { AssertionError } from 'assert';
-import Util from 'util';
 
 // /** It is normal to have error on the next line
 //  * because the user credential is not provided
@@ -14,7 +13,7 @@ import Util from 'util';
 //  * }
 //  */
 import UserConfig from '../../user_config.json';
-import Futu, { Proto } from '../futu';
+import Futu from '../futu';
 import { Qot_Common, Trd_Common } from '../proto/proto';
 
 async function AssertShouldResolve<T>(block: (() => Promise<T>) | Promise<T>, message?: string): Promise<T> {
