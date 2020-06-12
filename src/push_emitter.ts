@@ -24,7 +24,7 @@ export default class PushEmitter {
 
   public static instance: PushEmitter|undefined = new PushEmitter()
 
-  protected emitter: EventEmitter
+  protected emitter: EventEmitter.EventEmitter
 
   constructor() {
     if (PushEmitter.instance) {
