@@ -2,7 +2,7 @@
 <a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
 This module automatically generates interfaces and class according to official release files.
 
-Tested on FutuOpenD Ver.2.13.950(Beta) [Future version]
+Tested on FutuOpenD Ver.2.13.950 <font color="red"><strong>(Beta)</font></strong> from Futu development team for testing
 
 ## Install
 ```bash
