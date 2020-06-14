@@ -113,21 +113,19 @@ export default class WebSocket extends PushEmitter {
   }
 
   private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
+    const reqId = ++this.reqId
     return new Promise((resolve, reject) => {
-      const reqId = ++this.reqId
-      // will it cause performance issues?
-      let timeoutTimer = setTimeout(() => {
-        delete this.locks[reqId]
-        return reject(new TimeoutError('Timeout'))
-      }, this.config.reqTimeout)
+      let timeoutTimer: NodeJS.Timeout|undefined,
+          isHandled = false
       this.ws.send(this.pack(cmd, reqId, buffer).toArrayBuffer(), err => {
-        if (!this.locks[reqId]) {
+        if (timeoutTimer) clearTimeout(timeoutTimer)
+        if (!this.locks[reqId] && !isHandled) {
+          isHandled = true
           if (err) return reject(err)
-          const lock = (err?: Error, data?: FutuRet) => {
-            if (timeoutTimer) clearTimeout(timeoutTimer)
+          this.locks[reqId] = (err?: Error, data?: FutuRet) => {
             if (err) return reject(err)
             if (!data) {
-              return reject(new FutuError('Return obj is undeifned'))
+              return reject(new FutuError('Return obj is undefined'))
             } else if (data.error !== 0) {
               return reject(new FutuError(data.errMsg))
             } else if (data.sign.indexOf(HeadSign) === -1) {
@@ -136,9 +134,15 @@ export default class WebSocket extends PushEmitter {
               return resolve(data.data)
             }
           }
-          this.locks[reqId] = lock
         }
       })
+      // will it cause performance issues?
+      timeoutTimer = setTimeout(() => {
+        if (!isHandled) {
+          isHandled = true
+          reject(new Error('Timeout'))
+        }
+      }, this.config.reqTimeout!)
     })
   }
 
