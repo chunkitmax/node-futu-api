@@ -204,16 +204,16 @@ export default class WebSocket extends PushEmitter {
         } as Proto.Trd_GetAccList.IC2S) as Proto.Trd_GetAccList.IS2C)
         if (!accList || accList.length === 0) throw new SystemError('Cannot get acc list')
         const matchedAcc = accList.find(acc =>
-          acc.trdEnv === this.config.account!.env! &&
-          acc.trdMarketAuthList!.includes(this.config.account!.market!) &&
-          acc.accType === this.config.account!.accType!
+          acc.trdEnv === this.config.accEnv! &&
+          acc.trdMarketAuthList!.includes(this.config.accMarket!) &&
+          acc.accType === this.config.accType!
         )
         if (!matchedAcc) throw new SystemError('No matched account')
         // prepare header
         this.header = {
-          trdEnv: this.config.account!.env!,
+          trdEnv: this.config.accEnv!,
           accID: matchedAcc.accID,
-          trdMarket: this.config.account!.market!
+          trdMarket: this.config.accMarket!
         }
         const { connID, qotLogined, trdLogined } = (await this._request('GetGlobalState', {
           userID: this.config.userID

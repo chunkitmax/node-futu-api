@@ -13,11 +13,9 @@ export type FutuConfig = {
   userID: number
   pwdMd5: string
   // account
-  account?: {
-    market?: Proto.Trd_Common.TrdMarket
-    env?: Proto.Trd_Common.TrdEnv
-    accType?: Proto.Trd_Common.TrdAccType
-  }
+  accMarket?: Proto.Trd_Common.TrdMarket
+  accEnv?: Proto.Trd_Common.TrdEnv
+  accType?: Proto.Trd_Common.TrdAccType
   // websocket
   isSSL?: boolean
   wsKey?: string
@@ -31,11 +29,9 @@ const DefaultConfig = {
   recvNotify: true,
   // no default user
   // account
-  account: {
-    market: Proto.Trd_Common.TrdMarket.TrdMarket_HK,
-    env: Proto.Trd_Common.TrdEnv.TrdEnv_Real,
-    accType: Proto.Trd_Common.TrdAccType.TrdAccType_Cash
-  },
+  accMarket: Proto.Trd_Common.TrdMarket.TrdMarket_HK,
+  accEnv: Proto.Trd_Common.TrdEnv.TrdEnv_Real,
+  accType: Proto.Trd_Common.TrdAccType.TrdAccType_Cash,
   // websocket
   isSSL: false,
   wsKey: null,
