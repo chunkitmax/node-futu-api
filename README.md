@@ -22,18 +22,35 @@ npm run build
 //   Make sure websocket_port is set
 
 import Futu, { Proto, Subscribe } from 'futu-api';
-import UserConfig from '../user_config.json';
 import { Qot_Common, Trd_Common } from '../proto/proto';
 
 /**
- * UserConfig: FutuConfig
- *  {
-      ip: string,
-      port: number,
-      userID: number,
+ * type FutuConfig = {
+      // server
+      ip?: string           // default: 'localhost'
+      port?: number         // default: 33333
+      recvNotify?: boolean  // default: true
+
+      // user
+      userID: number
       pwdMd5: string
+
+      // account
+      accMarket?: Proto.Trd_Common.TrdMarket  // default: TrdMarket_HK
+      accEnv?: Proto.Trd_Common.TrdEnv        // default: TrdEnv_Real
+      accType?: Proto.Trd_Common.TrdAccType   // default:  TrdAccType_Cash
+
+      // websocket
+      isSSL?: boolean       // default: false
+      wsKey?: string        // default: null
+      reqTimeout?: number   // default: 10000
     }
-  */
+*/
+
+const UserConfig = {
+  userID: 1234,
+  pwdMd5: "129619259239abcdef",
+}
 
 (async function main() {
   // extend the lookup table
