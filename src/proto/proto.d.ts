@@ -1,5 +1,4 @@
-import * as $protobuf from 'protobufjs';
-
+import * as $protobuf from "protobufjs";
 /** Namespace Common. */
 export namespace Common {
 
@@ -1125,31 +1124,14 @@ export namespace GetDelayStatistics {
     }
 }
 
-/** Namespace GetUserInfo. */
-export namespace GetUserInfo {
-
-    /** UpdateType enum. */
-    enum UpdateType {
-        UpdateType_None = 0,
-        UpdateType_Advice = 1,
-        UpdateType_Force = 2
-    }
-
-    /** UserInfoField enum. */
-    enum UserInfoField {
-        UserInfoField_Basic = 1,
-        UserInfoField_API = 2,
-        UserInfoField_QotRight = 4,
-        UserInfoField_Disclaimer = 8,
-        UserInfoField_Update = 16,
-        UserInfoField_WebKey = 2048
-    }
+/** Namespace GetGlobalState. */
+export namespace GetGlobalState {
 
     /** Properties of a C2S. */
     interface IC2S {
 
-        /** C2S flag */
-        flag?: (number|null);
+        /** C2S userID */
+        userID: (number|Long);
     }
 
     /** Represents a C2S. */
@@ -1159,529 +1141,33 @@ export namespace GetUserInfo {
          * Constructs a new C2S.
          * @param [properties] Properties to set
          */
-        constructor(properties?: GetUserInfo.IC2S);
+        constructor(properties?: GetGlobalState.IC2S);
 
-        /** C2S flag. */
-        public flag: number;
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns C2S instance
-         */
-        public static create(properties?: GetUserInfo.IC2S): GetUserInfo.C2S;
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetUserInfo.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetUserInfo.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.C2S;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.C2S;
-
-        /**
-         * Verifies a C2S message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns C2S
-         */
-        public static fromObject(object: { [k: string]: any }): GetUserInfo.C2S;
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @param message C2S
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetUserInfo.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this C2S to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a S2C. */
-    interface IS2C {
-
-        /** S2C nickName */
-        nickName?: (string|null);
-
-        /** S2C avatarUrl */
-        avatarUrl?: (string|null);
-
-        /** S2C apiLevel */
-        apiLevel?: (string|null);
-
-        /** S2C hkQotRight */
-        hkQotRight?: (number|null);
-
-        /** S2C usQotRight */
-        usQotRight?: (number|null);
-
-        /** S2C cnQotRight */
-        cnQotRight?: (number|null);
-
-        /** S2C isNeedAgreeDisclaimer */
-        isNeedAgreeDisclaimer?: (boolean|null);
-
-        /** S2C userID */
-        userID?: (number|Long|null);
-
-        /** S2C updateType */
-        updateType?: (number|null);
-
-        /** S2C webKey */
-        webKey?: (string|null);
-
-        /** S2C hkOptionQotRight */
-        hkOptionQotRight?: (number|null);
-
-        /** S2C hasUSOptionQotRight */
-        hasUSOptionQotRight?: (boolean|null);
-
-        /** S2C hkFutureQotRight */
-        hkFutureQotRight?: (number|null);
-
-        /** S2C subQuota */
-        subQuota?: (number|null);
-
-        /** S2C historyKLQuota */
-        historyKLQuota?: (number|null);
-    }
-
-    /** Represents a S2C. */
-    class S2C implements IS2C {
-
-        /**
-         * Constructs a new S2C.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetUserInfo.IS2C);
-
-        /** S2C nickName. */
-        public nickName: string;
-
-        /** S2C avatarUrl. */
-        public avatarUrl: string;
-
-        /** S2C apiLevel. */
-        public apiLevel: string;
-
-        /** S2C hkQotRight. */
-        public hkQotRight: number;
-
-        /** S2C usQotRight. */
-        public usQotRight: number;
-
-        /** S2C cnQotRight. */
-        public cnQotRight: number;
-
-        /** S2C isNeedAgreeDisclaimer. */
-        public isNeedAgreeDisclaimer: boolean;
-
-        /** S2C userID. */
+        /** C2S userID. */
         public userID: (number|Long);
 
-        /** S2C updateType. */
-        public updateType: number;
-
-        /** S2C webKey. */
-        public webKey: string;
-
-        /** S2C hkOptionQotRight. */
-        public hkOptionQotRight: number;
-
-        /** S2C hasUSOptionQotRight. */
-        public hasUSOptionQotRight: boolean;
-
-        /** S2C hkFutureQotRight. */
-        public hkFutureQotRight: number;
-
-        /** S2C subQuota. */
-        public subQuota: number;
-
-        /** S2C historyKLQuota. */
-        public historyKLQuota: number;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns S2C instance
-         */
-        public static create(properties?: GetUserInfo.IS2C): GetUserInfo.S2C;
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetUserInfo.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetUserInfo.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.S2C;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.S2C;
-
-        /**
-         * Verifies a S2C message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns S2C
-         */
-        public static fromObject(object: { [k: string]: any }): GetUserInfo.S2C;
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @param message S2C
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetUserInfo.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this S2C to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Request. */
-    interface IRequest {
-
-        /** Request c2s */
-        c2s: GetUserInfo.IC2S;
-    }
-
-    /** Represents a Request. */
-    class Request implements IRequest {
-
-        /**
-         * Constructs a new Request.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetUserInfo.IRequest);
-
-        /** Request c2s. */
-        public c2s: GetUserInfo.IC2S;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Request instance
-         */
-        public static create(properties?: GetUserInfo.IRequest): GetUserInfo.Request;
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetUserInfo.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetUserInfo.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.Request;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.Request;
-
-        /**
-         * Verifies a Request message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Request
-         */
-        public static fromObject(object: { [k: string]: any }): GetUserInfo.Request;
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @param message Request
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetUserInfo.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Request to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Response. */
-    interface IResponse {
-
-        /** Response retType */
-        retType: number;
-
-        /** Response retMsg */
-        retMsg?: (string|null);
-
-        /** Response errCode */
-        errCode?: (number|null);
-
-        /** Response s2c */
-        s2c?: (GetUserInfo.IS2C|null);
-    }
-
-    /** Represents a Response. */
-    class Response implements IResponse {
-
-        /**
-         * Constructs a new Response.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetUserInfo.IResponse);
-
-        /** Response retType. */
-        public retType: number;
-
-        /** Response retMsg. */
-        public retMsg: string;
-
-        /** Response errCode. */
-        public errCode: number;
-
-        /** Response s2c. */
-        public s2c?: (GetUserInfo.IS2C|null);
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Response instance
-         */
-        public static create(properties?: GetUserInfo.IResponse): GetUserInfo.Response;
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetUserInfo.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetUserInfo.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.Response;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.Response;
-
-        /**
-         * Verifies a Response message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Response
-         */
-        public static fromObject(object: { [k: string]: any }): GetUserInfo.Response;
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @param message Response
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetUserInfo.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Response to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-}
-
-/** Namespace InitConnect. */
-export namespace InitConnect {
-
-    /** Properties of a C2S. */
-    interface IC2S {
-
-        /** C2S clientVer */
-        clientVer: number;
-
-        /** C2S clientID */
-        clientID: string;
-
-        /** C2S recvNotify */
-        recvNotify?: (boolean|null);
-
-        /** C2S packetEncAlgo */
-        packetEncAlgo?: (number|null);
-
-        /** C2S pushProtoFmt */
-        pushProtoFmt?: (number|null);
-
-        /** C2S programmingLanguage */
-        programmingLanguage?: (string|null);
-    }
-
-    /** Represents a C2S. */
-    class C2S implements IC2S {
-
-        /**
-         * Constructs a new C2S.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: InitConnect.IC2S);
-
-        /** C2S clientVer. */
-        public clientVer: number;
-
-        /** C2S clientID. */
-        public clientID: string;
-
-        /** C2S recvNotify. */
-        public recvNotify: boolean;
-
-        /** C2S packetEncAlgo. */
-        public packetEncAlgo: number;
-
-        /** C2S pushProtoFmt. */
-        public pushProtoFmt: number;
-
-        /** C2S programmingLanguage. */
-        public programmingLanguage: string;
-
         /**
          * Creates a new C2S instance using the specified properties.
          * @param [properties] Properties to set
          * @returns C2S instance
          */
-        public static create(properties?: InitConnect.IC2S): InitConnect.C2S;
+        public static create(properties?: GetGlobalState.IC2S): GetGlobalState.C2S;
 
         /**
-         * Encodes the specified C2S message. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * Encodes the specified C2S message. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
          * @param message C2S message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: InitConnect.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: GetGlobalState.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
          * @param message C2S message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: InitConnect.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: GetGlobalState.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a C2S message from the specified reader or buffer.
@@ -1691,7 +1177,7 @@ export namespace InitConnect {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.C2S;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.C2S;
 
         /**
          * Decodes a C2S message from the specified reader or buffer, length delimited.
@@ -1700,7 +1186,7 @@ export namespace InitConnect {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.C2S;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.C2S;
 
         /**
          * Verifies a C2S message.
@@ -1714,7 +1200,7 @@ export namespace InitConnect {
          * @param object Plain object
          * @returns C2S
          */
-        public static fromObject(object: { [k: string]: any }): InitConnect.C2S;
+        public static fromObject(object: { [k: string]: any }): GetGlobalState.C2S;
 
         /**
          * Creates a plain object from a C2S message. Also converts values to other types if specified.
@@ -1722,7 +1208,7 @@ export namespace InitConnect {
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: InitConnect.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: GetGlobalState.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
          * Converts this C2S to JSON.
@@ -1733,24 +1219,54 @@ export namespace InitConnect {
 
     /** Properties of a S2C. */
     interface IS2C {
+
+        /** S2C marketHK */
+        marketHK: number;
+
+        /** S2C marketUS */
+        marketUS: number;
+
+        /** S2C marketSH */
+        marketSH: number;
+
+        /** S2C marketSZ */
+        marketSZ: number;
+
+        /** S2C marketHKFuture */
+        marketHKFuture: number;
+
+        /** S2C marketUSFuture */
+        marketUSFuture?: (number|null);
+
+        /** S2C qotLogined */
+        qotLogined: boolean;
+
+        /** S2C trdLogined */
+        trdLogined: boolean;
 
         /** S2C serverVer */
         serverVer: number;
 
-        /** S2C loginUserID */
-        loginUserID: (number|Long);
+        /** S2C serverBuildNo */
+        serverBuildNo: number;
+
+        /** S2C time */
+        time: (number|Long);
+
+        /** S2C localTime */
+        localTime?: (number|null);
+
+        /** S2C programStatus */
+        programStatus?: (Common.IProgramStatus|null);
+
+        /** S2C qotSvrIpAddr */
+        qotSvrIpAddr?: (string|null);
+
+        /** S2C trdSvrIpAddr */
+        trdSvrIpAddr?: (string|null);
 
         /** S2C connID */
-        connID: (number|Long);
-
-        /** S2C connAESKey */
-        connAESKey: string;
-
-        /** S2C keepAliveInterval */
-        keepAliveInterval: number;
-
-        /** S2C aesCBCiv */
-        aesCBCiv?: (string|null);
+        connID?: (number|Long|null);
     }
 
     /** Represents a S2C. */
@@ -1760,430 +1276,78 @@ export namespace InitConnect {
          * Constructs a new S2C.
          * @param [properties] Properties to set
          */
-        constructor(properties?: InitConnect.IS2C);
+        constructor(properties?: GetGlobalState.IS2C);
+
+        /** S2C marketHK. */
+        public marketHK: number;
+
+        /** S2C marketUS. */
+        public marketUS: number;
+
+        /** S2C marketSH. */
+        public marketSH: number;
+
+        /** S2C marketSZ. */
+        public marketSZ: number;
+
+        /** S2C marketHKFuture. */
+        public marketHKFuture: number;
+
+        /** S2C marketUSFuture. */
+        public marketUSFuture: number;
+
+        /** S2C qotLogined. */
+        public qotLogined: boolean;
+
+        /** S2C trdLogined. */
+        public trdLogined: boolean;
 
         /** S2C serverVer. */
         public serverVer: number;
 
-        /** S2C loginUserID. */
-        public loginUserID: (number|Long);
-
-        /** S2C connID. */
-        public connID: (number|Long);
-
-        /** S2C connAESKey. */
-        public connAESKey: string;
-
-        /** S2C keepAliveInterval. */
-        public keepAliveInterval: number;
-
-        /** S2C aesCBCiv. */
-        public aesCBCiv: string;
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns S2C instance
-         */
-        public static create(properties?: InitConnect.IS2C): InitConnect.S2C;
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: InitConnect.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: InitConnect.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.S2C;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.S2C;
-
-        /**
-         * Verifies a S2C message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns S2C
-         */
-        public static fromObject(object: { [k: string]: any }): InitConnect.S2C;
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @param message S2C
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: InitConnect.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this S2C to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Request. */
-    interface IRequest {
-
-        /** Request c2s */
-        c2s: InitConnect.IC2S;
-    }
-
-    /** Represents a Request. */
-    class Request implements IRequest {
-
-        /**
-         * Constructs a new Request.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: InitConnect.IRequest);
-
-        /** Request c2s. */
-        public c2s: InitConnect.IC2S;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Request instance
-         */
-        public static create(properties?: InitConnect.IRequest): InitConnect.Request;
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: InitConnect.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: InitConnect.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.Request;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.Request;
-
-        /**
-         * Verifies a Request message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Request
-         */
-        public static fromObject(object: { [k: string]: any }): InitConnect.Request;
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @param message Request
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: InitConnect.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Request to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Response. */
-    interface IResponse {
-
-        /** Response retType */
-        retType: number;
-
-        /** Response retMsg */
-        retMsg?: (string|null);
-
-        /** Response errCode */
-        errCode?: (number|null);
-
-        /** Response s2c */
-        s2c?: (InitConnect.IS2C|null);
-    }
-
-    /** Represents a Response. */
-    class Response implements IResponse {
-
-        /**
-         * Constructs a new Response.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: InitConnect.IResponse);
-
-        /** Response retType. */
-        public retType: number;
-
-        /** Response retMsg. */
-        public retMsg: string;
-
-        /** Response errCode. */
-        public errCode: number;
-
-        /** Response s2c. */
-        public s2c?: (InitConnect.IS2C|null);
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Response instance
-         */
-        public static create(properties?: InitConnect.IResponse): InitConnect.Response;
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: InitConnect.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: InitConnect.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.Response;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.Response;
-
-        /**
-         * Verifies a Response message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Response
-         */
-        public static fromObject(object: { [k: string]: any }): InitConnect.Response;
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @param message Response
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: InitConnect.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Response to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-}
-
-/** Namespace KeepAlive. */
-export namespace KeepAlive {
-
-    /** Properties of a C2S. */
-    interface IC2S {
-
-        /** C2S time */
-        time: (number|Long);
-    }
-
-    /** Represents a C2S. */
-    class C2S implements IC2S {
-
-        /**
-         * Constructs a new C2S.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: KeepAlive.IC2S);
-
-        /** C2S time. */
-        public time: (number|Long);
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns C2S instance
-         */
-        public static create(properties?: KeepAlive.IC2S): KeepAlive.C2S;
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: KeepAlive.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: KeepAlive.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.C2S;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.C2S;
-
-        /**
-         * Verifies a C2S message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns C2S
-         */
-        public static fromObject(object: { [k: string]: any }): KeepAlive.C2S;
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @param message C2S
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: KeepAlive.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this C2S to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a S2C. */
-    interface IS2C {
-
-        /** S2C time */
-        time: (number|Long);
-    }
-
-    /** Represents a S2C. */
-    class S2C implements IS2C {
-
-        /**
-         * Constructs a new S2C.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: KeepAlive.IS2C);
+        /** S2C serverBuildNo. */
+        public serverBuildNo: number;
 
         /** S2C time. */
         public time: (number|Long);
 
+        /** S2C localTime. */
+        public localTime: number;
+
+        /** S2C programStatus. */
+        public programStatus?: (Common.IProgramStatus|null);
+
+        /** S2C qotSvrIpAddr. */
+        public qotSvrIpAddr: string;
+
+        /** S2C trdSvrIpAddr. */
+        public trdSvrIpAddr: string;
+
+        /** S2C connID. */
+        public connID: (number|Long);
+
         /**
          * Creates a new S2C instance using the specified properties.
          * @param [properties] Properties to set
          * @returns S2C instance
          */
-        public static create(properties?: KeepAlive.IS2C): KeepAlive.S2C;
+        public static create(properties?: GetGlobalState.IS2C): GetGlobalState.S2C;
 
         /**
-         * Encodes the specified S2C message. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * Encodes the specified S2C message. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
          * @param message S2C message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: KeepAlive.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: GetGlobalState.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
          * @param message S2C message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: KeepAlive.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: GetGlobalState.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a S2C message from the specified reader or buffer.
@@ -2193,7 +1357,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.S2C;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.S2C;
 
         /**
          * Decodes a S2C message from the specified reader or buffer, length delimited.
@@ -2202,7 +1366,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.S2C;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.S2C;
 
         /**
          * Verifies a S2C message.
@@ -2216,7 +1380,7 @@ export namespace KeepAlive {
          * @param object Plain object
          * @returns S2C
          */
-        public static fromObject(object: { [k: string]: any }): KeepAlive.S2C;
+        public static fromObject(object: { [k: string]: any }): GetGlobalState.S2C;
 
         /**
          * Creates a plain object from a S2C message. Also converts values to other types if specified.
@@ -2224,7 +1388,7 @@ export namespace KeepAlive {
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: KeepAlive.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: GetGlobalState.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
          * Converts this S2C to JSON.
@@ -2237,7 +1401,7 @@ export namespace KeepAlive {
     interface IRequest {
 
         /** Request c2s */
-        c2s: KeepAlive.IC2S;
+        c2s: GetGlobalState.IC2S;
     }
 
     /** Represents a Request. */
@@ -2247,33 +1411,33 @@ export namespace KeepAlive {
          * Constructs a new Request.
          * @param [properties] Properties to set
          */
-        constructor(properties?: KeepAlive.IRequest);
+        constructor(properties?: GetGlobalState.IRequest);
 
         /** Request c2s. */
-        public c2s: KeepAlive.IC2S;
+        public c2s: GetGlobalState.IC2S;
 
         /**
          * Creates a new Request instance using the specified properties.
          * @param [properties] Properties to set
          * @returns Request instance
          */
-        public static create(properties?: KeepAlive.IRequest): KeepAlive.Request;
+        public static create(properties?: GetGlobalState.IRequest): GetGlobalState.Request;
 
         /**
-         * Encodes the specified Request message. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * Encodes the specified Request message. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
          * @param message Request message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: KeepAlive.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: GetGlobalState.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
          * @param message Request message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: KeepAlive.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: GetGlobalState.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a Request message from the specified reader or buffer.
@@ -2283,7 +1447,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.Request;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.Request;
 
         /**
          * Decodes a Request message from the specified reader or buffer, length delimited.
@@ -2292,7 +1456,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.Request;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.Request;
 
         /**
          * Verifies a Request message.
@@ -2306,7 +1470,7 @@ export namespace KeepAlive {
          * @param object Plain object
          * @returns Request
          */
-        public static fromObject(object: { [k: string]: any }): KeepAlive.Request;
+        public static fromObject(object: { [k: string]: any }): GetGlobalState.Request;
 
         /**
          * Creates a plain object from a Request message. Also converts values to other types if specified.
@@ -2314,7 +1478,7 @@ export namespace KeepAlive {
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: KeepAlive.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: GetGlobalState.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
          * Converts this Request to JSON.
@@ -2336,7 +1500,7 @@ export namespace KeepAlive {
         errCode?: (number|null);
 
         /** Response s2c */
-        s2c?: (KeepAlive.IS2C|null);
+        s2c?: (GetGlobalState.IS2C|null);
     }
 
     /** Represents a Response. */
@@ -2346,7 +1510,7 @@ export namespace KeepAlive {
          * Constructs a new Response.
          * @param [properties] Properties to set
          */
-        constructor(properties?: KeepAlive.IResponse);
+        constructor(properties?: GetGlobalState.IResponse);
 
         /** Response retType. */
         public retType: number;
@@ -2358,30 +1522,30 @@ export namespace KeepAlive {
         public errCode: number;
 
         /** Response s2c. */
-        public s2c?: (KeepAlive.IS2C|null);
+        public s2c?: (GetGlobalState.IS2C|null);
 
         /**
          * Creates a new Response instance using the specified properties.
          * @param [properties] Properties to set
          * @returns Response instance
          */
-        public static create(properties?: KeepAlive.IResponse): KeepAlive.Response;
+        public static create(properties?: GetGlobalState.IResponse): GetGlobalState.Response;
 
         /**
-         * Encodes the specified Response message. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * Encodes the specified Response message. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
          * @param message Response message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: KeepAlive.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: GetGlobalState.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
          * @param message Response message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: KeepAlive.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: GetGlobalState.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a Response message from the specified reader or buffer.
@@ -2391,7 +1555,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.Response;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.Response;
 
         /**
          * Decodes a Response message from the specified reader or buffer, length delimited.
@@ -2400,7 +1564,7 @@ export namespace KeepAlive {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.Response;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.Response;
 
         /**
          * Verifies a Response message.
@@ -2414,7 +1578,7 @@ export namespace KeepAlive {
          * @param object Plain object
          * @returns Response
          */
-        public static fromObject(object: { [k: string]: any }): KeepAlive.Response;
+        public static fromObject(object: { [k: string]: any }): GetGlobalState.Response;
 
         /**
          * Creates a plain object from a Response message. Also converts values to other types if specified.
@@ -2422,864 +1586,7 @@ export namespace KeepAlive {
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: KeepAlive.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Response to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-}
-
-/** Namespace Notify. */
-export namespace Notify {
-
-    /** NotifyType enum. */
-    enum NotifyType {
-        NotifyType_None = 0,
-        NotifyType_GtwEvent = 1,
-        NotifyType_ProgramStatus = 2,
-        NotifyType_ConnStatus = 3,
-        NotifyType_QotRight = 4,
-        NotifyType_APILevel = 5,
-        NotifyType_APIQuota = 6
-    }
-
-    /** GtwEventType enum. */
-    enum GtwEventType {
-        GtwEventType_None = 0,
-        GtwEventType_LocalCfgLoadFailed = 1,
-        GtwEventType_APISvrRunFailed = 2,
-        GtwEventType_ForceUpdate = 3,
-        GtwEventType_LoginFailed = 4,
-        GtwEventType_UnAgreeDisclaimer = 5,
-        GtwEventType_NetCfgMissing = 6,
-        GtwEventType_KickedOut = 7,
-        GtwEventType_LoginPwdChanged = 8,
-        GtwEventType_BanLogin = 9,
-        GtwEventType_NeedPicVerifyCode = 10,
-        GtwEventType_NeedPhoneVerifyCode = 11,
-        GtwEventType_AppDataNotExist = 12,
-        GtwEventType_NessaryDataMissing = 13,
-        GtwEventType_TradePwdChanged = 14,
-        GtwEventType_EnableDeviceLock = 15
-    }
-
-    /** Properties of a GtwEvent. */
-    interface IGtwEvent {
-
-        /** GtwEvent eventType */
-        eventType: number;
-
-        /** GtwEvent desc */
-        desc: string;
-    }
-
-    /** Represents a GtwEvent. */
-    class GtwEvent implements IGtwEvent {
-
-        /**
-         * Constructs a new GtwEvent.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IGtwEvent);
-
-        /** GtwEvent eventType. */
-        public eventType: number;
-
-        /** GtwEvent desc. */
-        public desc: string;
-
-        /**
-         * Creates a new GtwEvent instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns GtwEvent instance
-         */
-        public static create(properties?: Notify.IGtwEvent): Notify.GtwEvent;
-
-        /**
-         * Encodes the specified GtwEvent message. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
-         * @param message GtwEvent message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IGtwEvent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified GtwEvent message, length delimited. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
-         * @param message GtwEvent message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IGtwEvent, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a GtwEvent message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns GtwEvent
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.GtwEvent;
-
-        /**
-         * Decodes a GtwEvent message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns GtwEvent
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.GtwEvent;
-
-        /**
-         * Verifies a GtwEvent message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a GtwEvent message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns GtwEvent
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.GtwEvent;
-
-        /**
-         * Creates a plain object from a GtwEvent message. Also converts values to other types if specified.
-         * @param message GtwEvent
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.GtwEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this GtwEvent to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a ProgramStatus. */
-    interface IProgramStatus {
-
-        /** ProgramStatus programStatus */
-        programStatus: Common.IProgramStatus;
-    }
-
-    /** Represents a ProgramStatus. */
-    class ProgramStatus implements IProgramStatus {
-
-        /**
-         * Constructs a new ProgramStatus.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IProgramStatus);
-
-        /** ProgramStatus programStatus. */
-        public programStatus: Common.IProgramStatus;
-
-        /**
-         * Creates a new ProgramStatus instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ProgramStatus instance
-         */
-        public static create(properties?: Notify.IProgramStatus): Notify.ProgramStatus;
-
-        /**
-         * Encodes the specified ProgramStatus message. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
-         * @param message ProgramStatus message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IProgramStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ProgramStatus message, length delimited. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
-         * @param message ProgramStatus message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IProgramStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ProgramStatus message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ProgramStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.ProgramStatus;
-
-        /**
-         * Decodes a ProgramStatus message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ProgramStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.ProgramStatus;
-
-        /**
-         * Verifies a ProgramStatus message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ProgramStatus message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ProgramStatus
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.ProgramStatus;
-
-        /**
-         * Creates a plain object from a ProgramStatus message. Also converts values to other types if specified.
-         * @param message ProgramStatus
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.ProgramStatus, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ProgramStatus to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a ConnectStatus. */
-    interface IConnectStatus {
-
-        /** ConnectStatus qotLogined */
-        qotLogined: boolean;
-
-        /** ConnectStatus trdLogined */
-        trdLogined: boolean;
-    }
-
-    /** Represents a ConnectStatus. */
-    class ConnectStatus implements IConnectStatus {
-
-        /**
-         * Constructs a new ConnectStatus.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IConnectStatus);
-
-        /** ConnectStatus qotLogined. */
-        public qotLogined: boolean;
-
-        /** ConnectStatus trdLogined. */
-        public trdLogined: boolean;
-
-        /**
-         * Creates a new ConnectStatus instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ConnectStatus instance
-         */
-        public static create(properties?: Notify.IConnectStatus): Notify.ConnectStatus;
-
-        /**
-         * Encodes the specified ConnectStatus message. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
-         * @param message ConnectStatus message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IConnectStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ConnectStatus message, length delimited. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
-         * @param message ConnectStatus message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IConnectStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ConnectStatus message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ConnectStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.ConnectStatus;
-
-        /**
-         * Decodes a ConnectStatus message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ConnectStatus
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.ConnectStatus;
-
-        /**
-         * Verifies a ConnectStatus message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ConnectStatus message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ConnectStatus
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.ConnectStatus;
-
-        /**
-         * Creates a plain object from a ConnectStatus message. Also converts values to other types if specified.
-         * @param message ConnectStatus
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.ConnectStatus, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ConnectStatus to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a QotRight. */
-    interface IQotRight {
-
-        /** QotRight hkQotRight */
-        hkQotRight: number;
-
-        /** QotRight usQotRight */
-        usQotRight: number;
-
-        /** QotRight cnQotRight */
-        cnQotRight: number;
-
-        /** QotRight hkOptionQotRight */
-        hkOptionQotRight?: (number|null);
-
-        /** QotRight hasUSOptionQotRight */
-        hasUSOptionQotRight?: (boolean|null);
-
-        /** QotRight hkFutureQotRight */
-        hkFutureQotRight?: (number|null);
-    }
-
-    /** Represents a QotRight. */
-    class QotRight implements IQotRight {
-
-        /**
-         * Constructs a new QotRight.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IQotRight);
-
-        /** QotRight hkQotRight. */
-        public hkQotRight: number;
-
-        /** QotRight usQotRight. */
-        public usQotRight: number;
-
-        /** QotRight cnQotRight. */
-        public cnQotRight: number;
-
-        /** QotRight hkOptionQotRight. */
-        public hkOptionQotRight: number;
-
-        /** QotRight hasUSOptionQotRight. */
-        public hasUSOptionQotRight: boolean;
-
-        /** QotRight hkFutureQotRight. */
-        public hkFutureQotRight: number;
-
-        /**
-         * Creates a new QotRight instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns QotRight instance
-         */
-        public static create(properties?: Notify.IQotRight): Notify.QotRight;
-
-        /**
-         * Encodes the specified QotRight message. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
-         * @param message QotRight message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IQotRight, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified QotRight message, length delimited. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
-         * @param message QotRight message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IQotRight, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a QotRight message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns QotRight
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.QotRight;
-
-        /**
-         * Decodes a QotRight message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns QotRight
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.QotRight;
-
-        /**
-         * Verifies a QotRight message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a QotRight message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns QotRight
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.QotRight;
-
-        /**
-         * Creates a plain object from a QotRight message. Also converts values to other types if specified.
-         * @param message QotRight
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.QotRight, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this QotRight to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a APILevel. */
-    interface IAPILevel {
-
-        /** APILevel apiLevel */
-        apiLevel: string;
-    }
-
-    /** Represents a APILevel. */
-    class APILevel implements IAPILevel {
-
-        /**
-         * Constructs a new APILevel.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IAPILevel);
-
-        /** APILevel apiLevel. */
-        public apiLevel: string;
-
-        /**
-         * Creates a new APILevel instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns APILevel instance
-         */
-        public static create(properties?: Notify.IAPILevel): Notify.APILevel;
-
-        /**
-         * Encodes the specified APILevel message. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
-         * @param message APILevel message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IAPILevel, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified APILevel message, length delimited. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
-         * @param message APILevel message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IAPILevel, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a APILevel message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns APILevel
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.APILevel;
-
-        /**
-         * Decodes a APILevel message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns APILevel
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.APILevel;
-
-        /**
-         * Verifies a APILevel message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a APILevel message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns APILevel
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.APILevel;
-
-        /**
-         * Creates a plain object from a APILevel message. Also converts values to other types if specified.
-         * @param message APILevel
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.APILevel, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this APILevel to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a APIQuota. */
-    interface IAPIQuota {
-
-        /** APIQuota subQuota */
-        subQuota: number;
-
-        /** APIQuota historyKLQuota */
-        historyKLQuota: number;
-    }
-
-    /** Represents a APIQuota. */
-    class APIQuota implements IAPIQuota {
-
-        /**
-         * Constructs a new APIQuota.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IAPIQuota);
-
-        /** APIQuota subQuota. */
-        public subQuota: number;
-
-        /** APIQuota historyKLQuota. */
-        public historyKLQuota: number;
-
-        /**
-         * Creates a new APIQuota instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns APIQuota instance
-         */
-        public static create(properties?: Notify.IAPIQuota): Notify.APIQuota;
-
-        /**
-         * Encodes the specified APIQuota message. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @param message APIQuota message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IAPIQuota, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified APIQuota message, length delimited. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
-         * @param message APIQuota message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IAPIQuota, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.APIQuota;
-
-        /**
-         * Decodes a APIQuota message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns APIQuota
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.APIQuota;
-
-        /**
-         * Verifies a APIQuota message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a APIQuota message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns APIQuota
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.APIQuota;
-
-        /**
-         * Creates a plain object from a APIQuota message. Also converts values to other types if specified.
-         * @param message APIQuota
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.APIQuota, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this APIQuota to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a S2C. */
-    interface IS2C {
-
-        /** S2C type */
-        type: number;
-
-        /** S2C event */
-        event?: (Notify.IGtwEvent|null);
-
-        /** S2C programStatus */
-        programStatus?: (Notify.IProgramStatus|null);
-
-        /** S2C connectStatus */
-        connectStatus?: (Notify.IConnectStatus|null);
-
-        /** S2C qotRight */
-        qotRight?: (Notify.IQotRight|null);
-
-        /** S2C apiLevel */
-        apiLevel?: (Notify.IAPILevel|null);
-
-        /** S2C apiQuota */
-        apiQuota?: (Notify.IAPIQuota|null);
-    }
-
-    /** Represents a S2C. */
-    class S2C implements IS2C {
-
-        /**
-         * Constructs a new S2C.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IS2C);
-
-        /** S2C type. */
-        public type: number;
-
-        /** S2C event. */
-        public event?: (Notify.IGtwEvent|null);
-
-        /** S2C programStatus. */
-        public programStatus?: (Notify.IProgramStatus|null);
-
-        /** S2C connectStatus. */
-        public connectStatus?: (Notify.IConnectStatus|null);
-
-        /** S2C qotRight. */
-        public qotRight?: (Notify.IQotRight|null);
-
-        /** S2C apiLevel. */
-        public apiLevel?: (Notify.IAPILevel|null);
-
-        /** S2C apiQuota. */
-        public apiQuota?: (Notify.IAPIQuota|null);
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns S2C instance
-         */
-        public static create(properties?: Notify.IS2C): Notify.S2C;
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link Notify.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Notify.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.S2C;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.S2C;
-
-        /**
-         * Verifies a S2C message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns S2C
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.S2C;
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @param message S2C
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this S2C to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Response. */
-    interface IResponse {
-
-        /** Response retType */
-        retType: number;
-
-        /** Response retMsg */
-        retMsg?: (string|null);
-
-        /** Response errCode */
-        errCode?: (number|null);
-
-        /** Response s2c */
-        s2c?: (Notify.IS2C|null);
-    }
-
-    /** Represents a Response. */
-    class Response implements IResponse {
-
-        /**
-         * Constructs a new Response.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: Notify.IResponse);
-
-        /** Response retType. */
-        public retType: number;
-
-        /** Response retMsg. */
-        public retMsg: string;
-
-        /** Response errCode. */
-        public errCode: number;
-
-        /** Response s2c. */
-        public s2c?: (Notify.IS2C|null);
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Response instance
-         */
-        public static create(properties?: Notify.IResponse): Notify.Response;
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link Notify.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: Notify.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link Notify.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: Notify.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.Response;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.Response;
-
-        /**
-         * Verifies a Response message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Response
-         */
-        public static fromObject(object: { [k: string]: any }): Notify.Response;
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @param message Response
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: Notify.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: GetGlobalState.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
          * Converts this Response to JSON.
@@ -6523,6 +4830,2170 @@ export namespace Qot_Common {
 
         /**
          * Converts this Rehab to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+}
+
+/** Namespace GetUserInfo. */
+export namespace GetUserInfo {
+
+    /** UpdateType enum. */
+    enum UpdateType {
+        UpdateType_None = 0,
+        UpdateType_Advice = 1,
+        UpdateType_Force = 2
+    }
+
+    /** UserInfoField enum. */
+    enum UserInfoField {
+        UserInfoField_Basic = 1,
+        UserInfoField_API = 2,
+        UserInfoField_QotRight = 4,
+        UserInfoField_Disclaimer = 8,
+        UserInfoField_Update = 16,
+        UserInfoField_WebKey = 2048
+    }
+
+    /** Properties of a C2S. */
+    interface IC2S {
+
+        /** C2S flag */
+        flag?: (number|null);
+    }
+
+    /** Represents a C2S. */
+    class C2S implements IC2S {
+
+        /**
+         * Constructs a new C2S.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: GetUserInfo.IC2S);
+
+        /** C2S flag. */
+        public flag: number;
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2S instance
+         */
+        public static create(properties?: GetUserInfo.IC2S): GetUserInfo.C2S;
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: GetUserInfo.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetUserInfo.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: GetUserInfo.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.C2S;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.C2S;
+
+        /**
+         * Verifies a C2S message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2S
+         */
+        public static fromObject(object: { [k: string]: any }): GetUserInfo.C2S;
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @param message C2S
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: GetUserInfo.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2S to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a S2C. */
+    interface IS2C {
+
+        /** S2C nickName */
+        nickName?: (string|null);
+
+        /** S2C avatarUrl */
+        avatarUrl?: (string|null);
+
+        /** S2C apiLevel */
+        apiLevel?: (string|null);
+
+        /** S2C hkQotRight */
+        hkQotRight?: (number|null);
+
+        /** S2C usQotRight */
+        usQotRight?: (number|null);
+
+        /** S2C cnQotRight */
+        cnQotRight?: (number|null);
+
+        /** S2C isNeedAgreeDisclaimer */
+        isNeedAgreeDisclaimer?: (boolean|null);
+
+        /** S2C userID */
+        userID?: (number|Long|null);
+
+        /** S2C updateType */
+        updateType?: (number|null);
+
+        /** S2C webKey */
+        webKey?: (string|null);
+
+        /** S2C hkOptionQotRight */
+        hkOptionQotRight?: (number|null);
+
+        /** S2C hasUSOptionQotRight */
+        hasUSOptionQotRight?: (boolean|null);
+
+        /** S2C hkFutureQotRight */
+        hkFutureQotRight?: (number|null);
+
+        /** S2C subQuota */
+        subQuota?: (number|null);
+
+        /** S2C historyKLQuota */
+        historyKLQuota?: (number|null);
+    }
+
+    /** Represents a S2C. */
+    class S2C implements IS2C {
+
+        /**
+         * Constructs a new S2C.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: GetUserInfo.IS2C);
+
+        /** S2C nickName. */
+        public nickName: string;
+
+        /** S2C avatarUrl. */
+        public avatarUrl: string;
+
+        /** S2C apiLevel. */
+        public apiLevel: string;
+
+        /** S2C hkQotRight. */
+        public hkQotRight: number;
+
+        /** S2C usQotRight. */
+        public usQotRight: number;
+
+        /** S2C cnQotRight. */
+        public cnQotRight: number;
+
+        /** S2C isNeedAgreeDisclaimer. */
+        public isNeedAgreeDisclaimer: boolean;
+
+        /** S2C userID. */
+        public userID: (number|Long);
+
+        /** S2C updateType. */
+        public updateType: number;
+
+        /** S2C webKey. */
+        public webKey: string;
+
+        /** S2C hkOptionQotRight. */
+        public hkOptionQotRight: number;
+
+        /** S2C hasUSOptionQotRight. */
+        public hasUSOptionQotRight: boolean;
+
+        /** S2C hkFutureQotRight. */
+        public hkFutureQotRight: number;
+
+        /** S2C subQuota. */
+        public subQuota: number;
+
+        /** S2C historyKLQuota. */
+        public historyKLQuota: number;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns S2C instance
+         */
+        public static create(properties?: GetUserInfo.IS2C): GetUserInfo.S2C;
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: GetUserInfo.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetUserInfo.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: GetUserInfo.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.S2C;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.S2C;
+
+        /**
+         * Verifies a S2C message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns S2C
+         */
+        public static fromObject(object: { [k: string]: any }): GetUserInfo.S2C;
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @param message S2C
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: GetUserInfo.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this S2C to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Request. */
+    interface IRequest {
+
+        /** Request c2s */
+        c2s: GetUserInfo.IC2S;
+    }
+
+    /** Represents a Request. */
+    class Request implements IRequest {
+
+        /**
+         * Constructs a new Request.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: GetUserInfo.IRequest);
+
+        /** Request c2s. */
+        public c2s: GetUserInfo.IC2S;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Request instance
+         */
+        public static create(properties?: GetUserInfo.IRequest): GetUserInfo.Request;
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: GetUserInfo.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetUserInfo.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: GetUserInfo.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.Request;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.Request;
+
+        /**
+         * Verifies a Request message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Request
+         */
+        public static fromObject(object: { [k: string]: any }): GetUserInfo.Request;
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @param message Request
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: GetUserInfo.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Request to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Response. */
+    interface IResponse {
+
+        /** Response retType */
+        retType: number;
+
+        /** Response retMsg */
+        retMsg?: (string|null);
+
+        /** Response errCode */
+        errCode?: (number|null);
+
+        /** Response s2c */
+        s2c?: (GetUserInfo.IS2C|null);
+    }
+
+    /** Represents a Response. */
+    class Response implements IResponse {
+
+        /**
+         * Constructs a new Response.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: GetUserInfo.IResponse);
+
+        /** Response retType. */
+        public retType: number;
+
+        /** Response retMsg. */
+        public retMsg: string;
+
+        /** Response errCode. */
+        public errCode: number;
+
+        /** Response s2c. */
+        public s2c?: (GetUserInfo.IS2C|null);
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Response instance
+         */
+        public static create(properties?: GetUserInfo.IResponse): GetUserInfo.Response;
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: GetUserInfo.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetUserInfo.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: GetUserInfo.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetUserInfo.Response;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetUserInfo.Response;
+
+        /**
+         * Verifies a Response message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Response
+         */
+        public static fromObject(object: { [k: string]: any }): GetUserInfo.Response;
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @param message Response
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: GetUserInfo.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Response to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+}
+
+/** Namespace InitConnect. */
+export namespace InitConnect {
+
+    /** Properties of a C2S. */
+    interface IC2S {
+
+        /** C2S clientVer */
+        clientVer: number;
+
+        /** C2S clientID */
+        clientID: string;
+
+        /** C2S recvNotify */
+        recvNotify?: (boolean|null);
+
+        /** C2S packetEncAlgo */
+        packetEncAlgo?: (number|null);
+
+        /** C2S pushProtoFmt */
+        pushProtoFmt?: (number|null);
+
+        /** C2S programmingLanguage */
+        programmingLanguage?: (string|null);
+    }
+
+    /** Represents a C2S. */
+    class C2S implements IC2S {
+
+        /**
+         * Constructs a new C2S.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: InitConnect.IC2S);
+
+        /** C2S clientVer. */
+        public clientVer: number;
+
+        /** C2S clientID. */
+        public clientID: string;
+
+        /** C2S recvNotify. */
+        public recvNotify: boolean;
+
+        /** C2S packetEncAlgo. */
+        public packetEncAlgo: number;
+
+        /** C2S pushProtoFmt. */
+        public pushProtoFmt: number;
+
+        /** C2S programmingLanguage. */
+        public programmingLanguage: string;
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2S instance
+         */
+        public static create(properties?: InitConnect.IC2S): InitConnect.C2S;
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: InitConnect.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link InitConnect.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: InitConnect.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.C2S;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.C2S;
+
+        /**
+         * Verifies a C2S message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2S
+         */
+        public static fromObject(object: { [k: string]: any }): InitConnect.C2S;
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @param message C2S
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: InitConnect.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2S to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a S2C. */
+    interface IS2C {
+
+        /** S2C serverVer */
+        serverVer: number;
+
+        /** S2C loginUserID */
+        loginUserID: (number|Long);
+
+        /** S2C connID */
+        connID: (number|Long);
+
+        /** S2C connAESKey */
+        connAESKey: string;
+
+        /** S2C keepAliveInterval */
+        keepAliveInterval: number;
+
+        /** S2C aesCBCiv */
+        aesCBCiv?: (string|null);
+    }
+
+    /** Represents a S2C. */
+    class S2C implements IS2C {
+
+        /**
+         * Constructs a new S2C.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: InitConnect.IS2C);
+
+        /** S2C serverVer. */
+        public serverVer: number;
+
+        /** S2C loginUserID. */
+        public loginUserID: (number|Long);
+
+        /** S2C connID. */
+        public connID: (number|Long);
+
+        /** S2C connAESKey. */
+        public connAESKey: string;
+
+        /** S2C keepAliveInterval. */
+        public keepAliveInterval: number;
+
+        /** S2C aesCBCiv. */
+        public aesCBCiv: string;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns S2C instance
+         */
+        public static create(properties?: InitConnect.IS2C): InitConnect.S2C;
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: InitConnect.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link InitConnect.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: InitConnect.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.S2C;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.S2C;
+
+        /**
+         * Verifies a S2C message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns S2C
+         */
+        public static fromObject(object: { [k: string]: any }): InitConnect.S2C;
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @param message S2C
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: InitConnect.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this S2C to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Request. */
+    interface IRequest {
+
+        /** Request c2s */
+        c2s: InitConnect.IC2S;
+    }
+
+    /** Represents a Request. */
+    class Request implements IRequest {
+
+        /**
+         * Constructs a new Request.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: InitConnect.IRequest);
+
+        /** Request c2s. */
+        public c2s: InitConnect.IC2S;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Request instance
+         */
+        public static create(properties?: InitConnect.IRequest): InitConnect.Request;
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: InitConnect.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link InitConnect.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: InitConnect.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.Request;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.Request;
+
+        /**
+         * Verifies a Request message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Request
+         */
+        public static fromObject(object: { [k: string]: any }): InitConnect.Request;
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @param message Request
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: InitConnect.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Request to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Response. */
+    interface IResponse {
+
+        /** Response retType */
+        retType: number;
+
+        /** Response retMsg */
+        retMsg?: (string|null);
+
+        /** Response errCode */
+        errCode?: (number|null);
+
+        /** Response s2c */
+        s2c?: (InitConnect.IS2C|null);
+    }
+
+    /** Represents a Response. */
+    class Response implements IResponse {
+
+        /**
+         * Constructs a new Response.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: InitConnect.IResponse);
+
+        /** Response retType. */
+        public retType: number;
+
+        /** Response retMsg. */
+        public retMsg: string;
+
+        /** Response errCode. */
+        public errCode: number;
+
+        /** Response s2c. */
+        public s2c?: (InitConnect.IS2C|null);
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Response instance
+         */
+        public static create(properties?: InitConnect.IResponse): InitConnect.Response;
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: InitConnect.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link InitConnect.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: InitConnect.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): InitConnect.Response;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): InitConnect.Response;
+
+        /**
+         * Verifies a Response message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Response
+         */
+        public static fromObject(object: { [k: string]: any }): InitConnect.Response;
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @param message Response
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: InitConnect.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Response to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+}
+
+/** Namespace KeepAlive. */
+export namespace KeepAlive {
+
+    /** Properties of a C2S. */
+    interface IC2S {
+
+        /** C2S time */
+        time: (number|Long);
+    }
+
+    /** Represents a C2S. */
+    class C2S implements IC2S {
+
+        /**
+         * Constructs a new C2S.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: KeepAlive.IC2S);
+
+        /** C2S time. */
+        public time: (number|Long);
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2S instance
+         */
+        public static create(properties?: KeepAlive.IC2S): KeepAlive.C2S;
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: KeepAlive.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link KeepAlive.C2S.verify|verify} messages.
+         * @param message C2S message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: KeepAlive.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.C2S;
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.C2S;
+
+        /**
+         * Verifies a C2S message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2S
+         */
+        public static fromObject(object: { [k: string]: any }): KeepAlive.C2S;
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @param message C2S
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: KeepAlive.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2S to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a S2C. */
+    interface IS2C {
+
+        /** S2C time */
+        time: (number|Long);
+    }
+
+    /** Represents a S2C. */
+    class S2C implements IS2C {
+
+        /**
+         * Constructs a new S2C.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: KeepAlive.IS2C);
+
+        /** S2C time. */
+        public time: (number|Long);
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns S2C instance
+         */
+        public static create(properties?: KeepAlive.IS2C): KeepAlive.S2C;
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: KeepAlive.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link KeepAlive.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: KeepAlive.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.S2C;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.S2C;
+
+        /**
+         * Verifies a S2C message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns S2C
+         */
+        public static fromObject(object: { [k: string]: any }): KeepAlive.S2C;
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @param message S2C
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: KeepAlive.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this S2C to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Request. */
+    interface IRequest {
+
+        /** Request c2s */
+        c2s: KeepAlive.IC2S;
+    }
+
+    /** Represents a Request. */
+    class Request implements IRequest {
+
+        /**
+         * Constructs a new Request.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: KeepAlive.IRequest);
+
+        /** Request c2s. */
+        public c2s: KeepAlive.IC2S;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Request instance
+         */
+        public static create(properties?: KeepAlive.IRequest): KeepAlive.Request;
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: KeepAlive.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link KeepAlive.Request.verify|verify} messages.
+         * @param message Request message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: KeepAlive.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.Request;
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.Request;
+
+        /**
+         * Verifies a Request message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Request
+         */
+        public static fromObject(object: { [k: string]: any }): KeepAlive.Request;
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @param message Request
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: KeepAlive.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Request to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Response. */
+    interface IResponse {
+
+        /** Response retType */
+        retType: number;
+
+        /** Response retMsg */
+        retMsg?: (string|null);
+
+        /** Response errCode */
+        errCode?: (number|null);
+
+        /** Response s2c */
+        s2c?: (KeepAlive.IS2C|null);
+    }
+
+    /** Represents a Response. */
+    class Response implements IResponse {
+
+        /**
+         * Constructs a new Response.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: KeepAlive.IResponse);
+
+        /** Response retType. */
+        public retType: number;
+
+        /** Response retMsg. */
+        public retMsg: string;
+
+        /** Response errCode. */
+        public errCode: number;
+
+        /** Response s2c. */
+        public s2c?: (KeepAlive.IS2C|null);
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Response instance
+         */
+        public static create(properties?: KeepAlive.IResponse): KeepAlive.Response;
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: KeepAlive.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link KeepAlive.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: KeepAlive.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): KeepAlive.Response;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): KeepAlive.Response;
+
+        /**
+         * Verifies a Response message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Response
+         */
+        public static fromObject(object: { [k: string]: any }): KeepAlive.Response;
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @param message Response
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: KeepAlive.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Response to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+}
+
+/** Namespace Notify. */
+export namespace Notify {
+
+    /** NotifyType enum. */
+    enum NotifyType {
+        NotifyType_None = 0,
+        NotifyType_GtwEvent = 1,
+        NotifyType_ProgramStatus = 2,
+        NotifyType_ConnStatus = 3,
+        NotifyType_QotRight = 4,
+        NotifyType_APILevel = 5,
+        NotifyType_APIQuota = 6
+    }
+
+    /** GtwEventType enum. */
+    enum GtwEventType {
+        GtwEventType_None = 0,
+        GtwEventType_LocalCfgLoadFailed = 1,
+        GtwEventType_APISvrRunFailed = 2,
+        GtwEventType_ForceUpdate = 3,
+        GtwEventType_LoginFailed = 4,
+        GtwEventType_UnAgreeDisclaimer = 5,
+        GtwEventType_NetCfgMissing = 6,
+        GtwEventType_KickedOut = 7,
+        GtwEventType_LoginPwdChanged = 8,
+        GtwEventType_BanLogin = 9,
+        GtwEventType_NeedPicVerifyCode = 10,
+        GtwEventType_NeedPhoneVerifyCode = 11,
+        GtwEventType_AppDataNotExist = 12,
+        GtwEventType_NessaryDataMissing = 13,
+        GtwEventType_TradePwdChanged = 14,
+        GtwEventType_EnableDeviceLock = 15
+    }
+
+    /** Properties of a GtwEvent. */
+    interface IGtwEvent {
+
+        /** GtwEvent eventType */
+        eventType: number;
+
+        /** GtwEvent desc */
+        desc: string;
+    }
+
+    /** Represents a GtwEvent. */
+    class GtwEvent implements IGtwEvent {
+
+        /**
+         * Constructs a new GtwEvent.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IGtwEvent);
+
+        /** GtwEvent eventType. */
+        public eventType: number;
+
+        /** GtwEvent desc. */
+        public desc: string;
+
+        /**
+         * Creates a new GtwEvent instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GtwEvent instance
+         */
+        public static create(properties?: Notify.IGtwEvent): Notify.GtwEvent;
+
+        /**
+         * Encodes the specified GtwEvent message. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
+         * @param message GtwEvent message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IGtwEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GtwEvent message, length delimited. Does not implicitly {@link Notify.GtwEvent.verify|verify} messages.
+         * @param message GtwEvent message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IGtwEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GtwEvent message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GtwEvent
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.GtwEvent;
+
+        /**
+         * Decodes a GtwEvent message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GtwEvent
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.GtwEvent;
+
+        /**
+         * Verifies a GtwEvent message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GtwEvent message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GtwEvent
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.GtwEvent;
+
+        /**
+         * Creates a plain object from a GtwEvent message. Also converts values to other types if specified.
+         * @param message GtwEvent
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.GtwEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GtwEvent to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ProgramStatus. */
+    interface IProgramStatus {
+
+        /** ProgramStatus programStatus */
+        programStatus: Common.IProgramStatus;
+    }
+
+    /** Represents a ProgramStatus. */
+    class ProgramStatus implements IProgramStatus {
+
+        /**
+         * Constructs a new ProgramStatus.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IProgramStatus);
+
+        /** ProgramStatus programStatus. */
+        public programStatus: Common.IProgramStatus;
+
+        /**
+         * Creates a new ProgramStatus instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ProgramStatus instance
+         */
+        public static create(properties?: Notify.IProgramStatus): Notify.ProgramStatus;
+
+        /**
+         * Encodes the specified ProgramStatus message. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
+         * @param message ProgramStatus message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IProgramStatus, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ProgramStatus message, length delimited. Does not implicitly {@link Notify.ProgramStatus.verify|verify} messages.
+         * @param message ProgramStatus message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IProgramStatus, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ProgramStatus message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ProgramStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.ProgramStatus;
+
+        /**
+         * Decodes a ProgramStatus message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ProgramStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.ProgramStatus;
+
+        /**
+         * Verifies a ProgramStatus message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ProgramStatus message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ProgramStatus
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.ProgramStatus;
+
+        /**
+         * Creates a plain object from a ProgramStatus message. Also converts values to other types if specified.
+         * @param message ProgramStatus
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.ProgramStatus, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ProgramStatus to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ConnectStatus. */
+    interface IConnectStatus {
+
+        /** ConnectStatus qotLogined */
+        qotLogined: boolean;
+
+        /** ConnectStatus trdLogined */
+        trdLogined: boolean;
+    }
+
+    /** Represents a ConnectStatus. */
+    class ConnectStatus implements IConnectStatus {
+
+        /**
+         * Constructs a new ConnectStatus.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IConnectStatus);
+
+        /** ConnectStatus qotLogined. */
+        public qotLogined: boolean;
+
+        /** ConnectStatus trdLogined. */
+        public trdLogined: boolean;
+
+        /**
+         * Creates a new ConnectStatus instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ConnectStatus instance
+         */
+        public static create(properties?: Notify.IConnectStatus): Notify.ConnectStatus;
+
+        /**
+         * Encodes the specified ConnectStatus message. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
+         * @param message ConnectStatus message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IConnectStatus, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ConnectStatus message, length delimited. Does not implicitly {@link Notify.ConnectStatus.verify|verify} messages.
+         * @param message ConnectStatus message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IConnectStatus, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ConnectStatus message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ConnectStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.ConnectStatus;
+
+        /**
+         * Decodes a ConnectStatus message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ConnectStatus
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.ConnectStatus;
+
+        /**
+         * Verifies a ConnectStatus message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ConnectStatus message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ConnectStatus
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.ConnectStatus;
+
+        /**
+         * Creates a plain object from a ConnectStatus message. Also converts values to other types if specified.
+         * @param message ConnectStatus
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.ConnectStatus, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ConnectStatus to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a QotRight. */
+    interface IQotRight {
+
+        /** QotRight hkQotRight */
+        hkQotRight: number;
+
+        /** QotRight usQotRight */
+        usQotRight: number;
+
+        /** QotRight cnQotRight */
+        cnQotRight: number;
+
+        /** QotRight hkOptionQotRight */
+        hkOptionQotRight?: (number|null);
+
+        /** QotRight hasUSOptionQotRight */
+        hasUSOptionQotRight?: (boolean|null);
+
+        /** QotRight hkFutureQotRight */
+        hkFutureQotRight?: (number|null);
+    }
+
+    /** Represents a QotRight. */
+    class QotRight implements IQotRight {
+
+        /**
+         * Constructs a new QotRight.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IQotRight);
+
+        /** QotRight hkQotRight. */
+        public hkQotRight: number;
+
+        /** QotRight usQotRight. */
+        public usQotRight: number;
+
+        /** QotRight cnQotRight. */
+        public cnQotRight: number;
+
+        /** QotRight hkOptionQotRight. */
+        public hkOptionQotRight: number;
+
+        /** QotRight hasUSOptionQotRight. */
+        public hasUSOptionQotRight: boolean;
+
+        /** QotRight hkFutureQotRight. */
+        public hkFutureQotRight: number;
+
+        /**
+         * Creates a new QotRight instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns QotRight instance
+         */
+        public static create(properties?: Notify.IQotRight): Notify.QotRight;
+
+        /**
+         * Encodes the specified QotRight message. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
+         * @param message QotRight message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IQotRight, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified QotRight message, length delimited. Does not implicitly {@link Notify.QotRight.verify|verify} messages.
+         * @param message QotRight message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IQotRight, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a QotRight message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns QotRight
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.QotRight;
+
+        /**
+         * Decodes a QotRight message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns QotRight
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.QotRight;
+
+        /**
+         * Verifies a QotRight message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a QotRight message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns QotRight
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.QotRight;
+
+        /**
+         * Creates a plain object from a QotRight message. Also converts values to other types if specified.
+         * @param message QotRight
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.QotRight, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this QotRight to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a APILevel. */
+    interface IAPILevel {
+
+        /** APILevel apiLevel */
+        apiLevel: string;
+    }
+
+    /** Represents a APILevel. */
+    class APILevel implements IAPILevel {
+
+        /**
+         * Constructs a new APILevel.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IAPILevel);
+
+        /** APILevel apiLevel. */
+        public apiLevel: string;
+
+        /**
+         * Creates a new APILevel instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns APILevel instance
+         */
+        public static create(properties?: Notify.IAPILevel): Notify.APILevel;
+
+        /**
+         * Encodes the specified APILevel message. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
+         * @param message APILevel message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IAPILevel, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified APILevel message, length delimited. Does not implicitly {@link Notify.APILevel.verify|verify} messages.
+         * @param message APILevel message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IAPILevel, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a APILevel message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns APILevel
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.APILevel;
+
+        /**
+         * Decodes a APILevel message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns APILevel
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.APILevel;
+
+        /**
+         * Verifies a APILevel message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a APILevel message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns APILevel
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.APILevel;
+
+        /**
+         * Creates a plain object from a APILevel message. Also converts values to other types if specified.
+         * @param message APILevel
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.APILevel, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this APILevel to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a APIQuota. */
+    interface IAPIQuota {
+
+        /** APIQuota subQuota */
+        subQuota: number;
+
+        /** APIQuota historyKLQuota */
+        historyKLQuota: number;
+    }
+
+    /** Represents a APIQuota. */
+    class APIQuota implements IAPIQuota {
+
+        /**
+         * Constructs a new APIQuota.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IAPIQuota);
+
+        /** APIQuota subQuota. */
+        public subQuota: number;
+
+        /** APIQuota historyKLQuota. */
+        public historyKLQuota: number;
+
+        /**
+         * Creates a new APIQuota instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns APIQuota instance
+         */
+        public static create(properties?: Notify.IAPIQuota): Notify.APIQuota;
+
+        /**
+         * Encodes the specified APIQuota message. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
+         * @param message APIQuota message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IAPIQuota, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified APIQuota message, length delimited. Does not implicitly {@link Notify.APIQuota.verify|verify} messages.
+         * @param message APIQuota message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IAPIQuota, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a APIQuota message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns APIQuota
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.APIQuota;
+
+        /**
+         * Decodes a APIQuota message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns APIQuota
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.APIQuota;
+
+        /**
+         * Verifies a APIQuota message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a APIQuota message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns APIQuota
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.APIQuota;
+
+        /**
+         * Creates a plain object from a APIQuota message. Also converts values to other types if specified.
+         * @param message APIQuota
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.APIQuota, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this APIQuota to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a S2C. */
+    interface IS2C {
+
+        /** S2C type */
+        type: number;
+
+        /** S2C event */
+        event?: (Notify.IGtwEvent|null);
+
+        /** S2C programStatus */
+        programStatus?: (Notify.IProgramStatus|null);
+
+        /** S2C connectStatus */
+        connectStatus?: (Notify.IConnectStatus|null);
+
+        /** S2C qotRight */
+        qotRight?: (Notify.IQotRight|null);
+
+        /** S2C apiLevel */
+        apiLevel?: (Notify.IAPILevel|null);
+
+        /** S2C apiQuota */
+        apiQuota?: (Notify.IAPIQuota|null);
+    }
+
+    /** Represents a S2C. */
+    class S2C implements IS2C {
+
+        /**
+         * Constructs a new S2C.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IS2C);
+
+        /** S2C type. */
+        public type: number;
+
+        /** S2C event. */
+        public event?: (Notify.IGtwEvent|null);
+
+        /** S2C programStatus. */
+        public programStatus?: (Notify.IProgramStatus|null);
+
+        /** S2C connectStatus. */
+        public connectStatus?: (Notify.IConnectStatus|null);
+
+        /** S2C qotRight. */
+        public qotRight?: (Notify.IQotRight|null);
+
+        /** S2C apiLevel. */
+        public apiLevel?: (Notify.IAPILevel|null);
+
+        /** S2C apiQuota. */
+        public apiQuota?: (Notify.IAPIQuota|null);
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns S2C instance
+         */
+        public static create(properties?: Notify.IS2C): Notify.S2C;
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link Notify.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Notify.S2C.verify|verify} messages.
+         * @param message S2C message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.S2C;
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.S2C;
+
+        /**
+         * Verifies a S2C message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns S2C
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.S2C;
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @param message S2C
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this S2C to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Response. */
+    interface IResponse {
+
+        /** Response retType */
+        retType: number;
+
+        /** Response retMsg */
+        retMsg?: (string|null);
+
+        /** Response errCode */
+        errCode?: (number|null);
+
+        /** Response s2c */
+        s2c?: (Notify.IS2C|null);
+    }
+
+    /** Represents a Response. */
+    class Response implements IResponse {
+
+        /**
+         * Constructs a new Response.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Notify.IResponse);
+
+        /** Response retType. */
+        public retType: number;
+
+        /** Response retMsg. */
+        public retMsg: string;
+
+        /** Response errCode. */
+        public errCode: number;
+
+        /** Response s2c. */
+        public s2c?: (Notify.IS2C|null);
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Response instance
+         */
+        public static create(properties?: Notify.IResponse): Notify.Response;
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link Notify.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Notify.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link Notify.Response.verify|verify} messages.
+         * @param message Response message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Notify.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Notify.Response;
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Notify.Response;
+
+        /**
+         * Verifies a Response message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Response
+         */
+        public static fromObject(object: { [k: string]: any }): Notify.Response;
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @param message Response
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Notify.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Response to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -26220,7 +26691,12 @@ export namespace Qot_StockFilter {
         StockField_PeTTM = 13,
         StockField_PbRate = 14,
         StockField_ChangeRate5min = 15,
-        StockField_ChangeRateBeginYear = 16
+        StockField_ChangeRateBeginYear = 16,
+        StockField_PSTTM = 17,
+        StockField_PCFTTM = 18,
+        StockField_TotalShare = 19,
+        StockField_FloatShare = 20,
+        StockField_FloatMarketVal = 21
     }
 
     /** AccumulateField enum. */
@@ -26242,8 +26718,46 @@ export namespace Qot_StockFilter {
         FinancialField_SumOfBusinessGrowth = 4,
         FinancialField_NetProfitRate = 5,
         FinancialField_GrossProfitRate = 6,
-        FinancialField_DebtAssetRate = 7,
-        FinancialField_ReturnOnEquityRate = 8
+        FinancialField_DebtAssetsRate = 7,
+        FinancialField_ReturnOnEquityRate = 8,
+        FinancialField_ROIC = 9,
+        FinancialField_ROATTM = 10,
+        FinancialField_EBITTTM = 11,
+        FinancialField_EBITDA = 12,
+        FinancialField_OperatingMarginTTM = 13,
+        FinancialField_EBITMargin = 14,
+        FinancialField_EBITDAMargin = 15,
+        FinancialField_FinancialCostRate = 16,
+        FinancialField_OperatingProfitTTM = 17,
+        FinancialField_ShareholderNetProfitTTM = 18,
+        FinancialField_NetProfitCashCoverTTM = 19,
+        FinancialField_CurrentRatio = 20,
+        FinancialField_QuickRatio = 21,
+        FinancialField_CurrentAssetRatio = 22,
+        FinancialField_CurrentDebtRatio = 23,
+        FinancialField_EquityMultiplier = 24,
+        FinancialField_PropertyRatio = 25,
+        FinancialField_CashAndCashEquivalents = 26,
+        FinancialField_TotalAssetTurnover = 27,
+        FinancialField_FixedAssetTurnover = 28,
+        FinancialField_InventoryTurnover = 29,
+        FinancialField_OperatingCashFlowTTM = 30,
+        FinancialField_AccountsReceivable = 31,
+        FinancialField_EBITGrowthRate = 32,
+        FinancialField_OperatingProfitGrowthRate = 33,
+        FinancialField_TotalAssetsGrowthRate = 34,
+        FinancialField_ProfitToShareholdersGrowthRate = 35,
+        FinancialField_ProfitBeforeTaxGrowthRate = 36,
+        FinancialField_EPSGrowthRate = 37,
+        FinancialField_ROEGrowthRate = 38,
+        FinancialField_ROICGrowthRate = 39,
+        FinancialField_NOCFGrowthRate = 40,
+        FinancialField_NOCFPerShareGrowthRate = 41,
+        FinancialField_OperatingRevenueCashCover = 42,
+        FinancialField_OperatingProfitToTotalProfit = 43,
+        FinancialField_BasicEPS = 44,
+        FinancialField_DilutedEPS = 45,
+        FinancialField_NOCFPerShare = 46
     }
 
     /** FinancialQuarter enum. */
@@ -37737,478 +38251,6 @@ export namespace Verification {
          * @returns Plain object
          */
         public static toObject(message: Verification.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Response to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-}
-
-/** Namespace GetGlobalState. */
-export namespace GetGlobalState {
-
-    /** Properties of a C2S. */
-    interface IC2S {
-
-        /** C2S userID */
-        userID: (number|Long);
-    }
-
-    /** Represents a C2S. */
-    class C2S implements IC2S {
-
-        /**
-         * Constructs a new C2S.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetGlobalState.IC2S);
-
-        /** C2S userID. */
-        public userID: (number|Long);
-
-        /**
-         * Creates a new C2S instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns C2S instance
-         */
-        public static create(properties?: GetGlobalState.IC2S): GetGlobalState.C2S;
-
-        /**
-         * Encodes the specified C2S message. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetGlobalState.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified C2S message, length delimited. Does not implicitly {@link GetGlobalState.C2S.verify|verify} messages.
-         * @param message C2S message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetGlobalState.IC2S, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.C2S;
-
-        /**
-         * Decodes a C2S message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns C2S
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.C2S;
-
-        /**
-         * Verifies a C2S message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns C2S
-         */
-        public static fromObject(object: { [k: string]: any }): GetGlobalState.C2S;
-
-        /**
-         * Creates a plain object from a C2S message. Also converts values to other types if specified.
-         * @param message C2S
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetGlobalState.C2S, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this C2S to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a S2C. */
-    interface IS2C {
-
-        /** S2C marketHK */
-        marketHK: number;
-
-        /** S2C marketUS */
-        marketUS: number;
-
-        /** S2C marketSH */
-        marketSH: number;
-
-        /** S2C marketSZ */
-        marketSZ: number;
-
-        /** S2C marketHKFuture */
-        marketHKFuture: number;
-
-        /** S2C marketUSFuture */
-        marketUSFuture?: (number|null);
-
-        /** S2C qotLogined */
-        qotLogined: boolean;
-
-        /** S2C trdLogined */
-        trdLogined: boolean;
-
-        /** S2C serverVer */
-        serverVer: number;
-
-        /** S2C serverBuildNo */
-        serverBuildNo: number;
-
-        /** S2C time */
-        time: (number|Long);
-
-        /** S2C localTime */
-        localTime?: (number|null);
-
-        /** S2C programStatus */
-        programStatus?: (Common.IProgramStatus|null);
-
-        /** S2C qotSvrIpAddr */
-        qotSvrIpAddr?: (string|null);
-
-        /** S2C trdSvrIpAddr */
-        trdSvrIpAddr?: (string|null);
-
-        /** S2C connID */
-        connID?: (number|Long|null);
-    }
-
-    /** Represents a S2C. */
-    class S2C implements IS2C {
-
-        /**
-         * Constructs a new S2C.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetGlobalState.IS2C);
-
-        /** S2C marketHK. */
-        public marketHK: number;
-
-        /** S2C marketUS. */
-        public marketUS: number;
-
-        /** S2C marketSH. */
-        public marketSH: number;
-
-        /** S2C marketSZ. */
-        public marketSZ: number;
-
-        /** S2C marketHKFuture. */
-        public marketHKFuture: number;
-
-        /** S2C marketUSFuture. */
-        public marketUSFuture: number;
-
-        /** S2C qotLogined. */
-        public qotLogined: boolean;
-
-        /** S2C trdLogined. */
-        public trdLogined: boolean;
-
-        /** S2C serverVer. */
-        public serverVer: number;
-
-        /** S2C serverBuildNo. */
-        public serverBuildNo: number;
-
-        /** S2C time. */
-        public time: (number|Long);
-
-        /** S2C localTime. */
-        public localTime: number;
-
-        /** S2C programStatus. */
-        public programStatus?: (Common.IProgramStatus|null);
-
-        /** S2C qotSvrIpAddr. */
-        public qotSvrIpAddr: string;
-
-        /** S2C trdSvrIpAddr. */
-        public trdSvrIpAddr: string;
-
-        /** S2C connID. */
-        public connID: (number|Long);
-
-        /**
-         * Creates a new S2C instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns S2C instance
-         */
-        public static create(properties?: GetGlobalState.IS2C): GetGlobalState.S2C;
-
-        /**
-         * Encodes the specified S2C message. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetGlobalState.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified S2C message, length delimited. Does not implicitly {@link GetGlobalState.S2C.verify|verify} messages.
-         * @param message S2C message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetGlobalState.IS2C, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.S2C;
-
-        /**
-         * Decodes a S2C message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns S2C
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.S2C;
-
-        /**
-         * Verifies a S2C message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns S2C
-         */
-        public static fromObject(object: { [k: string]: any }): GetGlobalState.S2C;
-
-        /**
-         * Creates a plain object from a S2C message. Also converts values to other types if specified.
-         * @param message S2C
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetGlobalState.S2C, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this S2C to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Request. */
-    interface IRequest {
-
-        /** Request c2s */
-        c2s: GetGlobalState.IC2S;
-    }
-
-    /** Represents a Request. */
-    class Request implements IRequest {
-
-        /**
-         * Constructs a new Request.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetGlobalState.IRequest);
-
-        /** Request c2s. */
-        public c2s: GetGlobalState.IC2S;
-
-        /**
-         * Creates a new Request instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Request instance
-         */
-        public static create(properties?: GetGlobalState.IRequest): GetGlobalState.Request;
-
-        /**
-         * Encodes the specified Request message. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetGlobalState.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Request message, length delimited. Does not implicitly {@link GetGlobalState.Request.verify|verify} messages.
-         * @param message Request message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetGlobalState.IRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.Request;
-
-        /**
-         * Decodes a Request message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Request
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.Request;
-
-        /**
-         * Verifies a Request message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Request message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Request
-         */
-        public static fromObject(object: { [k: string]: any }): GetGlobalState.Request;
-
-        /**
-         * Creates a plain object from a Request message. Also converts values to other types if specified.
-         * @param message Request
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetGlobalState.Request, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Request to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Response. */
-    interface IResponse {
-
-        /** Response retType */
-        retType: number;
-
-        /** Response retMsg */
-        retMsg?: (string|null);
-
-        /** Response errCode */
-        errCode?: (number|null);
-
-        /** Response s2c */
-        s2c?: (GetGlobalState.IS2C|null);
-    }
-
-    /** Represents a Response. */
-    class Response implements IResponse {
-
-        /**
-         * Constructs a new Response.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: GetGlobalState.IResponse);
-
-        /** Response retType. */
-        public retType: number;
-
-        /** Response retMsg. */
-        public retMsg: string;
-
-        /** Response errCode. */
-        public errCode: number;
-
-        /** Response s2c. */
-        public s2c?: (GetGlobalState.IS2C|null);
-
-        /**
-         * Creates a new Response instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Response instance
-         */
-        public static create(properties?: GetGlobalState.IResponse): GetGlobalState.Response;
-
-        /**
-         * Encodes the specified Response message. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: GetGlobalState.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Response message, length delimited. Does not implicitly {@link GetGlobalState.Response.verify|verify} messages.
-         * @param message Response message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: GetGlobalState.IResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GetGlobalState.Response;
-
-        /**
-         * Decodes a Response message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Response
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GetGlobalState.Response;
-
-        /**
-         * Verifies a Response message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Response message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Response
-         */
-        public static fromObject(object: { [k: string]: any }): GetGlobalState.Response;
-
-        /**
-         * Creates a plain object from a Response message. Also converts values to other types if specified.
-         * @param message Response
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: GetGlobalState.Response, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
          * Converts this Response to JSON.
