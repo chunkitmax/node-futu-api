@@ -1,8 +1,8 @@
 # node-futu-api
 <a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
-This module automatically generates interfaces and class according to official release files.
+Open-source unofficial Futu Websocket API for Node.js
 
-Tested on FutuOpenD Ver.2.13.950 <font color="red"><strong>(Beta)</font></strong> from Futu development team for testing
+Tested on FutuOpenD Ver.2.14.1000 (on Ubuntu 18.04)
 
 ## Install
 ```bash
@@ -19,6 +19,7 @@ npm run build
 ### Example:
 ```typescript
 // TODO: Run FutuOpenD software first
+//   Make sure websocket_port is set
 
 import Futu, { Proto, Subscribe } from 'futu-api';
 import UserConfig from '../user_config.json';
