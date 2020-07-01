@@ -76,8 +76,8 @@ describe('Futu', () => {
 
   it('qotRequestHistoryKL', async () => {
     const targetSecurity = {
-      code: 'YMmain',
-      market: Qot_Common.QotMarket.QotMarket_US_Security
+      code: '00700',
+      market: Qot_Common.QotMarket.QotMarket_HK_Security
     }
     let res = await AssertShouldResolve(ft.qotRequestHistoryKL({
       beginTime: '2020-01-01 00:00:00',
