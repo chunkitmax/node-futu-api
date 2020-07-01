@@ -1,12 +1,12 @@
 {
   "name": "futu-api",
-  "version": "1.1.1",
-  "description": "Basic tool for algorithmic trading on Futu which automatically generates interfaces and methods according to official release files",
-  "main": "dist/src/Futu.js",
+  "version": "1.2.3",
+  "description": "Open-source unofficial Futu API",
+  "main": "dist/src/futu.js",
   "scripts": {
     "test": "npm run update; mocha dist/src/test/test.js",
-    "prebuild": "mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh; ./tools/update_proto_id.sh",
-    "build": "npm run update",
+    "prebuild": "rm dist -rf; mkdir -p src/proto; chmod +x tools/*.sh; ./tools/pb2ts.sh",
+    "build": "npm install && npm run update",
     "update": "./tools/build.sh"
   },
   "repository": {
@@ -15,21 +15,28 @@
   },
   "keywords": [
     "futu",
-    "api"
+    "api",
+    "node",
+    "js",
+    "futu-api",
+    "opend"
   ],
   "author": "Petel__",
   "license": "ISC",
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.29",
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "mocha": "^6.2.2",
-    "tslint": "^5.20.1",
-    "typescript": "^3.8.3"
+    "@types/bytebuffer": "5.0.41",
+    "@types/mocha": "5.2.7",
+    "@types/node": "12.12.29",
+    "mocha": "6.2.2",
+    "tslint": "5.20.1",
+    "typescript": "3.8.3"
   },
   "dependencies": {
-    "hex-sha1": "^1.0.2",
-    "protobufjs": "^6.8.8"
+    "@types/ws": "7.2.5",
+    "bytebuffer": "5.0.1",
+    "loglevel": "1.6.8",
+    "long": "4.0.0",
+    "protobufjs": "6.8.8",
+    "ws": "7.3.0"
   }
 }
