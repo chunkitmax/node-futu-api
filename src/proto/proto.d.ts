@@ -1992,7 +1992,8 @@ export namespace Qot_Common {
         QotRight_Bmp = 1,
         QotRight_Level1 = 2,
         QotRight_Level2 = 3,
-        QotRight_SF = 4
+        QotRight_SF = 4,
+        QotRight_No = 5
     }
 
     /** PriceReminderType enum. */
@@ -2699,6 +2700,108 @@ export namespace Qot_Common {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a WarrantBasicQotExData. */
+    interface IWarrantBasicQotExData {
+
+        /** WarrantBasicQotExData delta */
+        delta?: (number|null);
+
+        /** WarrantBasicQotExData impliedVolatility */
+        impliedVolatility?: (number|null);
+
+        /** WarrantBasicQotExData premium */
+        premium: number;
+    }
+
+    /** Represents a WarrantBasicQotExData. */
+    class WarrantBasicQotExData implements IWarrantBasicQotExData {
+
+        /**
+         * Constructs a new WarrantBasicQotExData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Qot_Common.IWarrantBasicQotExData);
+
+        /** WarrantBasicQotExData delta. */
+        public delta: number;
+
+        /** WarrantBasicQotExData impliedVolatility. */
+        public impliedVolatility: number;
+
+        /** WarrantBasicQotExData premium. */
+        public premium: number;
+
+        /**
+         * Creates a new WarrantBasicQotExData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns WarrantBasicQotExData instance
+         */
+        public static create(properties?: Qot_Common.IWarrantBasicQotExData): Qot_Common.WarrantBasicQotExData;
+
+        /**
+         * Encodes the specified WarrantBasicQotExData message. Does not implicitly {@link Qot_Common.WarrantBasicQotExData.verify|verify} messages.
+         * @param message WarrantBasicQotExData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Qot_Common.IWarrantBasicQotExData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified WarrantBasicQotExData message, length delimited. Does not implicitly {@link Qot_Common.WarrantBasicQotExData.verify|verify} messages.
+         * @param message WarrantBasicQotExData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Qot_Common.IWarrantBasicQotExData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a WarrantBasicQotExData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns WarrantBasicQotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Qot_Common.WarrantBasicQotExData;
+
+        /**
+         * Decodes a WarrantBasicQotExData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns WarrantBasicQotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Qot_Common.WarrantBasicQotExData;
+
+        /**
+         * Verifies a WarrantBasicQotExData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a WarrantBasicQotExData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns WarrantBasicQotExData
+         */
+        public static fromObject(object: { [k: string]: any }): Qot_Common.WarrantBasicQotExData;
+
+        /**
+         * Creates a plain object from a WarrantBasicQotExData message. Also converts values to other types if specified.
+         * @param message WarrantBasicQotExData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Qot_Common.WarrantBasicQotExData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this WarrantBasicQotExData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a BasicQot. */
     interface IBasicQot {
 
@@ -2767,6 +2870,9 @@ export namespace Qot_Common {
 
         /** BasicQot futureExData */
         futureExData?: (Qot_Common.IFutureBasicQotExData|null);
+
+        /** BasicQot warrantExData */
+        warrantExData?: (Qot_Common.IWarrantBasicQotExData|null);
     }
 
     /** Represents a BasicQot. */
@@ -2843,6 +2949,9 @@ export namespace Qot_Common {
 
         /** BasicQot futureExData. */
         public futureExData?: (Qot_Common.IFutureBasicQotExData|null);
+
+        /** BasicQot warrantExData. */
+        public warrantExData?: (Qot_Common.IWarrantBasicQotExData|null);
 
         /**
          * Creates a new BasicQot instance using the specified properties.

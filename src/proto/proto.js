@@ -4886,6 +4886,7 @@ $root.Qot_Common = (function() {
      * @property {number} QotRight_Level1=2 QotRight_Level1 value
      * @property {number} QotRight_Level2=3 QotRight_Level2 value
      * @property {number} QotRight_SF=4 QotRight_SF value
+     * @property {number} QotRight_No=5 QotRight_No value
      */
     Qot_Common.QotRight = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4894,6 +4895,7 @@ $root.Qot_Common = (function() {
         values[valuesById[2] = "QotRight_Level1"] = 2;
         values[valuesById[3] = "QotRight_Level2"] = 3;
         values[valuesById[4] = "QotRight_SF"] = 4;
+        values[valuesById[5] = "QotRight_No"] = 5;
         return values;
     })();
 
@@ -6757,6 +6759,238 @@ $root.Qot_Common = (function() {
         return FutureBasicQotExData;
     })();
 
+    Qot_Common.WarrantBasicQotExData = (function() {
+
+        /**
+         * Properties of a WarrantBasicQotExData.
+         * @memberof Qot_Common
+         * @interface IWarrantBasicQotExData
+         * @property {number|null} [delta] WarrantBasicQotExData delta
+         * @property {number|null} [impliedVolatility] WarrantBasicQotExData impliedVolatility
+         * @property {number} premium WarrantBasicQotExData premium
+         */
+
+        /**
+         * Constructs a new WarrantBasicQotExData.
+         * @memberof Qot_Common
+         * @classdesc Represents a WarrantBasicQotExData.
+         * @implements IWarrantBasicQotExData
+         * @constructor
+         * @param {Qot_Common.IWarrantBasicQotExData=} [properties] Properties to set
+         */
+        function WarrantBasicQotExData(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * WarrantBasicQotExData delta.
+         * @member {number} delta
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @instance
+         */
+        WarrantBasicQotExData.prototype.delta = 0;
+
+        /**
+         * WarrantBasicQotExData impliedVolatility.
+         * @member {number} impliedVolatility
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @instance
+         */
+        WarrantBasicQotExData.prototype.impliedVolatility = 0;
+
+        /**
+         * WarrantBasicQotExData premium.
+         * @member {number} premium
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @instance
+         */
+        WarrantBasicQotExData.prototype.premium = 0;
+
+        /**
+         * Creates a new WarrantBasicQotExData instance using the specified properties.
+         * @function create
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Qot_Common.IWarrantBasicQotExData=} [properties] Properties to set
+         * @returns {Qot_Common.WarrantBasicQotExData} WarrantBasicQotExData instance
+         */
+        WarrantBasicQotExData.create = function create(properties) {
+            return new WarrantBasicQotExData(properties);
+        };
+
+        /**
+         * Encodes the specified WarrantBasicQotExData message. Does not implicitly {@link Qot_Common.WarrantBasicQotExData.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Qot_Common.IWarrantBasicQotExData} message WarrantBasicQotExData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        WarrantBasicQotExData.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.delta != null && message.hasOwnProperty("delta"))
+                writer.uint32(/* id 1, wireType 1 =*/9).double(message.delta);
+            if (message.impliedVolatility != null && message.hasOwnProperty("impliedVolatility"))
+                writer.uint32(/* id 2, wireType 1 =*/17).double(message.impliedVolatility);
+            writer.uint32(/* id 3, wireType 1 =*/25).double(message.premium);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified WarrantBasicQotExData message, length delimited. Does not implicitly {@link Qot_Common.WarrantBasicQotExData.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Qot_Common.IWarrantBasicQotExData} message WarrantBasicQotExData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        WarrantBasicQotExData.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a WarrantBasicQotExData message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_Common.WarrantBasicQotExData} WarrantBasicQotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        WarrantBasicQotExData.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_Common.WarrantBasicQotExData();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.delta = reader.double();
+                    break;
+                case 2:
+                    message.impliedVolatility = reader.double();
+                    break;
+                case 3:
+                    message.premium = reader.double();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("premium"))
+                throw $util.ProtocolError("missing required 'premium'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a WarrantBasicQotExData message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_Common.WarrantBasicQotExData} WarrantBasicQotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        WarrantBasicQotExData.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a WarrantBasicQotExData message.
+         * @function verify
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        WarrantBasicQotExData.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.delta != null && message.hasOwnProperty("delta"))
+                if (typeof message.delta !== "number")
+                    return "delta: number expected";
+            if (message.impliedVolatility != null && message.hasOwnProperty("impliedVolatility"))
+                if (typeof message.impliedVolatility !== "number")
+                    return "impliedVolatility: number expected";
+            if (typeof message.premium !== "number")
+                return "premium: number expected";
+            return null;
+        };
+
+        /**
+         * Creates a WarrantBasicQotExData message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_Common.WarrantBasicQotExData} WarrantBasicQotExData
+         */
+        WarrantBasicQotExData.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_Common.WarrantBasicQotExData)
+                return object;
+            var message = new $root.Qot_Common.WarrantBasicQotExData();
+            if (object.delta != null)
+                message.delta = Number(object.delta);
+            if (object.impliedVolatility != null)
+                message.impliedVolatility = Number(object.impliedVolatility);
+            if (object.premium != null)
+                message.premium = Number(object.premium);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a WarrantBasicQotExData message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @static
+         * @param {Qot_Common.WarrantBasicQotExData} message WarrantBasicQotExData
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        WarrantBasicQotExData.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.delta = 0;
+                object.impliedVolatility = 0;
+                object.premium = 0;
+            }
+            if (message.delta != null && message.hasOwnProperty("delta"))
+                object.delta = options.json && !isFinite(message.delta) ? String(message.delta) : message.delta;
+            if (message.impliedVolatility != null && message.hasOwnProperty("impliedVolatility"))
+                object.impliedVolatility = options.json && !isFinite(message.impliedVolatility) ? String(message.impliedVolatility) : message.impliedVolatility;
+            if (message.premium != null && message.hasOwnProperty("premium"))
+                object.premium = options.json && !isFinite(message.premium) ? String(message.premium) : message.premium;
+            return object;
+        };
+
+        /**
+         * Converts this WarrantBasicQotExData to JSON.
+         * @function toJSON
+         * @memberof Qot_Common.WarrantBasicQotExData
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        WarrantBasicQotExData.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return WarrantBasicQotExData;
+    })();
+
     Qot_Common.BasicQot = (function() {
 
         /**
@@ -6785,6 +7019,7 @@ $root.Qot_Common = (function() {
          * @property {Qot_Common.IPreAfterMarketData|null} [afterMarket] BasicQot afterMarket
          * @property {number|null} [secStatus] BasicQot secStatus
          * @property {Qot_Common.IFutureBasicQotExData|null} [futureExData] BasicQot futureExData
+         * @property {Qot_Common.IWarrantBasicQotExData|null} [warrantExData] BasicQot warrantExData
          */
 
         /**
@@ -6979,6 +7214,14 @@ $root.Qot_Common = (function() {
         BasicQot.prototype.futureExData = null;
 
         /**
+         * BasicQot warrantExData.
+         * @member {Qot_Common.IWarrantBasicQotExData|null|undefined} warrantExData
+         * @memberof Qot_Common.BasicQot
+         * @instance
+         */
+        BasicQot.prototype.warrantExData = null;
+
+        /**
          * Creates a new BasicQot instance using the specified properties.
          * @function create
          * @memberof Qot_Common.BasicQot
@@ -7032,6 +7275,8 @@ $root.Qot_Common = (function() {
                 writer.uint32(/* id 21, wireType 0 =*/168).int32(message.secStatus);
             if (message.futureExData != null && message.hasOwnProperty("futureExData"))
                 $root.Qot_Common.FutureBasicQotExData.encode(message.futureExData, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
+            if (message.warrantExData != null && message.hasOwnProperty("warrantExData"))
+                $root.Qot_Common.WarrantBasicQotExData.encode(message.warrantExData, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
             return writer;
         };
 
@@ -7131,6 +7376,9 @@ $root.Qot_Common = (function() {
                     break;
                 case 22:
                     message.futureExData = $root.Qot_Common.FutureBasicQotExData.decode(reader, reader.uint32());
+                    break;
+                case 23:
+                    message.warrantExData = $root.Qot_Common.WarrantBasicQotExData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -7258,6 +7506,11 @@ $root.Qot_Common = (function() {
                 if (error)
                     return "futureExData." + error;
             }
+            if (message.warrantExData != null && message.hasOwnProperty("warrantExData")) {
+                var error = $root.Qot_Common.WarrantBasicQotExData.verify(message.warrantExData);
+                if (error)
+                    return "warrantExData." + error;
+            }
             return null;
         };
 
@@ -7339,6 +7592,11 @@ $root.Qot_Common = (function() {
                     throw TypeError(".Qot_Common.BasicQot.futureExData: object expected");
                 message.futureExData = $root.Qot_Common.FutureBasicQotExData.fromObject(object.futureExData);
             }
+            if (object.warrantExData != null) {
+                if (typeof object.warrantExData !== "object")
+                    throw TypeError(".Qot_Common.BasicQot.warrantExData: object expected");
+                message.warrantExData = $root.Qot_Common.WarrantBasicQotExData.fromObject(object.warrantExData);
+            }
             return message;
         };
 
@@ -7382,6 +7640,7 @@ $root.Qot_Common = (function() {
                 object.afterMarket = null;
                 object.secStatus = 0;
                 object.futureExData = null;
+                object.warrantExData = null;
             }
             if (message.security != null && message.hasOwnProperty("security"))
                 object.security = $root.Qot_Common.Security.toObject(message.security, options);
@@ -7430,6 +7689,8 @@ $root.Qot_Common = (function() {
                 object.secStatus = message.secStatus;
             if (message.futureExData != null && message.hasOwnProperty("futureExData"))
                 object.futureExData = $root.Qot_Common.FutureBasicQotExData.toObject(message.futureExData, options);
+            if (message.warrantExData != null && message.hasOwnProperty("warrantExData"))
+                object.warrantExData = $root.Qot_Common.WarrantBasicQotExData.toObject(message.warrantExData, options);
             return object;
         };
 
