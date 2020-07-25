@@ -21,8 +21,8 @@ npm run build
 // TODO: Run FutuOpenD software first
 //   Make sure websocket_port is set
 
-import Futu, { Proto, Subscribe } from 'futu-api';
-import { Qot_Common, Trd_Common } from '../proto/proto';
+import Futu, { Proto } from 'futu-api';
+const { Qot_Common, Trd_Common } = Proto;
 
 /**
  * type FutuConfig = {
@@ -47,15 +47,14 @@ import { Qot_Common, Trd_Common } from '../proto/proto';
     }
 */
 
-const UserConfig = {
+const FutuConfig = {
   userID: 1234,
   pwdMd5: "129619259239abcdef",
 }
 
-(async function main() {
-  // extend the lookup table
-  // add back protocol 'Qot_RequestHistoryKLQuota' with its protocol id
-  const ft = new Futu(UserConfig)
+;(async function main() {
+  // Init
+  const ft = new Futu(FutuConfig)
   // wait for initialization to finish
   await ft.ready
 
@@ -144,6 +143,7 @@ const UserConfig = {
 
 
 // You can use "Subscibe" decorator instead of ft.on()
+import { Subscribe } from 'futu-api';
 class Example {
 
   @Subscribe(Qot_Common.SubType.SubType_Ticker, {
