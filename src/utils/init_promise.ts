@@ -1,45 +1,47 @@
 
 export default class InitPromise {
 
-  private p: Promise<void>
-  private resolveFunc: undefined|((value?: void | PromiseLike<void> | undefined) => void)
-  private rejectFunc: undefined|((value?: void | PromiseLike<void> | undefined) => void)
+  private isInit: boolean = false
+  private resolveFunc: ((_any?: any) => void)[] = []
+  private rejectFunc: ((_any?: any) => void)[] = []
 
-  constructor() {
-    this.p = this.reset()
+  public reset() {
+    this.isInit = false
+    try {
+      this.rejectFunc.forEach(reject => reject('reset'))
+    } catch {}
+    this.resolveFunc = []
+    this.rejectFunc = []
   }
 
   public get isReady(): Promise<void> {
-    return this.p
+    if (this.isInit) return Promise.resolve()
+    else return new Promise((resolve, reject) => {
+      let timeoutTimer = setTimeout(() => reject('timeout'), 5000)
+      this.resolveFunc.push(() => {
+        clearTimeout(timeoutTimer)
+        resolve()
+      })
+      this.rejectFunc.push((any: any) => reject(any))
+    })
   }
 
   public async resolve() {
-    if (this.resolveFunc) {
-      this.resolveFunc()
-    }
-    if (this.p) await this.p
+    this.isInit = true
+    try {
+      this.resolveFunc.forEach(resolve => resolve())
+    } catch {}
+    this.resolveFunc = []
+    this.rejectFunc = []
   }
 
-  public async reject() {
-    if (this.rejectFunc) {
-      this.rejectFunc()
-    }
-    if (this.p) await this.p
-  }
-
-  public async reset(): Promise<void> {
-    if (this.rejectFunc) {
-      this.rejectFunc()
-    }
-    if (this.p) {
-      try {
-        await this.p
-      } catch (err) {}
-    }
-    return this.p = new Promise((resolve, reject) => {
-      this.resolveFunc = resolve
-      this.rejectFunc = reject
-    })
+  public async reject(_any: any) {
+    this.isInit = false
+    try {
+      this.rejectFunc.forEach(reject => reject(_any))
+    } catch {}
+    this.resolveFunc = []
+    this.rejectFunc = []
   }
 
 }

@@ -50,9 +50,9 @@ export default class WebSocket extends PushEmitter {
   constructor(private config: FutuConfig) {
     super()
     this.ws = this.setup()
-    process.on('exit', () => { this.exitFlag = true; this.clean() })
-    process.on('SIGINT', () => { this.exitFlag = true; this.clean() })
-    process.on('SIGTERM', () => { this.exitFlag = true; this.clean() })
+    process.on('exit', () => this.close())
+    process.on('SIGINT', () => this.close())
+    process.on('SIGTERM', () => this.close())
     this.initPromise = new InitPromise()
   }
 
@@ -109,7 +109,7 @@ export default class WebSocket extends PushEmitter {
 
   public close() {
     this.exitFlag = true
-    this.clean()
+    this.clean(false)
   }
 
   private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
