@@ -106,7 +106,7 @@ export default class WebSocket extends PushEmitter {
 
   public close() {
     this.exitFlag = true
-    this.clean(false)
+    this.clean()
   }
 
   private sendCmd(cmd: number, buffer: Uint8Array): Promise<ArrayBuffer> {
@@ -230,6 +230,7 @@ export default class WebSocket extends PushEmitter {
         this.exitFlag = true
         this.clean()
         // won't reconnect
+        L.warn('Closing')
       }
     }
   }
@@ -237,6 +238,7 @@ export default class WebSocket extends PushEmitter {
   private onError(e: Ws.ErrorEvent) {
     if (this.exitFlag) {
       L.warn('Websocket disconnected')
+      L.warn('Closing')
     } else {
       L.error('Error occured', e)
       if (!this.reconnectTimer) {
@@ -249,6 +251,7 @@ export default class WebSocket extends PushEmitter {
   private onClose(_: Ws.CloseEvent) {
     if (this.exitFlag) {
       L.warn('Websocket disconnected')
+      L.warn('Closing')
     } else {
       L.error('Websocket disconnected')
       if (!this.reconnectTimer) {
@@ -328,11 +331,9 @@ export default class WebSocket extends PushEmitter {
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer)
     }
-    if (super.emitter) {
-      super.emitter.removeAllListeners()
-    }
+    super.emitter?.removeAllListeners()
     if (close) {
-      this.initPromise.reset()
+        this.initPromise.reset()
       try {
         this.ws.close()
       } catch (e) {}

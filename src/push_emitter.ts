@@ -22,16 +22,20 @@ declare module './futu' {
 
 export default class PushEmitter {
 
-  public static _instance: PushEmitter|undefined = new PushEmitter()
+  public static _instance: PushEmitter|undefined
 
-  protected emitter: EventEmitter.EventEmitter
+  protected emitter: EventEmitter.EventEmitter|undefined
 
   constructor() {
-    if (PushEmitter._instance) {
-      this.emitter = PushEmitter._instance!.emitter
-    } else {
+    if (!PushEmitter._instance) {
       this.emitter = new EventEmitter()
+      PushEmitter._instance = this
     }
+  }
+
+  public close() {
+    this.emitter?.removeAllListeners()
+    PushEmitter._instance = undefined
   }
 
 
