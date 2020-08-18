@@ -226,7 +226,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.on(
+    this.emitter?.on(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -421,7 +421,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.addListener(
+    this.emitter?.addListener(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -616,7 +616,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.once(
+    this.emitter?.once(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -811,7 +811,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.prependListener(
+    this.emitter?.prependListener(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -1006,7 +1006,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.prependOnceListener(
+    this.emitter?.prependOnceListener(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -1201,7 +1201,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.removeListener(
+    this.emitter?.removeListener(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -1396,7 +1396,7 @@ export default class PushEmitter {
     const [subType, identity, listener] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.off(
+    this.emitter?.off(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity),
@@ -1559,7 +1559,7 @@ export default class PushEmitter {
     const [subType, identity] = args
     let cmd = PushEmitter.translateSubType(subType)
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter.removeAllListeners(
+    this.emitter?.removeAllListeners(
       (typeof identity === 'object' && Long.isLong(identity)
         ? PushEmitter.translateAccID
         : PushEmitter.translateSecurity)(cmd, identity)
@@ -1569,13 +1569,13 @@ export default class PushEmitter {
   protected onPush(cmd: number, res: any) {
     try {
       if (res.security) {
-        this.emitter.emit(PushEmitter.translateSecurity(cmd, res.security), res)
+        this.emitter?.emit(PushEmitter.translateSecurity(cmd, res.security), res)
       } else if (res.basicQotList) {
         ;(res.basicQotList as Proto.Qot_Common.BasicQot[]).forEach(qot => {
-          this.emitter.emit(PushEmitter.translateSecurity(cmd, qot.security), qot)
+          this.emitter?.emit(PushEmitter.translateSecurity(cmd, qot.security), qot)
         })
       } else if (res.TrdHeader) {
-        this.emitter.emit(
+        this.emitter?.emit(
           PushEmitter.translateAccID(cmd, (res.TrdHeader as Proto.Trd_Common.TrdHeader).accID),
           res.order || res.orderFill
         )
