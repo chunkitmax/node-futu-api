@@ -2022,6 +2022,17 @@ export namespace Qot_Common {
         PriceReminderFreq_OnlyOnce = 3
     }
 
+    /** AssetClass enum. */
+    enum AssetClass {
+        AssetClass_Unknow = 0,
+        AssetClass_Stock = 1,
+        AssetClass_Bond = 2,
+        AssetClass_Commodity = 3,
+        AssetClass_CurrencyMarket = 4,
+        AssetClass_Future = 5,
+        AssetClass_Swap = 6
+    }
+
     /** Properties of a Security. */
     interface ISecurity {
 
@@ -2289,6 +2300,9 @@ export namespace Qot_Common {
         /** OptionBasicQotExData contractSize */
         contractSize: number;
 
+        /** OptionBasicQotExData contractSizeFloat */
+        contractSizeFloat?: (number|null);
+
         /** OptionBasicQotExData openInterest */
         openInterest: number;
 
@@ -2346,6 +2360,9 @@ export namespace Qot_Common {
 
         /** OptionBasicQotExData contractSize. */
         public contractSize: number;
+
+        /** OptionBasicQotExData contractSizeFloat. */
+        public contractSizeFloat: number;
 
         /** OptionBasicQotExData openInterest. */
         public openInterest: number;
@@ -18412,6 +18429,9 @@ export namespace Qot_GetSecuritySnapshot {
         /** OptionSnapshotExData contractSize */
         contractSize: number;
 
+        /** OptionSnapshotExData contractSizeFloat */
+        contractSizeFloat?: (number|null);
+
         /** OptionSnapshotExData openInterest */
         openInterest: number;
 
@@ -18484,6 +18504,9 @@ export namespace Qot_GetSecuritySnapshot {
 
         /** OptionSnapshotExData contractSize. */
         public contractSize: number;
+
+        /** OptionSnapshotExData contractSizeFloat. */
+        public contractSizeFloat: number;
 
         /** OptionSnapshotExData openInterest. */
         public openInterest: number;
@@ -18928,6 +18951,126 @@ export namespace Qot_GetSecuritySnapshot {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a TrustSnapshotExData. */
+    interface ITrustSnapshotExData {
+
+        /** TrustSnapshotExData dividendYield */
+        dividendYield: number;
+
+        /** TrustSnapshotExData aum */
+        aum: number;
+
+        /** TrustSnapshotExData outstandingUnits */
+        outstandingUnits: (number|Long);
+
+        /** TrustSnapshotExData netAssetValue */
+        netAssetValue: number;
+
+        /** TrustSnapshotExData premium */
+        premium: number;
+
+        /** TrustSnapshotExData assetClass */
+        assetClass: number;
+    }
+
+    /** Represents a TrustSnapshotExData. */
+    class TrustSnapshotExData implements ITrustSnapshotExData {
+
+        /**
+         * Constructs a new TrustSnapshotExData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Qot_GetSecuritySnapshot.ITrustSnapshotExData);
+
+        /** TrustSnapshotExData dividendYield. */
+        public dividendYield: number;
+
+        /** TrustSnapshotExData aum. */
+        public aum: number;
+
+        /** TrustSnapshotExData outstandingUnits. */
+        public outstandingUnits: (number|Long);
+
+        /** TrustSnapshotExData netAssetValue. */
+        public netAssetValue: number;
+
+        /** TrustSnapshotExData premium. */
+        public premium: number;
+
+        /** TrustSnapshotExData assetClass. */
+        public assetClass: number;
+
+        /**
+         * Creates a new TrustSnapshotExData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns TrustSnapshotExData instance
+         */
+        public static create(properties?: Qot_GetSecuritySnapshot.ITrustSnapshotExData): Qot_GetSecuritySnapshot.TrustSnapshotExData;
+
+        /**
+         * Encodes the specified TrustSnapshotExData message. Does not implicitly {@link Qot_GetSecuritySnapshot.TrustSnapshotExData.verify|verify} messages.
+         * @param message TrustSnapshotExData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Qot_GetSecuritySnapshot.ITrustSnapshotExData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified TrustSnapshotExData message, length delimited. Does not implicitly {@link Qot_GetSecuritySnapshot.TrustSnapshotExData.verify|verify} messages.
+         * @param message TrustSnapshotExData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Qot_GetSecuritySnapshot.ITrustSnapshotExData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a TrustSnapshotExData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns TrustSnapshotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Qot_GetSecuritySnapshot.TrustSnapshotExData;
+
+        /**
+         * Decodes a TrustSnapshotExData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns TrustSnapshotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Qot_GetSecuritySnapshot.TrustSnapshotExData;
+
+        /**
+         * Verifies a TrustSnapshotExData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a TrustSnapshotExData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns TrustSnapshotExData
+         */
+        public static fromObject(object: { [k: string]: any }): Qot_GetSecuritySnapshot.TrustSnapshotExData;
+
+        /**
+         * Creates a plain object from a TrustSnapshotExData message. Also converts values to other types if specified.
+         * @param message TrustSnapshotExData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Qot_GetSecuritySnapshot.TrustSnapshotExData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this TrustSnapshotExData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a SnapshotBasicData. */
     interface ISnapshotBasicData {
 
@@ -19275,6 +19418,9 @@ export namespace Qot_GetSecuritySnapshot {
 
         /** Snapshot futureExData */
         futureExData?: (Qot_GetSecuritySnapshot.IFutureSnapshotExData|null);
+
+        /** Snapshot trustExData */
+        trustExData?: (Qot_GetSecuritySnapshot.ITrustSnapshotExData|null);
     }
 
     /** Represents a Snapshot. */
@@ -19306,6 +19452,9 @@ export namespace Qot_GetSecuritySnapshot {
 
         /** Snapshot futureExData. */
         public futureExData?: (Qot_GetSecuritySnapshot.IFutureSnapshotExData|null);
+
+        /** Snapshot trustExData. */
+        public trustExData?: (Qot_GetSecuritySnapshot.ITrustSnapshotExData|null);
 
         /**
          * Creates a new Snapshot instance using the specified properties.
@@ -24570,6 +24719,9 @@ export namespace Qot_RequestHistoryKL {
 
         /** C2S nextReqKey */
         nextReqKey?: (Uint8Array|null);
+
+        /** C2S extendedTime */
+        extendedTime?: (boolean|null);
     }
 
     /** Represents a C2S. */
@@ -24604,6 +24756,9 @@ export namespace Qot_RequestHistoryKL {
 
         /** C2S nextReqKey. */
         public nextReqKey: Uint8Array;
+
+        /** C2S extendedTime. */
+        public extendedTime: boolean;
 
         /**
          * Creates a new C2S instance using the specified properties.

@@ -4955,6 +4955,30 @@ $root.Qot_Common = (function() {
         return values;
     })();
 
+    /**
+     * AssetClass enum.
+     * @name Qot_Common.AssetClass
+     * @enum {string}
+     * @property {number} AssetClass_Unknow=0 AssetClass_Unknow value
+     * @property {number} AssetClass_Stock=1 AssetClass_Stock value
+     * @property {number} AssetClass_Bond=2 AssetClass_Bond value
+     * @property {number} AssetClass_Commodity=3 AssetClass_Commodity value
+     * @property {number} AssetClass_CurrencyMarket=4 AssetClass_CurrencyMarket value
+     * @property {number} AssetClass_Future=5 AssetClass_Future value
+     * @property {number} AssetClass_Swap=6 AssetClass_Swap value
+     */
+    Qot_Common.AssetClass = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "AssetClass_Unknow"] = 0;
+        values[valuesById[1] = "AssetClass_Stock"] = 1;
+        values[valuesById[2] = "AssetClass_Bond"] = 2;
+        values[valuesById[3] = "AssetClass_Commodity"] = 3;
+        values[valuesById[4] = "AssetClass_CurrencyMarket"] = 4;
+        values[valuesById[5] = "AssetClass_Future"] = 5;
+        values[valuesById[6] = "AssetClass_Swap"] = 6;
+        return values;
+    })();
+
     Qot_Common.Security = (function() {
 
         /**
@@ -5639,6 +5663,7 @@ $root.Qot_Common = (function() {
          * @interface IOptionBasicQotExData
          * @property {number} strikePrice OptionBasicQotExData strikePrice
          * @property {number} contractSize OptionBasicQotExData contractSize
+         * @property {number|null} [contractSizeFloat] OptionBasicQotExData contractSizeFloat
          * @property {number} openInterest OptionBasicQotExData openInterest
          * @property {number} impliedVolatility OptionBasicQotExData impliedVolatility
          * @property {number} premium OptionBasicQotExData premium
@@ -5685,6 +5710,14 @@ $root.Qot_Common = (function() {
          * @instance
          */
         OptionBasicQotExData.prototype.contractSize = 0;
+
+        /**
+         * OptionBasicQotExData contractSizeFloat.
+         * @member {number} contractSizeFloat
+         * @memberof Qot_Common.OptionBasicQotExData
+         * @instance
+         */
+        OptionBasicQotExData.prototype.contractSizeFloat = 0;
 
         /**
          * OptionBasicQotExData openInterest.
@@ -5844,6 +5877,8 @@ $root.Qot_Common = (function() {
                 writer.uint32(/* id 15, wireType 0 =*/120).int32(message.optionAreaType);
             if (message.contractMultiplier != null && message.hasOwnProperty("contractMultiplier"))
                 writer.uint32(/* id 16, wireType 1 =*/129).double(message.contractMultiplier);
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                writer.uint32(/* id 17, wireType 1 =*/137).double(message.contractSizeFloat);
             return writer;
         };
 
@@ -5883,6 +5918,9 @@ $root.Qot_Common = (function() {
                     break;
                 case 2:
                     message.contractSize = reader.int32();
+                    break;
+                case 17:
+                    message.contractSizeFloat = reader.double();
                     break;
                 case 3:
                     message.openInterest = reader.int32();
@@ -5985,6 +6023,9 @@ $root.Qot_Common = (function() {
                 return "strikePrice: number expected";
             if (!$util.isInteger(message.contractSize))
                 return "contractSize: integer expected";
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                if (typeof message.contractSizeFloat !== "number")
+                    return "contractSizeFloat: number expected";
             if (!$util.isInteger(message.openInterest))
                 return "openInterest: integer expected";
             if (typeof message.impliedVolatility !== "number")
@@ -6038,6 +6079,8 @@ $root.Qot_Common = (function() {
                 message.strikePrice = Number(object.strikePrice);
             if (object.contractSize != null)
                 message.contractSize = object.contractSize | 0;
+            if (object.contractSizeFloat != null)
+                message.contractSizeFloat = Number(object.contractSizeFloat);
             if (object.openInterest != null)
                 message.openInterest = object.openInterest | 0;
             if (object.impliedVolatility != null)
@@ -6099,6 +6142,7 @@ $root.Qot_Common = (function() {
                 object.ownerLotMultiplier = 0;
                 object.optionAreaType = 0;
                 object.contractMultiplier = 0;
+                object.contractSizeFloat = 0;
             }
             if (message.strikePrice != null && message.hasOwnProperty("strikePrice"))
                 object.strikePrice = options.json && !isFinite(message.strikePrice) ? String(message.strikePrice) : message.strikePrice;
@@ -6132,6 +6176,8 @@ $root.Qot_Common = (function() {
                 object.optionAreaType = message.optionAreaType;
             if (message.contractMultiplier != null && message.hasOwnProperty("contractMultiplier"))
                 object.contractMultiplier = options.json && !isFinite(message.contractMultiplier) ? String(message.contractMultiplier) : message.contractMultiplier;
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                object.contractSizeFloat = options.json && !isFinite(message.contractSizeFloat) ? String(message.contractSizeFloat) : message.contractSizeFloat;
             return object;
         };
 
@@ -45370,6 +45416,7 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @property {string} strikeTime OptionSnapshotExData strikeTime
          * @property {number} strikePrice OptionSnapshotExData strikePrice
          * @property {number} contractSize OptionSnapshotExData contractSize
+         * @property {number|null} [contractSizeFloat] OptionSnapshotExData contractSizeFloat
          * @property {number} openInterest OptionSnapshotExData openInterest
          * @property {number} impliedVolatility OptionSnapshotExData impliedVolatility
          * @property {number} premium OptionSnapshotExData premium
@@ -45442,6 +45489,14 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @instance
          */
         OptionSnapshotExData.prototype.contractSize = 0;
+
+        /**
+         * OptionSnapshotExData contractSizeFloat.
+         * @member {number} contractSizeFloat
+         * @memberof Qot_GetSecuritySnapshot.OptionSnapshotExData
+         * @instance
+         */
+        OptionSnapshotExData.prototype.contractSizeFloat = 0;
 
         /**
          * OptionSnapshotExData openInterest.
@@ -45624,6 +45679,8 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 writer.uint32(/* id 20, wireType 0 =*/160).int32(message.optionAreaType);
             if (message.contractMultiplier != null && message.hasOwnProperty("contractMultiplier"))
                 writer.uint32(/* id 21, wireType 1 =*/169).double(message.contractMultiplier);
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                writer.uint32(/* id 22, wireType 1 =*/177).double(message.contractSizeFloat);
             return writer;
         };
 
@@ -45672,6 +45729,9 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     break;
                 case 5:
                     message.contractSize = reader.int32();
+                    break;
+                case 22:
+                    message.contractSizeFloat = reader.double();
                     break;
                 case 6:
                     message.openInterest = reader.int32();
@@ -45795,6 +45855,9 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 return "strikePrice: number expected";
             if (!$util.isInteger(message.contractSize))
                 return "contractSize: integer expected";
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                if (typeof message.contractSizeFloat !== "number")
+                    return "contractSizeFloat: number expected";
             if (!$util.isInteger(message.openInterest))
                 return "openInterest: integer expected";
             if (typeof message.impliedVolatility !== "number")
@@ -45863,6 +45926,8 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 message.strikePrice = Number(object.strikePrice);
             if (object.contractSize != null)
                 message.contractSize = object.contractSize | 0;
+            if (object.contractSizeFloat != null)
+                message.contractSizeFloat = Number(object.contractSizeFloat);
             if (object.openInterest != null)
                 message.openInterest = object.openInterest | 0;
             if (object.impliedVolatility != null)
@@ -45933,6 +45998,7 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.ownerLotMultiplier = 0;
                 object.optionAreaType = 0;
                 object.contractMultiplier = 0;
+                object.contractSizeFloat = 0;
             }
             if (message.type != null && message.hasOwnProperty("type"))
                 object.type = message.type;
@@ -45976,6 +46042,8 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.optionAreaType = message.optionAreaType;
             if (message.contractMultiplier != null && message.hasOwnProperty("contractMultiplier"))
                 object.contractMultiplier = options.json && !isFinite(message.contractMultiplier) ? String(message.contractMultiplier) : message.contractMultiplier;
+            if (message.contractSizeFloat != null && message.hasOwnProperty("contractSizeFloat"))
+                object.contractSizeFloat = options.json && !isFinite(message.contractSizeFloat) ? String(message.contractSizeFloat) : message.contractSizeFloat;
             return object;
         };
 
@@ -46753,6 +46821,318 @@ $root.Qot_GetSecuritySnapshot = (function() {
         };
 
         return FutureSnapshotExData;
+    })();
+
+    Qot_GetSecuritySnapshot.TrustSnapshotExData = (function() {
+
+        /**
+         * Properties of a TrustSnapshotExData.
+         * @memberof Qot_GetSecuritySnapshot
+         * @interface ITrustSnapshotExData
+         * @property {number} dividendYield TrustSnapshotExData dividendYield
+         * @property {number} aum TrustSnapshotExData aum
+         * @property {number|Long} outstandingUnits TrustSnapshotExData outstandingUnits
+         * @property {number} netAssetValue TrustSnapshotExData netAssetValue
+         * @property {number} premium TrustSnapshotExData premium
+         * @property {number} assetClass TrustSnapshotExData assetClass
+         */
+
+        /**
+         * Constructs a new TrustSnapshotExData.
+         * @memberof Qot_GetSecuritySnapshot
+         * @classdesc Represents a TrustSnapshotExData.
+         * @implements ITrustSnapshotExData
+         * @constructor
+         * @param {Qot_GetSecuritySnapshot.ITrustSnapshotExData=} [properties] Properties to set
+         */
+        function TrustSnapshotExData(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TrustSnapshotExData dividendYield.
+         * @member {number} dividendYield
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.dividendYield = 0;
+
+        /**
+         * TrustSnapshotExData aum.
+         * @member {number} aum
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.aum = 0;
+
+        /**
+         * TrustSnapshotExData outstandingUnits.
+         * @member {number|Long} outstandingUnits
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.outstandingUnits = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * TrustSnapshotExData netAssetValue.
+         * @member {number} netAssetValue
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.netAssetValue = 0;
+
+        /**
+         * TrustSnapshotExData premium.
+         * @member {number} premium
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.premium = 0;
+
+        /**
+         * TrustSnapshotExData assetClass.
+         * @member {number} assetClass
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         */
+        TrustSnapshotExData.prototype.assetClass = 0;
+
+        /**
+         * Creates a new TrustSnapshotExData instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Qot_GetSecuritySnapshot.ITrustSnapshotExData=} [properties] Properties to set
+         * @returns {Qot_GetSecuritySnapshot.TrustSnapshotExData} TrustSnapshotExData instance
+         */
+        TrustSnapshotExData.create = function create(properties) {
+            return new TrustSnapshotExData(properties);
+        };
+
+        /**
+         * Encodes the specified TrustSnapshotExData message. Does not implicitly {@link Qot_GetSecuritySnapshot.TrustSnapshotExData.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Qot_GetSecuritySnapshot.ITrustSnapshotExData} message TrustSnapshotExData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TrustSnapshotExData.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 1 =*/9).double(message.dividendYield);
+            writer.uint32(/* id 2, wireType 1 =*/17).double(message.aum);
+            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.outstandingUnits);
+            writer.uint32(/* id 4, wireType 1 =*/33).double(message.netAssetValue);
+            writer.uint32(/* id 5, wireType 1 =*/41).double(message.premium);
+            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.assetClass);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TrustSnapshotExData message, length delimited. Does not implicitly {@link Qot_GetSecuritySnapshot.TrustSnapshotExData.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Qot_GetSecuritySnapshot.ITrustSnapshotExData} message TrustSnapshotExData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TrustSnapshotExData.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TrustSnapshotExData message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetSecuritySnapshot.TrustSnapshotExData} TrustSnapshotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TrustSnapshotExData.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetSecuritySnapshot.TrustSnapshotExData();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.dividendYield = reader.double();
+                    break;
+                case 2:
+                    message.aum = reader.double();
+                    break;
+                case 3:
+                    message.outstandingUnits = reader.int64();
+                    break;
+                case 4:
+                    message.netAssetValue = reader.double();
+                    break;
+                case 5:
+                    message.premium = reader.double();
+                    break;
+                case 6:
+                    message.assetClass = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("dividendYield"))
+                throw $util.ProtocolError("missing required 'dividendYield'", { instance: message });
+            if (!message.hasOwnProperty("aum"))
+                throw $util.ProtocolError("missing required 'aum'", { instance: message });
+            if (!message.hasOwnProperty("outstandingUnits"))
+                throw $util.ProtocolError("missing required 'outstandingUnits'", { instance: message });
+            if (!message.hasOwnProperty("netAssetValue"))
+                throw $util.ProtocolError("missing required 'netAssetValue'", { instance: message });
+            if (!message.hasOwnProperty("premium"))
+                throw $util.ProtocolError("missing required 'premium'", { instance: message });
+            if (!message.hasOwnProperty("assetClass"))
+                throw $util.ProtocolError("missing required 'assetClass'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a TrustSnapshotExData message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetSecuritySnapshot.TrustSnapshotExData} TrustSnapshotExData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TrustSnapshotExData.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TrustSnapshotExData message.
+         * @function verify
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TrustSnapshotExData.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (typeof message.dividendYield !== "number")
+                return "dividendYield: number expected";
+            if (typeof message.aum !== "number")
+                return "aum: number expected";
+            if (!$util.isInteger(message.outstandingUnits) && !(message.outstandingUnits && $util.isInteger(message.outstandingUnits.low) && $util.isInteger(message.outstandingUnits.high)))
+                return "outstandingUnits: integer|Long expected";
+            if (typeof message.netAssetValue !== "number")
+                return "netAssetValue: number expected";
+            if (typeof message.premium !== "number")
+                return "premium: number expected";
+            if (!$util.isInteger(message.assetClass))
+                return "assetClass: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a TrustSnapshotExData message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetSecuritySnapshot.TrustSnapshotExData} TrustSnapshotExData
+         */
+        TrustSnapshotExData.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetSecuritySnapshot.TrustSnapshotExData)
+                return object;
+            var message = new $root.Qot_GetSecuritySnapshot.TrustSnapshotExData();
+            if (object.dividendYield != null)
+                message.dividendYield = Number(object.dividendYield);
+            if (object.aum != null)
+                message.aum = Number(object.aum);
+            if (object.outstandingUnits != null)
+                if ($util.Long)
+                    (message.outstandingUnits = $util.Long.fromValue(object.outstandingUnits)).unsigned = false;
+                else if (typeof object.outstandingUnits === "string")
+                    message.outstandingUnits = parseInt(object.outstandingUnits, 10);
+                else if (typeof object.outstandingUnits === "number")
+                    message.outstandingUnits = object.outstandingUnits;
+                else if (typeof object.outstandingUnits === "object")
+                    message.outstandingUnits = new $util.LongBits(object.outstandingUnits.low >>> 0, object.outstandingUnits.high >>> 0).toNumber();
+            if (object.netAssetValue != null)
+                message.netAssetValue = Number(object.netAssetValue);
+            if (object.premium != null)
+                message.premium = Number(object.premium);
+            if (object.assetClass != null)
+                message.assetClass = object.assetClass | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TrustSnapshotExData message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @static
+         * @param {Qot_GetSecuritySnapshot.TrustSnapshotExData} message TrustSnapshotExData
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TrustSnapshotExData.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.dividendYield = 0;
+                object.aum = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.outstandingUnits = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.outstandingUnits = options.longs === String ? "0" : 0;
+                object.netAssetValue = 0;
+                object.premium = 0;
+                object.assetClass = 0;
+            }
+            if (message.dividendYield != null && message.hasOwnProperty("dividendYield"))
+                object.dividendYield = options.json && !isFinite(message.dividendYield) ? String(message.dividendYield) : message.dividendYield;
+            if (message.aum != null && message.hasOwnProperty("aum"))
+                object.aum = options.json && !isFinite(message.aum) ? String(message.aum) : message.aum;
+            if (message.outstandingUnits != null && message.hasOwnProperty("outstandingUnits"))
+                if (typeof message.outstandingUnits === "number")
+                    object.outstandingUnits = options.longs === String ? String(message.outstandingUnits) : message.outstandingUnits;
+                else
+                    object.outstandingUnits = options.longs === String ? $util.Long.prototype.toString.call(message.outstandingUnits) : options.longs === Number ? new $util.LongBits(message.outstandingUnits.low >>> 0, message.outstandingUnits.high >>> 0).toNumber() : message.outstandingUnits;
+            if (message.netAssetValue != null && message.hasOwnProperty("netAssetValue"))
+                object.netAssetValue = options.json && !isFinite(message.netAssetValue) ? String(message.netAssetValue) : message.netAssetValue;
+            if (message.premium != null && message.hasOwnProperty("premium"))
+                object.premium = options.json && !isFinite(message.premium) ? String(message.premium) : message.premium;
+            if (message.assetClass != null && message.hasOwnProperty("assetClass"))
+                object.assetClass = message.assetClass;
+            return object;
+        };
+
+        /**
+         * Converts this TrustSnapshotExData to JSON.
+         * @function toJSON
+         * @memberof Qot_GetSecuritySnapshot.TrustSnapshotExData
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TrustSnapshotExData.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return TrustSnapshotExData;
     })();
 
     Qot_GetSecuritySnapshot.SnapshotBasicData = (function() {
@@ -47886,6 +48266,7 @@ $root.Qot_GetSecuritySnapshot = (function() {
          * @property {Qot_GetSecuritySnapshot.IIndexSnapshotExData|null} [indexExData] Snapshot indexExData
          * @property {Qot_GetSecuritySnapshot.IPlateSnapshotExData|null} [plateExData] Snapshot plateExData
          * @property {Qot_GetSecuritySnapshot.IFutureSnapshotExData|null} [futureExData] Snapshot futureExData
+         * @property {Qot_GetSecuritySnapshot.ITrustSnapshotExData|null} [trustExData] Snapshot trustExData
          */
 
         /**
@@ -47960,6 +48341,14 @@ $root.Qot_GetSecuritySnapshot = (function() {
         Snapshot.prototype.futureExData = null;
 
         /**
+         * Snapshot trustExData.
+         * @member {Qot_GetSecuritySnapshot.ITrustSnapshotExData|null|undefined} trustExData
+         * @memberof Qot_GetSecuritySnapshot.Snapshot
+         * @instance
+         */
+        Snapshot.prototype.trustExData = null;
+
+        /**
          * Creates a new Snapshot instance using the specified properties.
          * @function create
          * @memberof Qot_GetSecuritySnapshot.Snapshot
@@ -47996,6 +48385,8 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.encode(message.plateExData, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
             if (message.futureExData != null && message.hasOwnProperty("futureExData"))
                 $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.encode(message.futureExData, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.trustExData != null && message.hasOwnProperty("trustExData"))
+                $root.Qot_GetSecuritySnapshot.TrustSnapshotExData.encode(message.trustExData, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -48050,6 +48441,9 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     break;
                 case 7:
                     message.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.trustExData = $root.Qot_GetSecuritySnapshot.TrustSnapshotExData.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -48123,6 +48517,11 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 if (error)
                     return "futureExData." + error;
             }
+            if (message.trustExData != null && message.hasOwnProperty("trustExData")) {
+                var error = $root.Qot_GetSecuritySnapshot.TrustSnapshotExData.verify(message.trustExData);
+                if (error)
+                    return "trustExData." + error;
+            }
             return null;
         };
 
@@ -48173,6 +48572,11 @@ $root.Qot_GetSecuritySnapshot = (function() {
                     throw TypeError(".Qot_GetSecuritySnapshot.Snapshot.futureExData: object expected");
                 message.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.fromObject(object.futureExData);
             }
+            if (object.trustExData != null) {
+                if (typeof object.trustExData !== "object")
+                    throw TypeError(".Qot_GetSecuritySnapshot.Snapshot.trustExData: object expected");
+                message.trustExData = $root.Qot_GetSecuritySnapshot.TrustSnapshotExData.fromObject(object.trustExData);
+            }
             return message;
         };
 
@@ -48197,6 +48601,7 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.indexExData = null;
                 object.plateExData = null;
                 object.futureExData = null;
+                object.trustExData = null;
             }
             if (message.basic != null && message.hasOwnProperty("basic"))
                 object.basic = $root.Qot_GetSecuritySnapshot.SnapshotBasicData.toObject(message.basic, options);
@@ -48212,6 +48617,8 @@ $root.Qot_GetSecuritySnapshot = (function() {
                 object.plateExData = $root.Qot_GetSecuritySnapshot.PlateSnapshotExData.toObject(message.plateExData, options);
             if (message.futureExData != null && message.hasOwnProperty("futureExData"))
                 object.futureExData = $root.Qot_GetSecuritySnapshot.FutureSnapshotExData.toObject(message.futureExData, options);
+            if (message.trustExData != null && message.hasOwnProperty("trustExData"))
+                object.trustExData = $root.Qot_GetSecuritySnapshot.TrustSnapshotExData.toObject(message.trustExData, options);
             return object;
         };
 
@@ -60926,6 +61333,7 @@ $root.Qot_RequestHistoryKL = (function() {
          * @property {number|null} [maxAckKLNum] C2S maxAckKLNum
          * @property {number|Long|null} [needKLFieldsFlag] C2S needKLFieldsFlag
          * @property {Uint8Array|null} [nextReqKey] C2S nextReqKey
+         * @property {boolean|null} [extendedTime] C2S extendedTime
          */
 
         /**
@@ -61008,6 +61416,14 @@ $root.Qot_RequestHistoryKL = (function() {
         C2S.prototype.nextReqKey = $util.newBuffer([]);
 
         /**
+         * C2S extendedTime.
+         * @member {boolean} extendedTime
+         * @memberof Qot_RequestHistoryKL.C2S
+         * @instance
+         */
+        C2S.prototype.extendedTime = false;
+
+        /**
          * Creates a new C2S instance using the specified properties.
          * @function create
          * @memberof Qot_RequestHistoryKL.C2S
@@ -61042,6 +61458,8 @@ $root.Qot_RequestHistoryKL = (function() {
                 writer.uint32(/* id 7, wireType 0 =*/56).int64(message.needKLFieldsFlag);
             if (message.nextReqKey != null && message.hasOwnProperty("nextReqKey"))
                 writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.nextReqKey);
+            if (message.extendedTime != null && message.hasOwnProperty("extendedTime"))
+                writer.uint32(/* id 9, wireType 0 =*/72).bool(message.extendedTime);
             return writer;
         };
 
@@ -61099,6 +61517,9 @@ $root.Qot_RequestHistoryKL = (function() {
                     break;
                 case 8:
                     message.nextReqKey = reader.bytes();
+                    break;
+                case 9:
+                    message.extendedTime = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -61167,6 +61588,9 @@ $root.Qot_RequestHistoryKL = (function() {
             if (message.nextReqKey != null && message.hasOwnProperty("nextReqKey"))
                 if (!(message.nextReqKey && typeof message.nextReqKey.length === "number" || $util.isString(message.nextReqKey)))
                     return "nextReqKey: buffer expected";
+            if (message.extendedTime != null && message.hasOwnProperty("extendedTime"))
+                if (typeof message.extendedTime !== "boolean")
+                    return "extendedTime: boolean expected";
             return null;
         };
 
@@ -61211,6 +61635,8 @@ $root.Qot_RequestHistoryKL = (function() {
                     $util.base64.decode(object.nextReqKey, message.nextReqKey = $util.newBuffer($util.base64.length(object.nextReqKey)), 0);
                 else if (object.nextReqKey.length)
                     message.nextReqKey = object.nextReqKey;
+            if (object.extendedTime != null)
+                message.extendedTime = Boolean(object.extendedTime);
             return message;
         };
 
@@ -61246,6 +61672,7 @@ $root.Qot_RequestHistoryKL = (function() {
                     if (options.bytes !== Array)
                         object.nextReqKey = $util.newBuffer(object.nextReqKey);
                 }
+                object.extendedTime = false;
             }
             if (message.rehabType != null && message.hasOwnProperty("rehabType"))
                 object.rehabType = message.rehabType;
@@ -61266,6 +61693,8 @@ $root.Qot_RequestHistoryKL = (function() {
                     object.needKLFieldsFlag = options.longs === String ? $util.Long.prototype.toString.call(message.needKLFieldsFlag) : options.longs === Number ? new $util.LongBits(message.needKLFieldsFlag.low >>> 0, message.needKLFieldsFlag.high >>> 0).toNumber() : message.needKLFieldsFlag;
             if (message.nextReqKey != null && message.hasOwnProperty("nextReqKey"))
                 object.nextReqKey = options.bytes === String ? $util.base64.encode(message.nextReqKey, 0, message.nextReqKey.length) : options.bytes === Array ? Array.prototype.slice.call(message.nextReqKey) : message.nextReqKey;
+            if (message.extendedTime != null && message.hasOwnProperty("extendedTime"))
+                object.extendedTime = message.extendedTime;
             return object;
         };
 
