@@ -26,11 +26,17 @@ export default class PushEmitter {
 
   protected emitter: EventEmitter.EventEmitter|undefined
 
+  private _accID: number|Long|undefined
+
   constructor() {
     if (!PushEmitter._instance) {
       this.emitter = new EventEmitter()
       PushEmitter._instance = this
     }
+  }
+
+  protected set accID(id: number|Long) {
+    this._accID = id
   }
 
   public close() {
@@ -40,93 +46,11 @@ export default class PushEmitter {
 
 
   public on(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public on(
     subType: Proto.Qot_Common.SubType.SubType_Order,
-    accID: number|Long,
     listener: OnPushListener<Proto.Trd_Common.Order>
   ): void
   public on(
     subType: Proto.Qot_Common.SubType.SubType_OrderFill,
-    accID: number|Long,
     listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public on(
@@ -222,106 +146,38 @@ export default class PushEmitter {
   public on(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.on(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.on(PushEmitter.translateAccID(cmd), listener)
+        break
+  }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.on(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public addListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
+
   public addListener(
     subType: Proto.Qot_Common.SubType.SubType_Order,
-    accID: number|Long,
     listener: OnPushListener<Proto.Trd_Common.Order>
   ): void
   public addListener(
     subType: Proto.Qot_Common.SubType.SubType_OrderFill,
-    accID: number|Long,
     listener: OnPushListener<Proto.Trd_Common.OrderFill>
   ): void
   public addListener(
@@ -417,98 +273,31 @@ export default class PushEmitter {
   public addListener(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.addListener(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.addListener(PushEmitter.translateAccID(cmd), listener)
+        break
+  }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.addListener(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public once(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
   public once(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -612,98 +401,31 @@ export default class PushEmitter {
   public once(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.once(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.once(PushEmitter.translateAccID(cmd), listener)
+        break
+  }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.once(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
   public prependListener(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -807,98 +529,31 @@ export default class PushEmitter {
   public prependListener(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.prependListener(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.prependListener(PushEmitter.translateAccID(cmd), listener)
+        break
+      }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.prependListener(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public prependOnceListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
   public prependOnceListener(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -1002,98 +657,31 @@ export default class PushEmitter {
   public prependOnceListener(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.prependOnceListener(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.prependOnceListener(PushEmitter.translateAccID(cmd), listener)
+        break
+      }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.prependOnceListener(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public removeListener(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
   public removeListener(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -1197,98 +785,31 @@ export default class PushEmitter {
   public removeListener(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.removeListener(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.removeListener(PushEmitter.translateAccID(cmd), listener)
+        break
+      }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.removeListener(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateTicker.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateRT.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-    listener: OnPushListener<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateBroker.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateOrderBook.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
-  public off(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-    listener: OnPushListener<Proto.Qot_UpdateKL.IS2C>
-  ): void
   public off(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -1392,82 +913,31 @@ export default class PushEmitter {
   public off(
     ...args: any[]
   ): void {
-    if (args.length !== 3) throw new ParameterError('Should pass 3 arguments')
-    const [subType, identity, listener] = args
-    let cmd = PushEmitter.translateSubType(subType)
+    let cmd = PushEmitter.translateSubType(args[0])
     if (typeof cmd === 'undefined') throw new ParameterError('Unknown SubType')
-    this.emitter?.off(
-      (typeof identity === 'object' && Long.isLong(identity)
-        ? PushEmitter.translateAccID
-        : PushEmitter.translateSecurity)(cmd, identity),
-      listener
-    )
+    var subType, identity, listener
+    switch (args.length) {
+      case 2: {
+        var [subType, listener] = args
+        this.emitter?.off(PushEmitter.translateAccID(cmd), listener)
+        break
+      }
+      case 3: {
+        var [subType, identity, listener] = args
+        if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
+          this.emitter?.off(PushEmitter.translateSecurity(cmd, identity), listener)
+        } else {
+          throw new Error('Invalid security')
+        }
+        break
+      }
+      default: {
+        throw new Error('Invalid arguments')
+        break
+      }
+    }
   }
 
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_Ticker,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_RT,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_Basic,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_Broker,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-    accID: number|Long,
-  ): void
-  public removeAllListeners(
-    subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-    accID: number|Long,
-  ): void
   public removeAllListeners(
     subType: Proto.Qot_Common.SubType.SubType_Order,
     accID: number|Long,
@@ -1607,7 +1077,14 @@ export default class PushEmitter {
 
   public static translateAccID(
     cmdOrName: valueof<typeof ProtoId>|keyof (typeof ProtoId),
-    accID: number|Long
+    accID?: number|Long
+  ) {
+    if (accID === undefined) {
+      accID = PushEmitter._instance?._accID
+    }
+    if (
+      typeof accID === 'number' ||
+      (typeof accID === 'object' && Long.isLong(accID))
   ) {
     let cmd: valueof<typeof ProtoId> = -1
     if (typeof cmdOrName === 'string') {
@@ -1624,6 +1101,9 @@ export default class PushEmitter {
       throw new ParameterError('Invalid cmd')
     }
     return `${cmd}_${Long.isLong(accID)? (accID as Long).toString() : accID}`
+    } else {
+      throw new Error('Invalid accID')
+    }
   }
 
   public static translateSubType(subType: Proto.Qot_Common.SubType): number|undefined {

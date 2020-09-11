@@ -37,7 +37,7 @@ export default class WebSocket extends PushEmitter {
   } = {}
 
   private connID: number|Long|undefined
-  private header: Proto.Trd_Common.ITrdHeader|undefined
+  protected header: Proto.Trd_Common.ITrdHeader|undefined
 
   private reconnectTimer: NodeJS.Timeout|undefined
   private isLoggedIn = false
@@ -151,7 +151,8 @@ export default class WebSocket extends PushEmitter {
           serialNo: Date.now()
         } as Proto.Common.IPacketID,
         header: this.header,
-        userID: this.config.userID
+        userID: this.config.userID,
+        accIDList: [this.header?.accID]
       })
       return this._request(name, _req)
     } else {
@@ -216,6 +217,7 @@ export default class WebSocket extends PushEmitter {
           accID: matchedAcc.accID,
           trdMarket: this.config.accMarket!
         }
+        super.accID = matchedAcc.accID
         const { connID, qotLogined, trdLogined } = (await this._request('GetGlobalState', {
           userID: this.config.userID
         } as Proto.GetGlobalState.IC2S)) as Proto.GetGlobalState.IS2C

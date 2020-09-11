@@ -41,7 +41,8 @@ const DefaultConfig = {
 type AutoFilled<T> = Omit<T,
   'header' |
   'packetID' |
-  'userID'
+  'userID' |
+  'accIDList'
 >
 
 type MayOptional<T> = (keyof T extends never? void : T)
