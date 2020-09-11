@@ -58,6 +58,16 @@ const FutuConfig = {
   // wait for initialization to finish
   await ft.ready
 
+  // Example 0: subscribe to trading account changes
+  await this.ft.trdSubAccPush()
+  ft.on(Qot_Common.SubType.SubType_Order, data => {
+    console.log(
+      'Security: ', data.code,
+      ' Price: ', data.price,
+      ' Qty: ', data.qty,
+      ' Order Type: ', data.orderType
+    )
+  })
 
   // Example 1: get static info
   let staticInfo = await ft.qotGetStaticInfo({
