@@ -154,7 +154,7 @@ export default class PushEmitter {
         var [subType, listener] = args
         this.emitter?.on(PushEmitter.translateAccID(cmd), listener)
         break
-  }
+      }
       case 3: {
         var [subType, identity, listener] = args
         if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
@@ -281,7 +281,7 @@ export default class PushEmitter {
         var [subType, listener] = args
         this.emitter?.addListener(PushEmitter.translateAccID(cmd), listener)
         break
-  }
+      }
       case 3: {
         var [subType, identity, listener] = args
         if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
@@ -409,7 +409,7 @@ export default class PushEmitter {
         var [subType, listener] = args
         this.emitter?.once(PushEmitter.translateAccID(cmd), listener)
         break
-  }
+      }
       case 3: {
         var [subType, identity, listener] = args
         if (typeof identity === 'object' && Proto.Qot_Common.Security.verify(identity) === null) {
@@ -1044,9 +1044,9 @@ export default class PushEmitter {
         ;(res.basicQotList as Proto.Qot_Common.BasicQot[]).forEach(qot => {
           this.emitter?.emit(PushEmitter.translateSecurity(cmd, qot.security), qot)
         })
-      } else if (res.TrdHeader) {
+      } else if (res.header) {
         this.emitter?.emit(
-          PushEmitter.translateAccID(cmd, (res.TrdHeader as Proto.Trd_Common.TrdHeader).accID),
+          PushEmitter.translateAccID(cmd, (res.header as Proto.Trd_Common.TrdHeader).accID),
           res.order || res.orderFill
         )
       }
@@ -1085,22 +1085,22 @@ export default class PushEmitter {
     if (
       typeof accID === 'number' ||
       (typeof accID === 'object' && Long.isLong(accID))
-  ) {
-    let cmd: valueof<typeof ProtoId> = -1
-    if (typeof cmdOrName === 'string') {
-      if (Proto[cmdOrName]) {
-        cmd = ProtoId[cmdOrName] as number
-      } else if (!isNaN(parseInt(cmdOrName))) {
-        cmd = parseInt(cmdOrName)
+    ) {
+      let cmd: valueof<typeof ProtoId> = -1
+      if (typeof cmdOrName === 'string') {
+        if (Proto[cmdOrName]) {
+          cmd = ProtoId[cmdOrName] as number
+        } else if (!isNaN(parseInt(cmdOrName))) {
+          cmd = parseInt(cmdOrName)
+        } else {
+          throw new ParameterError('Invalid cmd')
+        }
+      } else if (ProtoName[cmdOrName]) {
+        cmd = cmdOrName
       } else {
         throw new ParameterError('Invalid cmd')
       }
-    } else if (ProtoName[cmdOrName]) {
-      cmd = cmdOrName
-    } else {
-      throw new ParameterError('Invalid cmd')
-    }
-    return `${cmd}_${Long.isLong(accID)? (accID as Long).toString() : accID}`
+      return `${cmd}_${Long.isLong(accID)? (accID as Long).toString() : accID}`
     } else {
       throw new Error('Invalid accID')
     }
