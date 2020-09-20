@@ -1,30 +1,30 @@
 syntax = "proto2";
 package InitWebSocket;
-
 message C2S
 {
-  optional string IP = 1;
-  optional int32 Port = 2;
-  optional string RSAPrivateKey = 3;
-  optional string websocketKey = 4;
-  optional string clientId =5;
+   optional string IP = 1;
+   optional int32 Port = 2;
+   optional string RSAPrivateKey = 3;
+   optional string websocketKey = 4;
+   optional string clientID = 5;
+   optional string programmingLanguage = 6;
 }
 
 message S2C
 {
-  required int64 serverTime = 1;
+	optional int64 serverTime = 1;
+	optional uint64 connID = 2;
 }
 
 message Request
 {
-	required C2S c2s = 1;
+	optional C2S c2s = 1;
 }
 
 message Response
 {
-	required int32 retType = 1 [default = -400]; //RetType,返回结果
+	required int32 retType = 1 [default = -400];
 	optional string retMsg = 2;
 	optional int32 errCode = 3;
-
 	optional S2C s2c = 4;
 }

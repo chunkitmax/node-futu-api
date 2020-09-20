@@ -4226,6 +4226,9 @@ $root.Qot_Common = (function() {
      * @property {number} QotMarketState_FutureBreak=24 QotMarketState_FutureBreak value
      * @property {number} QotMarketState_FutureBreakOver=25 QotMarketState_FutureBreakOver value
      * @property {number} QotMarketState_FutureClose=26 QotMarketState_FutureClose value
+     * @property {number} QotMarketState_StibAfterHoursWait=27 QotMarketState_StibAfterHoursWait value
+     * @property {number} QotMarketState_StibAfterHoursBegin=28 QotMarketState_StibAfterHoursBegin value
+     * @property {number} QotMarketState_StibAfterHoursEnd=29 QotMarketState_StibAfterHoursEnd value
      */
     Qot_Common.QotMarketState = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4254,6 +4257,9 @@ $root.Qot_Common = (function() {
         values[valuesById[24] = "QotMarketState_FutureBreak"] = 24;
         values[valuesById[25] = "QotMarketState_FutureBreakOver"] = 25;
         values[valuesById[26] = "QotMarketState_FutureClose"] = 26;
+        values[valuesById[27] = "QotMarketState_StibAfterHoursWait"] = 27;
+        values[valuesById[28] = "QotMarketState_StibAfterHoursBegin"] = 28;
+        values[valuesById[29] = "QotMarketState_StibAfterHoursEnd"] = 29;
         return values;
     })();
 
@@ -32618,6 +32624,1124 @@ $root.Qot_GetKL = (function() {
     })();
 
     return Qot_GetKL;
+})();
+
+$root.Qot_GetMarketState = (function() {
+
+    /**
+     * Namespace Qot_GetMarketState.
+     * @exports Qot_GetMarketState
+     * @namespace
+     */
+    var Qot_GetMarketState = {};
+
+    Qot_GetMarketState.C2S = (function() {
+
+        /**
+         * Properties of a C2S.
+         * @memberof Qot_GetMarketState
+         * @interface IC2S
+         * @property {Array.<Qot_Common.ISecurity>|null} [securityList] C2S securityList
+         */
+
+        /**
+         * Constructs a new C2S.
+         * @memberof Qot_GetMarketState
+         * @classdesc Represents a C2S.
+         * @implements IC2S
+         * @constructor
+         * @param {Qot_GetMarketState.IC2S=} [properties] Properties to set
+         */
+        function C2S(properties) {
+            this.securityList = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2S securityList.
+         * @member {Array.<Qot_Common.ISecurity>} securityList
+         * @memberof Qot_GetMarketState.C2S
+         * @instance
+         */
+        C2S.prototype.securityList = $util.emptyArray;
+
+        /**
+         * Creates a new C2S instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Qot_GetMarketState.IC2S=} [properties] Properties to set
+         * @returns {Qot_GetMarketState.C2S} C2S instance
+         */
+        C2S.create = function create(properties) {
+            return new C2S(properties);
+        };
+
+        /**
+         * Encodes the specified C2S message. Does not implicitly {@link Qot_GetMarketState.C2S.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Qot_GetMarketState.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.securityList != null && message.securityList.length)
+                for (var i = 0; i < message.securityList.length; ++i)
+                    $root.Qot_Common.Security.encode(message.securityList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2S message, length delimited. Does not implicitly {@link Qot_GetMarketState.C2S.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Qot_GetMarketState.IC2S} message C2S message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2S.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetMarketState.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetMarketState.C2S();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.securityList && message.securityList.length))
+                        message.securityList = [];
+                    message.securityList.push($root.Qot_Common.Security.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a C2S message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetMarketState.C2S} C2S
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2S.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2S message.
+         * @function verify
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2S.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.securityList != null && message.hasOwnProperty("securityList")) {
+                if (!Array.isArray(message.securityList))
+                    return "securityList: array expected";
+                for (var i = 0; i < message.securityList.length; ++i) {
+                    var error = $root.Qot_Common.Security.verify(message.securityList[i]);
+                    if (error)
+                        return "securityList." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a C2S message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetMarketState.C2S} C2S
+         */
+        C2S.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetMarketState.C2S)
+                return object;
+            var message = new $root.Qot_GetMarketState.C2S();
+            if (object.securityList) {
+                if (!Array.isArray(object.securityList))
+                    throw TypeError(".Qot_GetMarketState.C2S.securityList: array expected");
+                message.securityList = [];
+                for (var i = 0; i < object.securityList.length; ++i) {
+                    if (typeof object.securityList[i] !== "object")
+                        throw TypeError(".Qot_GetMarketState.C2S.securityList: object expected");
+                    message.securityList[i] = $root.Qot_Common.Security.fromObject(object.securityList[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2S message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetMarketState.C2S
+         * @static
+         * @param {Qot_GetMarketState.C2S} message C2S
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2S.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.securityList = [];
+            if (message.securityList && message.securityList.length) {
+                object.securityList = [];
+                for (var j = 0; j < message.securityList.length; ++j)
+                    object.securityList[j] = $root.Qot_Common.Security.toObject(message.securityList[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this C2S to JSON.
+         * @function toJSON
+         * @memberof Qot_GetMarketState.C2S
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2S.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2S;
+    })();
+
+    Qot_GetMarketState.MarketInfo = (function() {
+
+        /**
+         * Properties of a MarketInfo.
+         * @memberof Qot_GetMarketState
+         * @interface IMarketInfo
+         * @property {Qot_Common.ISecurity} security MarketInfo security
+         * @property {string} name MarketInfo name
+         * @property {number} marketState MarketInfo marketState
+         */
+
+        /**
+         * Constructs a new MarketInfo.
+         * @memberof Qot_GetMarketState
+         * @classdesc Represents a MarketInfo.
+         * @implements IMarketInfo
+         * @constructor
+         * @param {Qot_GetMarketState.IMarketInfo=} [properties] Properties to set
+         */
+        function MarketInfo(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * MarketInfo security.
+         * @member {Qot_Common.ISecurity} security
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @instance
+         */
+        MarketInfo.prototype.security = null;
+
+        /**
+         * MarketInfo name.
+         * @member {string} name
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @instance
+         */
+        MarketInfo.prototype.name = "";
+
+        /**
+         * MarketInfo marketState.
+         * @member {number} marketState
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @instance
+         */
+        MarketInfo.prototype.marketState = 0;
+
+        /**
+         * Creates a new MarketInfo instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Qot_GetMarketState.IMarketInfo=} [properties] Properties to set
+         * @returns {Qot_GetMarketState.MarketInfo} MarketInfo instance
+         */
+        MarketInfo.create = function create(properties) {
+            return new MarketInfo(properties);
+        };
+
+        /**
+         * Encodes the specified MarketInfo message. Does not implicitly {@link Qot_GetMarketState.MarketInfo.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Qot_GetMarketState.IMarketInfo} message MarketInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        MarketInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.Qot_Common.Security.encode(message.security, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.marketState);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified MarketInfo message, length delimited. Does not implicitly {@link Qot_GetMarketState.MarketInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Qot_GetMarketState.IMarketInfo} message MarketInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        MarketInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a MarketInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetMarketState.MarketInfo} MarketInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        MarketInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetMarketState.MarketInfo();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.security = $root.Qot_Common.Security.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.marketState = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("security"))
+                throw $util.ProtocolError("missing required 'security'", { instance: message });
+            if (!message.hasOwnProperty("name"))
+                throw $util.ProtocolError("missing required 'name'", { instance: message });
+            if (!message.hasOwnProperty("marketState"))
+                throw $util.ProtocolError("missing required 'marketState'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a MarketInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetMarketState.MarketInfo} MarketInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        MarketInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a MarketInfo message.
+         * @function verify
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        MarketInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.Qot_Common.Security.verify(message.security);
+                if (error)
+                    return "security." + error;
+            }
+            if (!$util.isString(message.name))
+                return "name: string expected";
+            if (!$util.isInteger(message.marketState))
+                return "marketState: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a MarketInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetMarketState.MarketInfo} MarketInfo
+         */
+        MarketInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetMarketState.MarketInfo)
+                return object;
+            var message = new $root.Qot_GetMarketState.MarketInfo();
+            if (object.security != null) {
+                if (typeof object.security !== "object")
+                    throw TypeError(".Qot_GetMarketState.MarketInfo.security: object expected");
+                message.security = $root.Qot_Common.Security.fromObject(object.security);
+            }
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.marketState != null)
+                message.marketState = object.marketState | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a MarketInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @static
+         * @param {Qot_GetMarketState.MarketInfo} message MarketInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        MarketInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.security = null;
+                object.name = "";
+                object.marketState = 0;
+            }
+            if (message.security != null && message.hasOwnProperty("security"))
+                object.security = $root.Qot_Common.Security.toObject(message.security, options);
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.marketState != null && message.hasOwnProperty("marketState"))
+                object.marketState = message.marketState;
+            return object;
+        };
+
+        /**
+         * Converts this MarketInfo to JSON.
+         * @function toJSON
+         * @memberof Qot_GetMarketState.MarketInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        MarketInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return MarketInfo;
+    })();
+
+    Qot_GetMarketState.S2C = (function() {
+
+        /**
+         * Properties of a S2C.
+         * @memberof Qot_GetMarketState
+         * @interface IS2C
+         * @property {Array.<Qot_GetMarketState.IMarketInfo>|null} [marketInfoList] S2C marketInfoList
+         */
+
+        /**
+         * Constructs a new S2C.
+         * @memberof Qot_GetMarketState
+         * @classdesc Represents a S2C.
+         * @implements IS2C
+         * @constructor
+         * @param {Qot_GetMarketState.IS2C=} [properties] Properties to set
+         */
+        function S2C(properties) {
+            this.marketInfoList = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * S2C marketInfoList.
+         * @member {Array.<Qot_GetMarketState.IMarketInfo>} marketInfoList
+         * @memberof Qot_GetMarketState.S2C
+         * @instance
+         */
+        S2C.prototype.marketInfoList = $util.emptyArray;
+
+        /**
+         * Creates a new S2C instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Qot_GetMarketState.IS2C=} [properties] Properties to set
+         * @returns {Qot_GetMarketState.S2C} S2C instance
+         */
+        S2C.create = function create(properties) {
+            return new S2C(properties);
+        };
+
+        /**
+         * Encodes the specified S2C message. Does not implicitly {@link Qot_GetMarketState.S2C.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Qot_GetMarketState.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.marketInfoList != null && message.marketInfoList.length)
+                for (var i = 0; i < message.marketInfoList.length; ++i)
+                    $root.Qot_GetMarketState.MarketInfo.encode(message.marketInfoList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified S2C message, length delimited. Does not implicitly {@link Qot_GetMarketState.S2C.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Qot_GetMarketState.IS2C} message S2C message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        S2C.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetMarketState.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetMarketState.S2C();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.marketInfoList && message.marketInfoList.length))
+                        message.marketInfoList = [];
+                    message.marketInfoList.push($root.Qot_GetMarketState.MarketInfo.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a S2C message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetMarketState.S2C} S2C
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        S2C.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a S2C message.
+         * @function verify
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        S2C.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.marketInfoList != null && message.hasOwnProperty("marketInfoList")) {
+                if (!Array.isArray(message.marketInfoList))
+                    return "marketInfoList: array expected";
+                for (var i = 0; i < message.marketInfoList.length; ++i) {
+                    var error = $root.Qot_GetMarketState.MarketInfo.verify(message.marketInfoList[i]);
+                    if (error)
+                        return "marketInfoList." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a S2C message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetMarketState.S2C} S2C
+         */
+        S2C.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetMarketState.S2C)
+                return object;
+            var message = new $root.Qot_GetMarketState.S2C();
+            if (object.marketInfoList) {
+                if (!Array.isArray(object.marketInfoList))
+                    throw TypeError(".Qot_GetMarketState.S2C.marketInfoList: array expected");
+                message.marketInfoList = [];
+                for (var i = 0; i < object.marketInfoList.length; ++i) {
+                    if (typeof object.marketInfoList[i] !== "object")
+                        throw TypeError(".Qot_GetMarketState.S2C.marketInfoList: object expected");
+                    message.marketInfoList[i] = $root.Qot_GetMarketState.MarketInfo.fromObject(object.marketInfoList[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a S2C message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetMarketState.S2C
+         * @static
+         * @param {Qot_GetMarketState.S2C} message S2C
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        S2C.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.marketInfoList = [];
+            if (message.marketInfoList && message.marketInfoList.length) {
+                object.marketInfoList = [];
+                for (var j = 0; j < message.marketInfoList.length; ++j)
+                    object.marketInfoList[j] = $root.Qot_GetMarketState.MarketInfo.toObject(message.marketInfoList[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this S2C to JSON.
+         * @function toJSON
+         * @memberof Qot_GetMarketState.S2C
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        S2C.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return S2C;
+    })();
+
+    Qot_GetMarketState.Request = (function() {
+
+        /**
+         * Properties of a Request.
+         * @memberof Qot_GetMarketState
+         * @interface IRequest
+         * @property {Qot_GetMarketState.IC2S} c2s Request c2s
+         */
+
+        /**
+         * Constructs a new Request.
+         * @memberof Qot_GetMarketState
+         * @classdesc Represents a Request.
+         * @implements IRequest
+         * @constructor
+         * @param {Qot_GetMarketState.IRequest=} [properties] Properties to set
+         */
+        function Request(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Request c2s.
+         * @member {Qot_GetMarketState.IC2S} c2s
+         * @memberof Qot_GetMarketState.Request
+         * @instance
+         */
+        Request.prototype.c2s = null;
+
+        /**
+         * Creates a new Request instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Qot_GetMarketState.IRequest=} [properties] Properties to set
+         * @returns {Qot_GetMarketState.Request} Request instance
+         */
+        Request.create = function create(properties) {
+            return new Request(properties);
+        };
+
+        /**
+         * Encodes the specified Request message. Does not implicitly {@link Qot_GetMarketState.Request.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Qot_GetMarketState.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            $root.Qot_GetMarketState.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Request message, length delimited. Does not implicitly {@link Qot_GetMarketState.Request.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Qot_GetMarketState.IRequest} message Request message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Request.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetMarketState.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetMarketState.Request();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.c2s = $root.Qot_GetMarketState.C2S.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("c2s"))
+                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Request message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetMarketState.Request} Request
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Request.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Request message.
+         * @function verify
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Request.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            {
+                var error = $root.Qot_GetMarketState.C2S.verify(message.c2s);
+                if (error)
+                    return "c2s." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Request message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetMarketState.Request} Request
+         */
+        Request.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetMarketState.Request)
+                return object;
+            var message = new $root.Qot_GetMarketState.Request();
+            if (object.c2s != null) {
+                if (typeof object.c2s !== "object")
+                    throw TypeError(".Qot_GetMarketState.Request.c2s: object expected");
+                message.c2s = $root.Qot_GetMarketState.C2S.fromObject(object.c2s);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Request message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetMarketState.Request
+         * @static
+         * @param {Qot_GetMarketState.Request} message Request
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Request.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.c2s = null;
+            if (message.c2s != null && message.hasOwnProperty("c2s"))
+                object.c2s = $root.Qot_GetMarketState.C2S.toObject(message.c2s, options);
+            return object;
+        };
+
+        /**
+         * Converts this Request to JSON.
+         * @function toJSON
+         * @memberof Qot_GetMarketState.Request
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Request.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Request;
+    })();
+
+    Qot_GetMarketState.Response = (function() {
+
+        /**
+         * Properties of a Response.
+         * @memberof Qot_GetMarketState
+         * @interface IResponse
+         * @property {number} retType Response retType
+         * @property {string|null} [retMsg] Response retMsg
+         * @property {number|null} [errCode] Response errCode
+         * @property {Qot_GetMarketState.IS2C|null} [s2c] Response s2c
+         */
+
+        /**
+         * Constructs a new Response.
+         * @memberof Qot_GetMarketState
+         * @classdesc Represents a Response.
+         * @implements IResponse
+         * @constructor
+         * @param {Qot_GetMarketState.IResponse=} [properties] Properties to set
+         */
+        function Response(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Response retType.
+         * @member {number} retType
+         * @memberof Qot_GetMarketState.Response
+         * @instance
+         */
+        Response.prototype.retType = -400;
+
+        /**
+         * Response retMsg.
+         * @member {string} retMsg
+         * @memberof Qot_GetMarketState.Response
+         * @instance
+         */
+        Response.prototype.retMsg = "";
+
+        /**
+         * Response errCode.
+         * @member {number} errCode
+         * @memberof Qot_GetMarketState.Response
+         * @instance
+         */
+        Response.prototype.errCode = 0;
+
+        /**
+         * Response s2c.
+         * @member {Qot_GetMarketState.IS2C|null|undefined} s2c
+         * @memberof Qot_GetMarketState.Response
+         * @instance
+         */
+        Response.prototype.s2c = null;
+
+        /**
+         * Creates a new Response instance using the specified properties.
+         * @function create
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Qot_GetMarketState.IResponse=} [properties] Properties to set
+         * @returns {Qot_GetMarketState.Response} Response instance
+         */
+        Response.create = function create(properties) {
+            return new Response(properties);
+        };
+
+        /**
+         * Encodes the specified Response message. Does not implicitly {@link Qot_GetMarketState.Response.verify|verify} messages.
+         * @function encode
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Qot_GetMarketState.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.retType);
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.retMsg);
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.errCode);
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                $root.Qot_GetMarketState.S2C.encode(message.s2c, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Response message, length delimited. Does not implicitly {@link Qot_GetMarketState.Response.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Qot_GetMarketState.IResponse} message Response message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Response.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer.
+         * @function decode
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {Qot_GetMarketState.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Qot_GetMarketState.Response();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.retType = reader.int32();
+                    break;
+                case 2:
+                    message.retMsg = reader.string();
+                    break;
+                case 3:
+                    message.errCode = reader.int32();
+                    break;
+                case 4:
+                    message.s2c = $root.Qot_GetMarketState.S2C.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("retType"))
+                throw $util.ProtocolError("missing required 'retType'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a Response message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {Qot_GetMarketState.Response} Response
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Response.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Response message.
+         * @function verify
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Response.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.retType))
+                return "retType: integer expected";
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                if (!$util.isString(message.retMsg))
+                    return "retMsg: string expected";
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                if (!$util.isInteger(message.errCode))
+                    return "errCode: integer expected";
+            if (message.s2c != null && message.hasOwnProperty("s2c")) {
+                var error = $root.Qot_GetMarketState.S2C.verify(message.s2c);
+                if (error)
+                    return "s2c." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a Response message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {Qot_GetMarketState.Response} Response
+         */
+        Response.fromObject = function fromObject(object) {
+            if (object instanceof $root.Qot_GetMarketState.Response)
+                return object;
+            var message = new $root.Qot_GetMarketState.Response();
+            if (object.retType != null)
+                message.retType = object.retType | 0;
+            if (object.retMsg != null)
+                message.retMsg = String(object.retMsg);
+            if (object.errCode != null)
+                message.errCode = object.errCode | 0;
+            if (object.s2c != null) {
+                if (typeof object.s2c !== "object")
+                    throw TypeError(".Qot_GetMarketState.Response.s2c: object expected");
+                message.s2c = $root.Qot_GetMarketState.S2C.fromObject(object.s2c);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Response message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof Qot_GetMarketState.Response
+         * @static
+         * @param {Qot_GetMarketState.Response} message Response
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Response.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.retType = -400;
+                object.retMsg = "";
+                object.errCode = 0;
+                object.s2c = null;
+            }
+            if (message.retType != null && message.hasOwnProperty("retType"))
+                object.retType = message.retType;
+            if (message.retMsg != null && message.hasOwnProperty("retMsg"))
+                object.retMsg = message.retMsg;
+            if (message.errCode != null && message.hasOwnProperty("errCode"))
+                object.errCode = message.errCode;
+            if (message.s2c != null && message.hasOwnProperty("s2c"))
+                object.s2c = $root.Qot_GetMarketState.S2C.toObject(message.s2c, options);
+            return object;
+        };
+
+        /**
+         * Converts this Response to JSON.
+         * @function toJSON
+         * @memberof Qot_GetMarketState.Response
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Response.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Response;
+    })();
+
+    return Qot_GetMarketState;
 })();
 
 $root.Qot_GetOptionChain = (function() {
@@ -65613,6 +66737,7 @@ $root.Qot_SetPriceReminder = (function() {
      * @property {number} SetPriceReminderOp_Enable=3 SetPriceReminderOp_Enable value
      * @property {number} SetPriceReminderOp_Disable=4 SetPriceReminderOp_Disable value
      * @property {number} SetPriceReminderOp_Modify=5 SetPriceReminderOp_Modify value
+     * @property {number} SetPriceReminderOp_DelAll=6 SetPriceReminderOp_DelAll value
      */
     Qot_SetPriceReminder.SetPriceReminderOp = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -65622,6 +66747,7 @@ $root.Qot_SetPriceReminder = (function() {
         values[valuesById[3] = "SetPriceReminderOp_Enable"] = 3;
         values[valuesById[4] = "SetPriceReminderOp_Disable"] = 4;
         values[valuesById[5] = "SetPriceReminderOp_Modify"] = 5;
+        values[valuesById[6] = "SetPriceReminderOp_DelAll"] = 6;
         return values;
     })();
 
@@ -94990,7 +96116,8 @@ $root.InitWebSocket = (function() {
          * @property {number|null} [Port] C2S Port
          * @property {string|null} [RSAPrivateKey] C2S RSAPrivateKey
          * @property {string|null} [websocketKey] C2S websocketKey
-         * @property {string|null} [clientId] C2S clientId
+         * @property {string|null} [clientID] C2S clientID
+         * @property {string|null} [programmingLanguage] C2S programmingLanguage
          */
 
         /**
@@ -95041,12 +96168,20 @@ $root.InitWebSocket = (function() {
         C2S.prototype.websocketKey = "";
 
         /**
-         * C2S clientId.
-         * @member {string} clientId
+         * C2S clientID.
+         * @member {string} clientID
          * @memberof InitWebSocket.C2S
          * @instance
          */
-        C2S.prototype.clientId = "";
+        C2S.prototype.clientID = "";
+
+        /**
+         * C2S programmingLanguage.
+         * @member {string} programmingLanguage
+         * @memberof InitWebSocket.C2S
+         * @instance
+         */
+        C2S.prototype.programmingLanguage = "";
 
         /**
          * Creates a new C2S instance using the specified properties.
@@ -95080,8 +96215,10 @@ $root.InitWebSocket = (function() {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.RSAPrivateKey);
             if (message.websocketKey != null && message.hasOwnProperty("websocketKey"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.websocketKey);
-            if (message.clientId != null && message.hasOwnProperty("clientId"))
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.clientId);
+            if (message.clientID != null && message.hasOwnProperty("clientID"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.clientID);
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.programmingLanguage);
             return writer;
         };
 
@@ -95129,7 +96266,10 @@ $root.InitWebSocket = (function() {
                     message.websocketKey = reader.string();
                     break;
                 case 5:
-                    message.clientId = reader.string();
+                    message.clientID = reader.string();
+                    break;
+                case 6:
+                    message.programmingLanguage = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -95178,9 +96318,12 @@ $root.InitWebSocket = (function() {
             if (message.websocketKey != null && message.hasOwnProperty("websocketKey"))
                 if (!$util.isString(message.websocketKey))
                     return "websocketKey: string expected";
-            if (message.clientId != null && message.hasOwnProperty("clientId"))
-                if (!$util.isString(message.clientId))
-                    return "clientId: string expected";
+            if (message.clientID != null && message.hasOwnProperty("clientID"))
+                if (!$util.isString(message.clientID))
+                    return "clientID: string expected";
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                if (!$util.isString(message.programmingLanguage))
+                    return "programmingLanguage: string expected";
             return null;
         };
 
@@ -95204,8 +96347,10 @@ $root.InitWebSocket = (function() {
                 message.RSAPrivateKey = String(object.RSAPrivateKey);
             if (object.websocketKey != null)
                 message.websocketKey = String(object.websocketKey);
-            if (object.clientId != null)
-                message.clientId = String(object.clientId);
+            if (object.clientID != null)
+                message.clientID = String(object.clientID);
+            if (object.programmingLanguage != null)
+                message.programmingLanguage = String(object.programmingLanguage);
             return message;
         };
 
@@ -95227,7 +96372,8 @@ $root.InitWebSocket = (function() {
                 object.Port = 0;
                 object.RSAPrivateKey = "";
                 object.websocketKey = "";
-                object.clientId = "";
+                object.clientID = "";
+                object.programmingLanguage = "";
             }
             if (message.IP != null && message.hasOwnProperty("IP"))
                 object.IP = message.IP;
@@ -95237,8 +96383,10 @@ $root.InitWebSocket = (function() {
                 object.RSAPrivateKey = message.RSAPrivateKey;
             if (message.websocketKey != null && message.hasOwnProperty("websocketKey"))
                 object.websocketKey = message.websocketKey;
-            if (message.clientId != null && message.hasOwnProperty("clientId"))
-                object.clientId = message.clientId;
+            if (message.clientID != null && message.hasOwnProperty("clientID"))
+                object.clientID = message.clientID;
+            if (message.programmingLanguage != null && message.hasOwnProperty("programmingLanguage"))
+                object.programmingLanguage = message.programmingLanguage;
             return object;
         };
 
@@ -95262,7 +96410,8 @@ $root.InitWebSocket = (function() {
          * Properties of a S2C.
          * @memberof InitWebSocket
          * @interface IS2C
-         * @property {number|Long} serverTime S2C serverTime
+         * @property {number|Long|null} [serverTime] S2C serverTime
+         * @property {number|Long|null} [connID] S2C connID
          */
 
         /**
@@ -95289,6 +96438,14 @@ $root.InitWebSocket = (function() {
         S2C.prototype.serverTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
+         * S2C connID.
+         * @member {number|Long} connID
+         * @memberof InitWebSocket.S2C
+         * @instance
+         */
+        S2C.prototype.connID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
          * Creates a new S2C instance using the specified properties.
          * @function create
          * @memberof InitWebSocket.S2C
@@ -95312,7 +96469,10 @@ $root.InitWebSocket = (function() {
         S2C.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.serverTime);
+            if (message.serverTime != null && message.hasOwnProperty("serverTime"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.serverTime);
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.connID);
             return writer;
         };
 
@@ -95350,13 +96510,14 @@ $root.InitWebSocket = (function() {
                 case 1:
                     message.serverTime = reader.int64();
                     break;
+                case 2:
+                    message.connID = reader.uint64();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
                 }
             }
-            if (!message.hasOwnProperty("serverTime"))
-                throw $util.ProtocolError("missing required 'serverTime'", { instance: message });
             return message;
         };
 
@@ -95387,8 +96548,12 @@ $root.InitWebSocket = (function() {
         S2C.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.serverTime) && !(message.serverTime && $util.isInteger(message.serverTime.low) && $util.isInteger(message.serverTime.high)))
-                return "serverTime: integer|Long expected";
+            if (message.serverTime != null && message.hasOwnProperty("serverTime"))
+                if (!$util.isInteger(message.serverTime) && !(message.serverTime && $util.isInteger(message.serverTime.low) && $util.isInteger(message.serverTime.high)))
+                    return "serverTime: integer|Long expected";
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                if (!$util.isInteger(message.connID) && !(message.connID && $util.isInteger(message.connID.low) && $util.isInteger(message.connID.high)))
+                    return "connID: integer|Long expected";
             return null;
         };
 
@@ -95413,6 +96578,15 @@ $root.InitWebSocket = (function() {
                     message.serverTime = object.serverTime;
                 else if (typeof object.serverTime === "object")
                     message.serverTime = new $util.LongBits(object.serverTime.low >>> 0, object.serverTime.high >>> 0).toNumber();
+            if (object.connID != null)
+                if ($util.Long)
+                    (message.connID = $util.Long.fromValue(object.connID)).unsigned = true;
+                else if (typeof object.connID === "string")
+                    message.connID = parseInt(object.connID, 10);
+                else if (typeof object.connID === "number")
+                    message.connID = object.connID;
+                else if (typeof object.connID === "object")
+                    message.connID = new $util.LongBits(object.connID.low >>> 0, object.connID.high >>> 0).toNumber(true);
             return message;
         };
 
@@ -95429,17 +96603,28 @@ $root.InitWebSocket = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 if ($util.Long) {
                     var long = new $util.Long(0, 0, false);
                     object.serverTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.serverTime = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, true);
+                    object.connID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.connID = options.longs === String ? "0" : 0;
+            }
             if (message.serverTime != null && message.hasOwnProperty("serverTime"))
                 if (typeof message.serverTime === "number")
                     object.serverTime = options.longs === String ? String(message.serverTime) : message.serverTime;
                 else
                     object.serverTime = options.longs === String ? $util.Long.prototype.toString.call(message.serverTime) : options.longs === Number ? new $util.LongBits(message.serverTime.low >>> 0, message.serverTime.high >>> 0).toNumber() : message.serverTime;
+            if (message.connID != null && message.hasOwnProperty("connID"))
+                if (typeof message.connID === "number")
+                    object.connID = options.longs === String ? String(message.connID) : message.connID;
+                else
+                    object.connID = options.longs === String ? $util.Long.prototype.toString.call(message.connID) : options.longs === Number ? new $util.LongBits(message.connID.low >>> 0, message.connID.high >>> 0).toNumber(true) : message.connID;
             return object;
         };
 
@@ -95463,7 +96648,7 @@ $root.InitWebSocket = (function() {
          * Properties of a Request.
          * @memberof InitWebSocket
          * @interface IRequest
-         * @property {InitWebSocket.IC2S} c2s Request c2s
+         * @property {InitWebSocket.IC2S|null} [c2s] Request c2s
          */
 
         /**
@@ -95483,7 +96668,7 @@ $root.InitWebSocket = (function() {
 
         /**
          * Request c2s.
-         * @member {InitWebSocket.IC2S} c2s
+         * @member {InitWebSocket.IC2S|null|undefined} c2s
          * @memberof InitWebSocket.Request
          * @instance
          */
@@ -95513,7 +96698,8 @@ $root.InitWebSocket = (function() {
         Request.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            $root.InitWebSocket.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.c2s != null && message.hasOwnProperty("c2s"))
+                $root.InitWebSocket.C2S.encode(message.c2s, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
 
@@ -95556,8 +96742,6 @@ $root.InitWebSocket = (function() {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("c2s"))
-                throw $util.ProtocolError("missing required 'c2s'", { instance: message });
             return message;
         };
 
@@ -95588,7 +96772,7 @@ $root.InitWebSocket = (function() {
         Request.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            {
+            if (message.c2s != null && message.hasOwnProperty("c2s")) {
                 var error = $root.InitWebSocket.C2S.verify(message.c2s);
                 if (error)
                     return "c2s." + error;
