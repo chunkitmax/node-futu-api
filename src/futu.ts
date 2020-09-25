@@ -51,8 +51,8 @@ type ApiParam<T> = MayOptional<AutoFilled<T>>
 
 export default class Futu extends WebSocket {
 
-  constructor(config: FutuConfig) {
-    super(Object.assign({}, DefaultConfig, config))
+  constructor(config: FutuConfig, callback?: (ft: Futu) => void) {
+    super(Object.assign({}, DefaultConfig, config), () => callback?.(this))
   }
 
   public get ready() {

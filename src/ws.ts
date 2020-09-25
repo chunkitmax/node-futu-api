@@ -47,7 +47,7 @@ export default class WebSocket extends PushEmitter {
 
   private initPromise: InitPromise
 
-  constructor(private config: FutuConfig) {
+  constructor(private config: FutuConfig, private callback: () => void) {
     super()
     this.ws = this.setup()
     this.initPromise = new InitPromise()
@@ -226,6 +226,7 @@ export default class WebSocket extends PushEmitter {
         this.isLoggedIn = qotLogined && trdLogined
         if (!this.isLoggedIn) throw new SystemError('Either API for Quote and Trade is not permitted')
         await this.initPromise.resolve()
+        this.callback()
         L.info('Finish initialization')
       } catch (err) {
         L.error(err)
