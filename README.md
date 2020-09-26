@@ -52,22 +52,20 @@ const FutuConfig = {
   pwdMd5: "129619259239abcdef",
 }
 
-;(async function main() {
-  // Init
-  const ft = new Futu(FutuConfig)
-  // wait for initialization to finish
-  await ft.ready
 
+const targetSecurity = {
+  code: 'YMmain',
+  market: Qot_Common.QotMarket.QotMarket_US_Security
+}
+
+/**
+ * Init
+ * better use callback function because websocket may disconnect sometimes
+ * you can also use `await ft.ready` to wait for initialization to finish
+ */
+const ft = new Futu(FutuConfig, async ft => {
   // Example 0: subscribe to trading account changes
-  await this.ft.trdSubAccPush()
-  ft.on(Qot_Common.SubType.SubType_Order, data => {
-    console.log(
-      'Security: ', data.code,
-      ' Price: ', data.price,
-      ' Qty: ', data.qty,
-      ' Order Type: ', data.orderType
-    )
-  })
+  await ft.trdSubAccPush()
 
   // Example 1: get static info
   let staticInfo = await ft.qotGetStaticInfo({
@@ -108,16 +106,6 @@ const FutuConfig = {
 
   // Example 5: subscription
   // subscribe to DJI futures (Ticker & Realtime data)
-  let targetSecurity = {
-    code: 'YMmain',
-    market: Qot_Common.QotMarket.QotMarket_US_Security
-  }
-  ft.on(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
-    console.log('ticker: ', data.tickerList!.map(ticker => ticker.price))
-  })
-  ft.on(Qot_Common.SubType.SubType_RT, targetSecurity, data => {
-    console.log('rt: ', data.rtList!.map(rt => rt.price))
-  })
   await ft.qotSub({
     isSubOrUnSub: true,
     isRegOrUnRegPush: true,
@@ -149,10 +137,32 @@ const FutuConfig = {
   })
 
   ft.close()
-})()
+})
 
+/// Push Listeners
+// trdSubAccPush
+ft.on(Qot_Common.SubType.SubType_Order, data => {
+  console.log(
+    'Security: ', data.code,
+    ' Price: ', data.price,
+    ' Qty: ', data.qty,
+    ' Order Type: ', data.orderType
+  )
+})
+// qotSub (Ticker)
+ft.on(Qot_Common.SubType.SubType_Ticker, targetSecurity, data => {
+  console.log('ticker: ', data.tickerList!.map(ticker => ticker.price))
+})
+// qotSub (RT)
+ft.on(Qot_Common.SubType.SubType_RT, targetSecurity, data => {
+  console.log('rt: ', data.rtList!.map(rt => rt.price))
+})
+```
 
-// You can use "Subscibe" decorator instead of ft.on()
+<br/>
+You can use "Subscibe" decorator instead of ft.on()
+
+```typescript
 import { Subscribe } from 'futu-api';
 class Example {
 
