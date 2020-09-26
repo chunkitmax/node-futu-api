@@ -4,6 +4,7 @@ import { Proto } from '../futu';
 import PushEmitter from '../push_emitter';
 import { ElementOf, MemberOf } from '../types/ts';
 import { OnPushListener } from '../types/types';
+import { ParameterError } from '../utils/error';
 
 interface PropertyDecorator<T> {
   configurable?: boolean;
@@ -18,76 +19,10 @@ type FuncDecorator<T> =
   (target: any, key: string, descriptor: PropertyDecorator<T>) => PropertyDecorator<T>
 
 function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_Ticker,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateTicker.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_RT,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateRT.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_Basic,
-  accID: number|Long
-): FuncDecorator<ElementOf<MemberOf<Proto.Qot_UpdateBasicQot.S2C, 'basicQotList'>>>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_Broker,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateBroker.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_OrderBook,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateOrderBook.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_1Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_3Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_5Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_15Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_30Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_60Min,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_Day,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_Week,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_Month,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_Qurater,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
-  subType: Proto.Qot_Common.SubType.SubType_KL_Year,
-  accID: number|Long
-): FuncDecorator<Proto.Qot_UpdateKL.IS2C>
-function Subscribe(
   subType: Proto.Qot_Common.SubType.SubType_Order,
-  accID: number|Long
 ): FuncDecorator<Proto.Trd_Common.Order>
 function Subscribe(
   subType: Proto.Qot_Common.SubType.SubType_OrderFill,
-  accID: number|Long
 ): FuncDecorator<Proto.Trd_Common.OrderFill>
 function Subscribe(
   subType: Proto.Qot_Common.SubType.SubType_Ticker,
@@ -162,13 +97,23 @@ function Subscribe(
   security: Proto.Qot_Common.ISecurity
 ): FuncDecorator<Proto.Trd_Common.OrderFill>
 function Subscribe(
-  ...[subType, identity]: any[]
+  ...args: any[]
 ): FuncDecorator<any> {
   return function (_: any, __: string, descriptor: PropertyDecorator<any>) {
-    PushEmitter._instance!.on(
-      subType, identity,
-      descriptor.value as OnPushListener<any>
-    )
+    const [ subType, security ] = args,
+          isTrdSubType = [
+            Proto.Qot_Common.SubType.SubType_Order,
+            Proto.Qot_Common.SubType.SubType_OrderFill
+          ].includes(subType)
+    if (typeof subType !== 'number') {
+      throw new ParameterError('Invalid subType')
+    } else if (isTrdSubType) {
+      PushEmitter._instance!.on(subType, descriptor.value as OnPushListener<any>)
+    } else if (typeof security !== 'object' && !isTrdSubType) {
+      PushEmitter._instance!.on(subType, security, descriptor.value as OnPushListener<any>)
+    } else {
+      throw new ParameterError('Please provide target security')
+    }
     return descriptor
   }
 }
