@@ -45,7 +45,7 @@ type AutoFilled<T> = Omit<T,
   'accIDList'
 >
 
-type MayOptional<T> = (keyof T extends never? void : T)
+type MayOptional<T> = (keyof T extends never? void|undefined : T)
 
 type ApiParam<T> = MayOptional<AutoFilled<T>>
 
