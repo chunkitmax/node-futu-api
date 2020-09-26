@@ -60,10 +60,11 @@ const targetSecurity = {
 
 /**
  * Init
- * better use callback function because websocket may disconnect sometimes
- * you can also use `await ft.ready` to wait for initialization to finish
+ *
+ * In case the websocket connection ends unexpectedly,
+ *  you can subscribe to data again if you put ft.qotSub into callback function.
  */
-const ft = new Futu(FutuConfig, async ft => {
+const ft = new Futu(FutuConfig, async function onOpenListener(ft) {
   // Example 0: subscribe to trading account changes
   await ft.trdSubAccPush()
 
