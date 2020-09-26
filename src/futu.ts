@@ -271,6 +271,10 @@ export default class Futu extends WebSocket {
     return super.request('Qot_GetUserSecurityGroup', req)
   }
 
+  public async qotGetMarketState(req: ApiParam<Proto.Qot_GetMarketState.IC2S>): Promise<Proto.Qot_GetMarketState.IS2C> {
+    return super.request('Qot_GetMarketState', req)
+  }
+
   public async trdGetAccList(req: ApiParam<Proto.Trd_GetAccList.IC2S>): Promise<Proto.Trd_GetAccList.IS2C> {
     return super.request('Trd_GetAccList', req)
   }
