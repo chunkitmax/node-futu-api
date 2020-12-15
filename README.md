@@ -2,8 +2,6 @@
 <a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
 Open-source unofficial Futu Websocket API for Node.js
 
-Tested on FutuOpenD Ver.2.17.1150 (on Ubuntu 18.04)
-
 ## Install
 ```bash
 npm install --save futu-api

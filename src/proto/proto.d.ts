@@ -135,7 +135,8 @@ export namespace Common {
         ProgramStatusType_NessaryDataMissing = 8,
         ProgramStatusType_UnAgreeDisclaimer = 9,
         ProgramStatusType_Ready = 10,
-        ProgramStatusType_ForceLogout = 11
+        ProgramStatusType_ForceLogout = 11,
+        ProgramStatusType_DisclaimerPullFailed = 12
     }
 
     /** Properties of a ProgramStatus. */
@@ -5108,6 +5109,9 @@ export namespace GetUserInfo {
         /** S2C webKey */
         webKey?: (string|null);
 
+        /** S2C webJumpUrlHead */
+        webJumpUrlHead?: (string|null);
+
         /** S2C hkOptionQotRight */
         hkOptionQotRight?: (number|null);
 
@@ -5122,6 +5126,12 @@ export namespace GetUserInfo {
 
         /** S2C historyKLQuota */
         historyKLQuota?: (number|null);
+
+        /** S2C usFutureQotRight */
+        usFutureQotRight?: (number|null);
+
+        /** S2C usOptionQotRight */
+        usOptionQotRight?: (number|null);
     }
 
     /** Represents a S2C. */
@@ -5163,6 +5173,9 @@ export namespace GetUserInfo {
         /** S2C webKey. */
         public webKey: string;
 
+        /** S2C webJumpUrlHead. */
+        public webJumpUrlHead: string;
+
         /** S2C hkOptionQotRight. */
         public hkOptionQotRight: number;
 
@@ -5177,6 +5190,12 @@ export namespace GetUserInfo {
 
         /** S2C historyKLQuota. */
         public historyKLQuota: number;
+
+        /** S2C usFutureQotRight. */
+        public usFutureQotRight: number;
+
+        /** S2C usOptionQotRight. */
+        public usOptionQotRight: number;
 
         /**
          * Creates a new S2C instance using the specified properties.
@@ -6608,6 +6627,12 @@ export namespace Notify {
 
         /** QotRight hkFutureQotRight */
         hkFutureQotRight?: (number|null);
+
+        /** QotRight usFutureQotRight */
+        usFutureQotRight?: (number|null);
+
+        /** QotRight usOptionQotRight */
+        usOptionQotRight?: (number|null);
     }
 
     /** Represents a QotRight. */
@@ -6636,6 +6661,12 @@ export namespace Notify {
 
         /** QotRight hkFutureQotRight. */
         public hkFutureQotRight: number;
+
+        /** QotRight usFutureQotRight. */
+        public usFutureQotRight: number;
+
+        /** QotRight usOptionQotRight. */
+        public usOptionQotRight: number;
 
         /**
          * Creates a new QotRight instance using the specified properties.
@@ -27512,6 +27543,53 @@ export namespace Qot_StockFilter {
         FinancialField_NOCFPerShare = 46
     }
 
+    /** CustomIndicatorField enum. */
+    enum CustomIndicatorField {
+        CustomIndicatorField_Unknown = 0,
+        CustomIndicatorField_Price = 1,
+        CustomIndicatorField_MA5 = 2,
+        CustomIndicatorField_MA10 = 3,
+        CustomIndicatorField_MA20 = 4,
+        CustomIndicatorField_MA30 = 5,
+        CustomIndicatorField_MA60 = 6,
+        CustomIndicatorField_MA120 = 7,
+        CustomIndicatorField_MA250 = 8,
+        CustomIndicatorField_RSI = 9,
+        CustomIndicatorField_EMA5 = 10,
+        CustomIndicatorField_EMA10 = 11,
+        CustomIndicatorField_EMA20 = 12,
+        CustomIndicatorField_EMA30 = 13,
+        CustomIndicatorField_EMA60 = 14,
+        CustomIndicatorField_EMA120 = 15,
+        CustomIndicatorField_EMA250 = 16,
+        CustomIndicatorField_Value = 17
+    }
+
+    /** PatternField enum. */
+    enum PatternField {
+        PatternField_Unknown = 0,
+        PatternField_MAAlignmentLong = 1,
+        PatternField_MAAlignmentShort = 2,
+        PatternField_EMAAlignmentLong = 3,
+        PatternField_EMAAlignmentShort = 4,
+        PatternField_RSIGoldCrossLow = 5,
+        PatternField_RSIDeathCrossHigh = 6,
+        PatternField_RSITopDivergence = 7,
+        PatternField_RSIBottomDivergence = 8,
+        PatternField_KDJGoldCrossLow = 9,
+        PatternField_KDJDeathCrossHigh = 10,
+        PatternField_KDJTopDivergence = 11,
+        PatternField_KDJBottomDivergence = 12,
+        PatternField_MACDGoldCrossLow = 13,
+        PatternField_MACDDeathCrossHigh = 14,
+        PatternField_MACDTopDivergence = 15,
+        PatternField_MACDBottomDivergence = 16,
+        PatternField_BOLLBreakUpper = 17,
+        PatternField_BOLLLower = 18,
+        PatternField_BOLLCrossMiddleUp = 19,
+        PatternField_BOLLCrossMiddleDown = 20
+    }
+
     /** FinancialQuarter enum. */
     enum FinancialQuarter {
         FinancialQuarter_Unknown = 0,
@@ -27520,6 +27598,15 @@ export namespace Qot_StockFilter {
         FinancialQuarter_Interim = 3,
         FinancialQuarter_ThirdQuarter = 4,
         FinancialQuarter_MostRecentQuarter = 5
+    }
+
+    /** RelativePosition enum. */
+    enum RelativePosition {
+        RelativePosition_Unknown = 0,
+        RelativePosition_More = 1,
+        RelativePosition_Less = 2,
+        RelativePosition_CrossUp = 3,
+        RelativePosition_CrossDown = 4
     }
 
     /** SortDir enum. */
@@ -27883,6 +27970,228 @@ export namespace Qot_StockFilter {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a PatternFilter. */
+    interface IPatternFilter {
+
+        /** PatternFilter fieldName */
+        fieldName: number;
+
+        /** PatternFilter klType */
+        klType: number;
+
+        /** PatternFilter isNoFilter */
+        isNoFilter?: (boolean|null);
+    }
+
+    /** Represents a PatternFilter. */
+    class PatternFilter implements IPatternFilter {
+
+        /**
+         * Constructs a new PatternFilter.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Qot_StockFilter.IPatternFilter);
+
+        /** PatternFilter fieldName. */
+        public fieldName: number;
+
+        /** PatternFilter klType. */
+        public klType: number;
+
+        /** PatternFilter isNoFilter. */
+        public isNoFilter: boolean;
+
+        /**
+         * Creates a new PatternFilter instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns PatternFilter instance
+         */
+        public static create(properties?: Qot_StockFilter.IPatternFilter): Qot_StockFilter.PatternFilter;
+
+        /**
+         * Encodes the specified PatternFilter message. Does not implicitly {@link Qot_StockFilter.PatternFilter.verify|verify} messages.
+         * @param message PatternFilter message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Qot_StockFilter.IPatternFilter, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified PatternFilter message, length delimited. Does not implicitly {@link Qot_StockFilter.PatternFilter.verify|verify} messages.
+         * @param message PatternFilter message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Qot_StockFilter.IPatternFilter, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a PatternFilter message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns PatternFilter
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Qot_StockFilter.PatternFilter;
+
+        /**
+         * Decodes a PatternFilter message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns PatternFilter
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Qot_StockFilter.PatternFilter;
+
+        /**
+         * Verifies a PatternFilter message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a PatternFilter message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns PatternFilter
+         */
+        public static fromObject(object: { [k: string]: any }): Qot_StockFilter.PatternFilter;
+
+        /**
+         * Creates a plain object from a PatternFilter message. Also converts values to other types if specified.
+         * @param message PatternFilter
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Qot_StockFilter.PatternFilter, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this PatternFilter to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a CustomIndicatorFilter. */
+    interface ICustomIndicatorFilter {
+
+        /** CustomIndicatorFilter firstFieldName */
+        firstFieldName: number;
+
+        /** CustomIndicatorFilter secondFieldName */
+        secondFieldName: number;
+
+        /** CustomIndicatorFilter relativePosition */
+        relativePosition: number;
+
+        /** CustomIndicatorFilter fieldValue */
+        fieldValue?: (number|null);
+
+        /** CustomIndicatorFilter klType */
+        klType: number;
+
+        /** CustomIndicatorFilter isNoFilter */
+        isNoFilter?: (boolean|null);
+    }
+
+    /** Represents a CustomIndicatorFilter. */
+    class CustomIndicatorFilter implements ICustomIndicatorFilter {
+
+        /**
+         * Constructs a new CustomIndicatorFilter.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Qot_StockFilter.ICustomIndicatorFilter);
+
+        /** CustomIndicatorFilter firstFieldName. */
+        public firstFieldName: number;
+
+        /** CustomIndicatorFilter secondFieldName. */
+        public secondFieldName: number;
+
+        /** CustomIndicatorFilter relativePosition. */
+        public relativePosition: number;
+
+        /** CustomIndicatorFilter fieldValue. */
+        public fieldValue: number;
+
+        /** CustomIndicatorFilter klType. */
+        public klType: number;
+
+        /** CustomIndicatorFilter isNoFilter. */
+        public isNoFilter: boolean;
+
+        /**
+         * Creates a new CustomIndicatorFilter instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns CustomIndicatorFilter instance
+         */
+        public static create(properties?: Qot_StockFilter.ICustomIndicatorFilter): Qot_StockFilter.CustomIndicatorFilter;
+
+        /**
+         * Encodes the specified CustomIndicatorFilter message. Does not implicitly {@link Qot_StockFilter.CustomIndicatorFilter.verify|verify} messages.
+         * @param message CustomIndicatorFilter message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Qot_StockFilter.ICustomIndicatorFilter, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified CustomIndicatorFilter message, length delimited. Does not implicitly {@link Qot_StockFilter.CustomIndicatorFilter.verify|verify} messages.
+         * @param message CustomIndicatorFilter message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Qot_StockFilter.ICustomIndicatorFilter, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a CustomIndicatorFilter message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns CustomIndicatorFilter
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Qot_StockFilter.CustomIndicatorFilter;
+
+        /**
+         * Decodes a CustomIndicatorFilter message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns CustomIndicatorFilter
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Qot_StockFilter.CustomIndicatorFilter;
+
+        /**
+         * Verifies a CustomIndicatorFilter message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a CustomIndicatorFilter message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns CustomIndicatorFilter
+         */
+        public static fromObject(object: { [k: string]: any }): Qot_StockFilter.CustomIndicatorFilter;
+
+        /**
+         * Creates a plain object from a CustomIndicatorFilter message. Also converts values to other types if specified.
+         * @param message CustomIndicatorFilter
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Qot_StockFilter.CustomIndicatorFilter, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this CustomIndicatorFilter to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a BaseData. */
     interface IBaseData {
 
@@ -28183,6 +28492,108 @@ export namespace Qot_StockFilter {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a CustomIndicatorData. */
+    interface ICustomIndicatorData {
+
+        /** CustomIndicatorData fieldName */
+        fieldName: number;
+
+        /** CustomIndicatorData value */
+        value: number;
+
+        /** CustomIndicatorData klType */
+        klType: number;
+    }
+
+    /** Represents a CustomIndicatorData. */
+    class CustomIndicatorData implements ICustomIndicatorData {
+
+        /**
+         * Constructs a new CustomIndicatorData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Qot_StockFilter.ICustomIndicatorData);
+
+        /** CustomIndicatorData fieldName. */
+        public fieldName: number;
+
+        /** CustomIndicatorData value. */
+        public value: number;
+
+        /** CustomIndicatorData klType. */
+        public klType: number;
+
+        /**
+         * Creates a new CustomIndicatorData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns CustomIndicatorData instance
+         */
+        public static create(properties?: Qot_StockFilter.ICustomIndicatorData): Qot_StockFilter.CustomIndicatorData;
+
+        /**
+         * Encodes the specified CustomIndicatorData message. Does not implicitly {@link Qot_StockFilter.CustomIndicatorData.verify|verify} messages.
+         * @param message CustomIndicatorData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Qot_StockFilter.ICustomIndicatorData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified CustomIndicatorData message, length delimited. Does not implicitly {@link Qot_StockFilter.CustomIndicatorData.verify|verify} messages.
+         * @param message CustomIndicatorData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Qot_StockFilter.ICustomIndicatorData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a CustomIndicatorData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns CustomIndicatorData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Qot_StockFilter.CustomIndicatorData;
+
+        /**
+         * Decodes a CustomIndicatorData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns CustomIndicatorData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Qot_StockFilter.CustomIndicatorData;
+
+        /**
+         * Verifies a CustomIndicatorData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a CustomIndicatorData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns CustomIndicatorData
+         */
+        public static fromObject(object: { [k: string]: any }): Qot_StockFilter.CustomIndicatorData;
+
+        /**
+         * Creates a plain object from a CustomIndicatorData message. Also converts values to other types if specified.
+         * @param message CustomIndicatorData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Qot_StockFilter.CustomIndicatorData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this CustomIndicatorData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a StockData. */
     interface IStockData {
 
@@ -28200,6 +28611,9 @@ export namespace Qot_StockFilter {
 
         /** StockData financialDataList */
         financialDataList?: (Qot_StockFilter.IFinancialData[]|null);
+
+        /** StockData customIndicatorDataList */
+        customIndicatorDataList?: (Qot_StockFilter.ICustomIndicatorData[]|null);
     }
 
     /** Represents a StockData. */
@@ -28225,6 +28639,9 @@ export namespace Qot_StockFilter {
 
         /** StockData financialDataList. */
         public financialDataList: Qot_StockFilter.IFinancialData[];
+
+        /** StockData customIndicatorDataList. */
+        public customIndicatorDataList: Qot_StockFilter.ICustomIndicatorData[];
 
         /**
          * Creates a new StockData instance using the specified properties.
@@ -28320,6 +28737,12 @@ export namespace Qot_StockFilter {
 
         /** C2S financialFilterList */
         financialFilterList?: (Qot_StockFilter.IFinancialFilter[]|null);
+
+        /** C2S patternFilterList */
+        patternFilterList?: (Qot_StockFilter.IPatternFilter[]|null);
+
+        /** C2S customIndicatorFilterList */
+        customIndicatorFilterList?: (Qot_StockFilter.ICustomIndicatorFilter[]|null);
     }
 
     /** Represents a C2S. */
@@ -28351,6 +28774,12 @@ export namespace Qot_StockFilter {
 
         /** C2S financialFilterList. */
         public financialFilterList: Qot_StockFilter.IFinancialFilter[];
+
+        /** C2S patternFilterList. */
+        public patternFilterList: Qot_StockFilter.IPatternFilter[];
+
+        /** C2S customIndicatorFilterList. */
+        public customIndicatorFilterList: Qot_StockFilter.ICustomIndicatorFilter[];
 
         /**
          * Creates a new C2S instance using the specified properties.
@@ -28753,6 +29182,9 @@ export namespace Qot_Sub {
 
         /** C2S isSubOrderBookDetail */
         isSubOrderBookDetail?: (boolean|null);
+
+        /** C2S extendedTime */
+        extendedTime?: (boolean|null);
     }
 
     /** Represents a C2S. */
@@ -28787,6 +29219,9 @@ export namespace Qot_Sub {
 
         /** C2S isSubOrderBookDetail. */
         public isSubOrderBookDetail: boolean;
+
+        /** C2S extendedTime. */
+        public extendedTime: boolean;
 
         /**
          * Creates a new C2S instance using the specified properties.
@@ -31423,6 +31858,19 @@ export namespace Trd_Common {
         CltRiskLevel_OptDanger = 4
     }
 
+    /** TimeInForce enum. */
+    enum TimeInForce {
+        TimeInForce_DAY = 0,
+        TimeInForce_GTC = 1
+    }
+
+    /** SecurityFirm enum. */
+    enum SecurityFirm {
+        SecurityFirm_Unknown = 0,
+        SecurityFirm_FutuSecurities = 1,
+        SecurityFirm_FutuInc = 2
+    }
+
     /** Properties of an AccCashInfo. */
     interface IAccCashInfo {
 
@@ -31644,6 +32092,9 @@ export namespace Trd_Common {
 
         /** TrdAcc cardNum */
         cardNum?: (string|null);
+
+        /** TrdAcc securityFirm */
+        securityFirm?: (number|null);
     }
 
     /** Represents a TrdAcc. */
@@ -31669,6 +32120,9 @@ export namespace Trd_Common {
 
         /** TrdAcc cardNum. */
         public cardNum: string;
+
+        /** TrdAcc securityFirm. */
+        public securityFirm: number;
 
         /**
          * Creates a new TrdAcc instance using the specified properties.
@@ -32175,6 +32629,12 @@ export namespace Trd_Common {
 
         /** Order remark */
         remark?: (string|null);
+
+        /** Order timeInForce */
+        timeInForce?: (number|null);
+
+        /** Order fillOutsideRTH */
+        fillOutsideRTH?: (boolean|null);
     }
 
     /** Represents an Order. */
@@ -32239,6 +32699,12 @@ export namespace Trd_Common {
 
         /** Order remark. */
         public remark: string;
+
+        /** Order timeInForce. */
+        public timeInForce: number;
+
+        /** Order fillOutsideRTH. */
+        public fillOutsideRTH: boolean;
 
         /**
          * Creates a new Order instance using the specified properties.
@@ -36620,6 +37086,12 @@ export namespace Trd_PlaceOrder {
 
         /** C2S remark */
         remark?: (string|null);
+
+        /** C2S timeInForce */
+        timeInForce?: (number|null);
+
+        /** C2S fillOutsideRTH */
+        fillOutsideRTH?: (boolean|null);
     }
 
     /** Represents a C2S. */
@@ -36663,6 +37135,12 @@ export namespace Trd_PlaceOrder {
 
         /** C2S remark. */
         public remark: string;
+
+        /** C2S timeInForce. */
+        public timeInForce: number;
+
+        /** C2S fillOutsideRTH. */
+        public fillOutsideRTH: boolean;
 
         /**
          * Creates a new C2S instance using the specified properties.
