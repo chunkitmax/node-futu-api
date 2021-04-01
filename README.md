@@ -1,10 +1,12 @@
 # node-futu-api
-<a href="https://www.npmjs.com/package/futu-api">![npm](https://img.shields.io/npm/v/futu-api)</a><br/>
 Open-source unofficial Futu Websocket API for Node.js
+
+⚠️ (01 Apr 2021) This module is now __abandoned__ after transferring npm package to Futu OpenAPI development team.
 
 ## Install
 ```bash
-npm install --save futu-api
+# the "futu-api" npm package was transferred back to Futu OpenAPI development team.
+# npm install --save futu-api
 ```
 or build locally
 ```bash
